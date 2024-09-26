@@ -1,0 +1,31 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:host{
+    display: block;
+    height: auto;
+    width: 100%;
+}
+
+h1{
+    font-size: 5.5rem;
+    font-weight: 500;
+}
+
+.header{
+    height: 200px;
+    background-color: rgba(var(--clr-secondary-background), .5);
+}
+
+
+.section{
+    width: 70%;
+}
+
+#posts-wrapper{
+    background-color: yellow;
+    margin-bottom: 3rem;
+}

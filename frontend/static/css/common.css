@@ -1,0 +1,97 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.main-color{
+    background-color: rgb(var(--clr-main-background));
+    color: rgb(var(--clr-main-foreground));
+}
+
+.padding{
+    padding: 2rem;
+}
+
+.padding-view{
+    padding-top: calc(var(--nav-h) + 4rem);
+}
+
+.margin-view{
+    margin-top: var(--nav-h) ;
+    /* margin-top: calc(var(--nav-h) + 2rem); */
+}
+
+.wrapper{
+    height: 100%;
+    width: 100%;
+}
+
+.card{
+    width : 680px;
+    background-color: rgb(var(--clr-secondary-background));
+    color: rgb(var(--clr-main-foreground));
+    border-radius: var(--br);
+}
+
+.mb-1{
+    margin-bottom: 1rem;
+}
+
+.flex{
+    display: flex;
+}
+
+.flex-col{
+    flex-direction: column;
+}
+
+.flex-center{
+    justify-content: center;
+    align-items: center;
+}
+
+.justify-content-center{
+    justify-content: center;
+}
+
+.justify-content-between{
+    justify-content: space-between;
+}
+
+.justify-content-start{
+    justify-content: start;
+}
+
+.justify-content-end{
+    justify-content: end;
+}
+
+.gap{
+    gap: 1rem;
+}
+
+.align-items-center{
+    align-items: center;
+}
+
+.align-items-top{
+    align-items: start;
+}
+
+.grid{
+    display: grid;
+    gap: 1rem;
+}
+
+.col-2{
+    grid-template-columns: 45px 1fr;
+}
+
+.col-3{
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.col-3-custom{
+    grid-template-columns: 45px 1fr 45px;
+}

@@ -1,0 +1,26 @@
+:host{
+    display: inline-block;
+    user-select: none;
+}
+div{
+    width: 145px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--fs-header);
+    cursor: pointer;
+    border-radius: var(--br);
+    transition: var(--tr-hover);
+}
+div:hover{
+    background-color: rgb(var(--clr-hover));
+}
+div img{
+    height: 54px;
+    width: 54px;
+}
+div span{
+    padding-right: 1.5rem;
+    letter-spacing: .4rem;
+    margin-left: -1.2rem;
+}

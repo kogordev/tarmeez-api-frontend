@@ -1,0 +1,75 @@
+*{
+    padding:0;
+    margin:0;
+    box-sizing:border-box;
+}
+
+.border-radius{
+    border-radius: 10px;
+}
+
+.flex{
+    display: flex;
+}
+
+.flex-col{
+    flex-direction: column;
+}
+
+.flex-centered-end{
+    justify-content: center;
+    align-items: end;
+}
+
+.centered{
+    justify-content: center;
+    align-items: center;
+}
+
+.shadow{
+    box-shadow: 0 0 8px -2px rgba(0,0,0,.4);
+}
+
+
+.btn{
+    border: 0;
+    outline: none;
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+}
+
+.btn-circle{
+    border-radius: 50%;
+}
+
+.btn-close{
+    position: absolute;
+    inset: 1.5rem 1.5rem auto auto;
+    mask-image: url("/static/assets/images/close-button.svg");
+    -webkit-mask-image: url("/static/assets/images/close-button.svg");
+    background-color: var(--clr-main-foreground);     
+}
+
+.backdrop{
+    position: fixed;
+    height: 100vh;
+    inset: 0 0 0 0;
+    background-color: rgba(0,0,0, .75);
+    z-index: 9999;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity .3s ease;
+}
+
+.hidden{
+    visibility:hidden;
+    opacity: 0;
+}
+
+.wrapper{
+    height: auto;
+    width: auto;
+    position: relative;
+}

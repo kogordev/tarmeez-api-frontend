@@ -1,0 +1,106 @@
+:host{
+    display: block;
+}
+
+.container{
+    height: auto;
+    padding: 1rem;
+}
+
+p{
+    width: 100%;
+    height: 5rem;
+}
+
+textarea{
+    width: 100%;
+    height: 100%;
+    font-size: 1.8rem;
+    padding: 1.25rem;
+    outline: none;
+    resize: none;
+    border-radius: var(--br);
+    border: 0;
+    background-color: rgb(var(--clr-hover));
+    color: rgb(var(--clr-main-foreground));
+}
+
+#profile-img{
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+#file-input{
+    display: none;
+}
+
+#upload-btn{
+    border: 0;
+    height: 25px;
+    width: 25px;
+    margin-top: 1.25rem;
+    mask-image: url("/static/assets/images/img.svg");
+    -webkit-mask-image: url("/static/assets/images/img.svg");
+    mask-position: center;
+    mask-size: cover;
+    background-color: rgb(var(--clr-main-foreground));
+    cursor: pointer;
+}
+
+.submit-wrapper{
+    padding: 1rem;
+    padding-right: 2rem;
+    border-top: .5px solid rgb(var(--clr-hover));
+}
+
+.active{
+    background-color: rgb(var(--clr-tarmeez-light)) !important;
+}
+
+#submit-btn{
+    padding: 1rem;
+    font-size: 1.6rem;
+    font-weight: 600;  
+    border: 0;
+    background-color: rgb(var(--clr-tarmeez)); 
+    color: rgb(var(--clr-tarmeez-foreground));
+    border-radius: var(--br);
+    cursor: pointer;
+    transition: background-color .3s;
+}
+
+#submit-btn:hover{
+    background-color: rgb(var(--clr-tarmeez-light));
+}
+
+#submit-btn:disabled{
+    background-color: rgb(var(--clr-hover));
+    color: rgb(var(--clr-popup-background));
+}
+
+#upload-section{
+    position: relative;
+}
+
+#delete-btn{
+    position: absolute;
+    display: none;
+    height: 16px;
+    width: 16px;
+    background-color: red;
+    mask-image: url("/static/assets/images/trash.svg");
+    mask-position: center;
+    mask-size: cover;
+    cursor: pointer;
+    top: 0;
+    right: 0;
+    transition: background-color .3s, transform .3;
+}
+
+#delete-btn:hover{
+    background-color: rgb(255, 99, 99);
+    transform: scale(1.15);
+}
+

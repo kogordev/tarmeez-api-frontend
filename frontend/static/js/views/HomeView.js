@@ -36,11 +36,6 @@ export default class HomeView extends HTMLElement {
     }
 
     setupEventListeners() {
-        this.addEventListener("click", (e) => {
-            e.stopPropagation();
-            e.preventDefault();
-        });
-
         const postCreator = this.shadowRoot.querySelector("postcreator-c");
         if(postCreator){
             postCreator.addEventListener("finished", () => navigateTo("/"))
@@ -76,6 +71,10 @@ export default class HomeView extends HTMLElement {
     async createPostComponent(post) {
         const postComp = new PostComponent();
         postComp.state = post;
+        postComp.currentUser = this.data;
+
+        // Reload Home view if post is deleted
+        postComp.addEventListener("post-deleted",e => e.detail.isDeleted && navigateTo("/"));
 
         try {
             const response = await this.controller.request(`/posts/${post.id}`);

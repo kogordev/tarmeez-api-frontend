@@ -26,6 +26,7 @@ export default class ModalComponent extends HTMLElement {
         const closeBtn = this._shadow.querySelector("#btn-close");
 
         this._shadow.addEventListener("click", (e) => this._handleClick(e, backdrop, closeBtn));
+
     }
 
     _handleClick(event, backdrop, closeBtn) {

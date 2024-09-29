@@ -42,17 +42,18 @@ export default class PostCreator extends HTMLElement {
     }
 
     attachEventListeners() {
-        // const textarea = this.shadow.querySelector("textarea");
-        // const submitBtn = this.shadow.querySelector("#submit-btn");
-        // const fileInput = this.shadow.querySelector("#file-input");
-        // const uploadBtn = this.shadow.querySelector("#upload-btn");
         const elements = this.getElements();
-
+        this.addEventListener("click",e => e.stopPropagation())
         elements.textarea.addEventListener("input", e => this.handleInput(e, elements.textarea, elements.submitBtn));
-        elements.fileInput.addEventListener("change", e => this.handleFileSelection(e));
-        elements.uploadBtn.addEventListener("click", () => elements.fileInput.click());
-        elements.deleteBtn.addEventListener("click", () => this.handleDelete())
-        elements.submitBtn.addEventListener("click", () => this.handlePostSubmit());
+        elements.fileInput.addEventListener("change", e => {
+            this.handleFileSelection(e)
+            console.log("clicked");
+        });
+        elements.uploadBtn.addEventListener("click", () => {
+            elements.fileInput.click()
+        });
+        elements.deleteBtn.addEventListener("click", this.handleDelete.bind(this))
+        elements.submitBtn.addEventListener("click", this.handlePostSubmit.bind(this));
     }
 
     handleInput(e, textarea, btn) {

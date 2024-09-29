@@ -1,12 +1,110 @@
+import Controller from "/static/js/controllers/controller.js"
+
 export default class PostComponent extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: "open" });
         this.state = null;
+        this.controller = new Controller();
+        this.currentUser = null;
+    }
+
+    elements() {
+        return {
+            editBtn: this.shadowRoot.querySelector("#edit-btn"),
+            deleteBtn: this.shadowRoot.querySelector("#delete-btn"),
+        }
     }
 
     connectedCallback() {
         this.render();
+        const elements = this.elements();
+        this.attachEventListeneres(elements);
+    }
+
+    attachEventListeneres(elements) {
+        document.addEventListener("click", e => this.handleMenuToggle(e));
+        if (elements.editBtn) {
+            elements.editBtn.addEventListener("click", this.editPost.bind(this));
+        }
+        if (elements.deleteBtn) {
+            elements.deleteBtn.addEventListener("click", this.triggerDelete.bind(this));
+        }
+    }
+
+    editPost() {
+        console.log("post edit:", this.state.id);
+    }
+
+    triggerDelete() {
+        const confirmationComp = document.createElement("confirmation-c");
+        confirmationComp.msg = "Are you sure you want to delete this post?";
+        this.shadowRoot.appendChild(confirmationComp);
+        confirmationComp.addEventListener("delete-confirm", e =>
+            this.handleDeleteConfrimation(e, confirmationComp)
+        )
+    }
+
+    async handleDeleteConfrimation(e, element) {
+        const { isConfirm } = e.detail;
+        this.disposeElement(element);
+
+        if (isConfirm) {
+            // Delete 
+            console.log("post id:", this.state.id)
+            const token = this.currentUser.token;
+            const url = `/posts/${this.state.id}`
+            try {
+                const customHeader = {
+                    "Authorization": `Bearer ${token}`,
+                }
+                const response = await this.controller.request(url, "DELETE", null, customHeader);
+                if (response.status >= 200 && response.status < 300) {
+                    this._dispatchEvent("post-deleted", { detail: { isDeleted: true } })
+                } else {
+                    this._dispatchEvent("post-deleted", { detail: { isDeleted: false } })
+                }
+
+            } catch (error) {
+                console.log(error);
+                this._dispatchEvent("post-deleted", { detail: { isDeleted: false } })
+            }
+
+        }
+    }
+
+    _dispatchEvent(name, value) {
+        const event = new CustomEvent(name, value);
+        this.dispatchEvent(event);
+    }
+
+    // Function to dispose of the element
+    disposeElement(element) {
+        // Remove event listeners
+        element.removeEventListener('delete-confirm', this.handleDeleteConfrimation);
+
+        // Remove from DOM
+        if (element.parentNode) {
+            element.parentNode.removeChild(element);
+        }
+    }
+
+    handleMenuToggle(e) {
+        const chbx = this.shadowRoot.querySelector("#chbx");
+        const menuBtn = this.shadowRoot.querySelector(".post__button");
+        const menu = this.shadowRoot.querySelector(".post__menu");
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (!menu) return;
+
+        //check if user click outside menu to close it
+        if (menu.contains(e.composedPath()[0]) || menuBtn.contains(e.composedPath()[0])) {
+            chbx.checked = !chbx.checked
+        } else {
+            chbx.checked = false
+        }
     }
 
     // Renders the component's HTML structure
@@ -21,6 +119,18 @@ export default class PostComponent extends HTMLElement {
         this.shadowRoot.innerHTML = this.getHTMLTemplate(profileImage, postImage, profileUrl);
         this.addStyles();
         this.setFormattedDate();
+    }
+
+    // Shows the post details modal
+    showPostDetails() {
+        const modal = document.querySelector("modal-c");
+        const postDetails = document.createElement("post-details-c");
+        postDetails.state = this.state; // Pass the post state to the details component
+
+        modal.appendChild(postDetails);
+        document.body.appendChild(modal);
+
+        modal.show();
     }
 
     // Gets the author’s profile image or returns the default image
@@ -86,32 +196,57 @@ export default class PostComponent extends HTMLElement {
         `;
     }
 
+    getCurrentUser() {
+        try {
+            const localStorage = window.localStorage.getItem("currentUser");
+            if (localStorage) {
+                const currentUser = JSON.parse(localStorage);
+                return currentUser;
+            } else {
+                return null
+            }
+        } catch (error) {
+            return null;
+        }
+    }
+
     // Returns the post menu
     getPostMenu() {
-        return /*html*/ `
+        const currentUser = this.getCurrentUser();
+        if (this.state.author?.id === currentUser?.user?.id) {
+            return /*html*/ `
             <input type="checkbox" id="chbx">
             <div class="post__menu">
-                <svg class="post__menu__caret" height="12" viewBox="0 0 21 12" width="21" fill="var(--card-background)">
+                <svg class="post__menu__caret" height="12" viewBox="0 0 21 12" width="21" fill="currentColor">
                     <path d="M21 0c-2.229.424-4.593 2.034-6.496 3.523L5.4 10.94c-2.026 2.291-5.434.62-5.4-2.648V0h21Z"></path>
                 </svg>
                 <div class="post__menu__body shadow-lg">
                     ${this.getMenuItems()}
                 </div>
             </div>
+            <label  class="post__button" for="chbx">
+                <svg class="post__button__svg" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 448 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                    <path
+                        d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z" />
+                </svg>
+            </label>
         `;
+        }
+        return "";
     }
 
     // Returns the menu items
     getMenuItems() {
         return /*html*/ `
-            <label class="post__menu__item" for="chbx">
+            <label id="edit-btn" class="post__menu__item" for="chbx">
                 <svg class="post__menu__svg" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                     <path d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32z"></path>
                 </svg>
                 <span>Edit post</span>
             </label>
             <hr>
-            <label class="post__menu__item" for="chbx">
+            <label id="delete-btn" class="post__menu__item" for="chbx">
                 <svg class="post__menu__svg" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                     <path d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z"></path>
                 </svg>
@@ -186,6 +321,7 @@ export default class PostComponent extends HTMLElement {
                 color: rgb(var(--clr-main-foreground));
                 border-radius: 10px;
                 font-size: 1.6rem;
+                position: relative;
             }
 
             .post__header {

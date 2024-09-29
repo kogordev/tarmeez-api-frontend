@@ -1,5 +1,6 @@
 import PostComponent from '/static/js/components/PostComponent.js';
 import Controller from '/static/js/controllers/controller.js';
+import { navigateTo } from "/static/js/utils/router.js"
 
 export default class ProfileView extends HTMLElement {
     constructor(params) {
@@ -62,7 +63,7 @@ export default class ProfileView extends HTMLElement {
 
     attachEventListener() {
         const postcreator = this.shadowRoot.querySelector("postcreator-c");
-        if (postcreator){
+        if (postcreator) {
             postcreator.addEventListener("finished", this.rerender.bind(this));
         }
     }
@@ -83,6 +84,10 @@ export default class ProfileView extends HTMLElement {
         for (let post of posts) {
             const postComp = new PostComponent();
             postComp.state = post;
+            postComp.currentUser = this.data;
+            // Reload Home view if post is deleted
+            postComp.addEventListener("post-deleted", e => e.detail.isDeleted && navigateTo("/users/"+ this.user.id));
+
             postsWrapper.prepend(postComp);
         }
     }

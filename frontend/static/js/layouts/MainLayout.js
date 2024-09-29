@@ -75,7 +75,7 @@ export default class MainLayout extends HTMLElement {
     handleAuth(e) {
         this.shadowRoot.innerHTML = "";
         this.render();
-        if (e.detail.hasOwnProperty("id")) {
+        if (e.detail?.hasOwnProperty("id")) {
             navigateTo("/users/" + e.detail.id);
         }
     }

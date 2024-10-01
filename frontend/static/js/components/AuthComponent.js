@@ -1,4 +1,6 @@
 import Controller from "/static/js/controllers/controller.js";
+import state from "/static/js/utils/state.js";
+
 
 export default class AuthComponent extends HTMLElement {
     constructor() {
@@ -11,6 +13,7 @@ export default class AuthComponent extends HTMLElement {
         this.controller = new Controller(); // Use the new Controller class
         this.displayInfo = "";
         this.attachShadow({ mode: "open" });
+        this.screenLoader = document.createElement("screen-loader");
     }
 
     async connectedCallback() {
@@ -21,7 +24,7 @@ export default class AuthComponent extends HTMLElement {
         this.shadowRoot.innerHTML = /*html*/`
         <link rel="stylesheet" href="/static/css/auth.css"/>
         <div class="wrapper">
-            <form id="${this.formId.signup}" class="form active">
+            <form id="${this.formId.signup}" class="form container active">
                 <div class="header flex flex-center">
                     <h2>Join <span>TARMEEZ</span></h2>
                 </div>
@@ -41,7 +44,7 @@ export default class AuthComponent extends HTMLElement {
                     </p>
                 </div>
             </form>
-            <form id="${this.formId.login}" class="form login">
+            <form id="${this.formId.login}" class="form login container">
                 <div class="header flex flex-center">
                     <h2>Login</h2>
                 </div>
@@ -62,6 +65,11 @@ export default class AuthComponent extends HTMLElement {
         `;
 
         const elements = this.elements();
+
+        elements.inputs.forEach(input => {
+            input.addEventListener("input", this.clearDisplayInfo.bind(this));
+        })
+
 
         elements.links.forEach(link => {
             link.addEventListener("click", e => {
@@ -89,27 +97,49 @@ export default class AuthComponent extends HTMLElement {
         });
     }
 
-    async post(pathname, frmData, elements){
+    getActiveForm() {
+        return Array.from(this.shadowRoot.querySelectorAll(".form")).find(form => form.classList.contains("active"));
+    }
+
+    clearDisplayInfo() {
+        const activeForm = this.getActiveForm()
+        const dipslayInfo = activeForm.querySelector(".display-info");
+        dipslayInfo.style.textContent = "";
+        dipslayInfo.style.display = "none";
+    }
+
+    async post(pathname, frmData, elements) {
+        // console.log(this.getActiveForm())
+        const activeForm = this.getActiveForm();
+        activeForm.appendChild(this.screenLoader);
+        this.screenLoader.show()
         let response = null;
         try {
             response = await this.controller.post(pathname, frmData);
-            const { user, token } = response.data;
-
-            const currentUser = { user, token };
-            window.localStorage.setItem("currentUser", JSON.stringify(currentUser));
-
+            state.updateCurrentUser(response.data);
+            this.parentElement.remove();
         } catch (error) {
-            elements.signupDisplayInfo.style.display = "block";
-            elements.signupDisplayInfo.textContent = error.msg;
+            const displayInfo = activeForm.querySelector(".display-info");
+            displayInfo.style.display = "block";
+            displayInfo.textContent = error.msg;
+        } finally {
+            // Minimum loader display time
+            const minimumDisplayTime = 300; // Set a minimum time in milliseconds (e.g., 300ms)
+
+            const start = Date.now();
+            // Calculate the remaining time to maintain minimum display time
+            const remainingTime = minimumDisplayTime - (Date.now() - start);
+            setTimeout(() => {
+                if (this.screenLoader) this.screenLoader.hide(); // Hide loader after minimum time
+            }, Math.max(0, remainingTime)); // Ensure the remaining time is not negativ
+
         }
 
-        const event = new CustomEvent("auth-finished", {detail: response});
-        this.dispatchEvent(event);
     }
-
 
     elements() {
         return {
+            inputs: Array.from(this.shadowRoot.querySelectorAll(".input")),
             signupLink: this.shadowRoot.querySelector("#signup-link"),
             loginLink: this.shadowRoot.querySelector("#login-link"),
 

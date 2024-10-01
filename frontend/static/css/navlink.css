@@ -11,6 +11,7 @@ div{
     cursor: pointer;
     border-radius: var(--br);
     transition: var(--tr-hover);
+    overflow: hidden;
 }
 div:hover{
     background-color: rgb(var(--clr-hover));

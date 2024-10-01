@@ -1,6 +1,7 @@
 class State {
     constructor() {
         this.subscribers = [];
+        this.currentUser = null; // Initialize currentUser here
         this.loadCurrentUser();
     }
 
@@ -9,8 +10,6 @@ class State {
             const userObjectStr = window.localStorage.getItem("currentUser");
             if (userObjectStr) {
                 this.currentUser = JSON.parse(userObjectStr);
-            } else {
-                this.currentUser = null;
             }
         } catch (error) {
             console.error("Failed to load current user:", error);
@@ -18,20 +17,37 @@ class State {
         }
     }
 
+    getCurrentUserAsStrring() {
+        if (this.currentUser) {
+            try {
+                const currentUserStr = JSON.stringify(this.currentUser);
+                return currentUserStr;
+            } catch (error) {
+                return null;
+            }
+        }
+        return null;
+    }
+
     getCurrentUser() {
         return this.currentUser;
     }
 
-    setCurrentUser(userObject) {
-        if (userObject) {
-            try {
+    // Method to update the current user in both the state and localStorage
+    updateCurrentUser(userObject) {
+        try {
+            if (userObject) {
+                // Update with a new user object
                 this.currentUser = userObject;
-                const userObjectStr = JSON.stringify(userObject);
-                window.localStorage.setItem("currentUser", userObjectStr);
-                this.notifySubscribers();
-            } catch (error) {
-                console.error("Failed to update current user:", error);
+                window.localStorage.setItem("currentUser", JSON.stringify(userObject));
+            } else {
+                // If null, remove the user from localStorage (logging out)
+                this.currentUser = null;
+                window.localStorage.removeItem("currentUser");
             }
+            this.notifySubscribers(this.currentUser);
+        } catch (error) {
+            console.error("Failed to update current user:", error);
         }
     }
 
@@ -41,8 +57,8 @@ class State {
         }
     }
 
-    notifySubscribers() {
-        this.subscribers.forEach(callback => callback(this.currentUser));
+    notifySubscribers(state) {
+        this.subscribers.forEach(callback => callback(state));
     }
 }
 

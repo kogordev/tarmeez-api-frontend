@@ -38,7 +38,7 @@ export default class NavLinkComponent extends HTMLElement {
                 this.shadowRoot.append(wrapper);
                 wrapper.appendChild(linkImg);
 
-                if (this.text){
+                if (this.text) {
                     const linkText = document.createElement("span");
                     linkText.textContent = this.text;
                     wrapper.appendChild(linkText);
@@ -47,8 +47,6 @@ export default class NavLinkComponent extends HTMLElement {
                 this.addEventListener(
                     "click",
                     (e) => {
-                        e.stopPropagation();
-                        e.preventDefault();
                         navigateTo(this.to);
                     },
                     //{ once: true } // Prevent multiple event listener issues
@@ -62,8 +60,6 @@ export default class NavLinkComponent extends HTMLElement {
         });
     }
 
-
-
     rerender() {
         // Clear current shadow DOM content
         this.shadowRoot.innerHTML = '';
@@ -71,15 +67,15 @@ export default class NavLinkComponent extends HTMLElement {
         this.render();
     }
 
-    setImg(src){
+    setImg(src) {
         this.shadowRoot.querySelector("img").src = src;
     }
 
-    setTo(url){
+    setTo(url) {
         this.to = url;
     }
 
-    setText(text){
+    setText(text) {
         this.shadowRoot.querySelector("span").textContent = text;
     }
 }

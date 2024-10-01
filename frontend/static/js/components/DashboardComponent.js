@@ -1,30 +1,34 @@
+import Controller from '/static/js/controllers/controller.js';
+
 export default class DashboardComponent extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: "open" });
+        this.controller = new Controller();
         this.user = null; // Initialize user data
+        this.attachShadow({ mode: "open" });
     }
 
-    connectedCallback() {
-        this.setUser();
-        this.render();
+    async connectedCallback() {
+        this.load();
     }
 
-    setUser() {
+    async setUser(id) {
         // Parse and store user data from the dataset
-        const userData = this.dataset.user || null;
-        if (userData) {
-            try {
-                this.user = JSON.parse(userData);
-            } catch (error) {
-                console.error("Failed to parse user data:", error);
-            }
+        try {
+            const url = `/users/${id}`
+            const json = await this.controller.request(url);
+            this.user = json.data;
+        } catch (error) {
+            this.user = null;
+            console.error("Error fetching user data:", error.message);
         }
     }
 
     render() {
-        if (!this.user) return;
-
+        if (!this.user){
+            console.log("user not found");
+            return;
+        };
         // Clear the shadow DOM before rendering
         this.clearShadowDOM();
 
@@ -35,6 +39,17 @@ export default class DashboardComponent extends HTMLElement {
 
     clearShadowDOM() {
         this.shadowRoot.innerHTML = '';
+    }
+
+    async load(){
+        try {
+            const id = this.dataset.id;
+            await this.setUser(id);
+            this.render();
+        } catch (error) {
+            console.log("make sure data-id is provided!");
+            return;
+        }
     }
 
     attachStyles() {

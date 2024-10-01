@@ -69,6 +69,7 @@ export default class ConfirmationComponent extends HTMLElement {
             user-select: none;
         }
         .footer {
+            padding-top: 3rem;
             display: flex;
             justify-content: flex-end;
             gap: 1rem;

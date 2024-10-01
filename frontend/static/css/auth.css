@@ -9,9 +9,12 @@
     width: 600px;
     background-color: rgb(var(--clr-secondary-background));
     border-radius: var(--br);
-    position: relative;
     
     /* user-select: none; */
+}
+
+.container{
+    position: relative;
 }
 
 .flex{

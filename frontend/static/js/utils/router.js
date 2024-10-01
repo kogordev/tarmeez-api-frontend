@@ -14,14 +14,28 @@ function getParams(match){
     }))
 }
 
-export function navigateTo(url){
+export async function navigateTo(url) {
+    const screenLoader = document.getElementById("appLoader");
+    if (screenLoader) screenLoader.show(); // Show loader before navigation
+
+    // Minimum loader display time
+    const minimumDisplayTime =300; // Set a minimum time in milliseconds (e.g., 300ms)
+
+    const start = Date.now();
     window.history.pushState({}, "", url); 
-    router();
+    await router();
+
+    // Calculate the remaining time to maintain minimum display time
+    const remainingTime = minimumDisplayTime - (Date.now() - start);
+    setTimeout(() => {
+        if (screenLoader) screenLoader.hide(); // Hide loader after minimum time
+    }, Math.max(0, remainingTime)); // Ensure the remaining time is not negative
 }
+
 
 export function router(){
 
-    return new Promise( (res, rej)=>{
+    return new Promise( async(res, rej)=>{
         const routes = [
             {path: "/", view: HomeView},
             {path: "/users/:id", view: ProfileView},
@@ -44,8 +58,8 @@ export function router(){
         };
     
         const params = getParams(match);
-        const view = new match.route.view(params);
-        document.querySelector("main-layout").renderView(view);
+        const view =  new match.route.view(params);
+        await document.querySelector("main-layout").renderView(view);
         res(true);
     } )
 

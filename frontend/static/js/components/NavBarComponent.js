@@ -1,24 +1,29 @@
+import state from "/static/js/utils/state.js";
+
 export default class NavBarComponent extends HTMLElement {
     constructor() {
         super();
         this.shadow = this.attachShadow({ mode: "open" });
-        this.currentUser = null;
+        this.currentUser = null; // initial value
     }
 
     connectedCallback() {
-        this.currentUser = this.getCurrentUser();
 
+        this.currentUser = state.getCurrentUser(); // Set currentUser value
         this.render();
+        this.subscribeToState();
+    }
 
-        // Load element selectors
-        const elements = this.elements();
-
-        this.attachEventListeners(elements);
-
-        // Sync current user data across components
-        if (this.currentUser) {
-            this.syncUserDetails(elements);
-        }
+    subscribeToState() {
+        state.subscribe(currentUser => {
+            if (currentUser) {
+                this.currentUser = currentUser;
+            } else {
+                this.currentUser = null;
+            }
+            this.rerender();
+            console.log("feedback recieved from navbar");
+        });
     }
 
     render() {
@@ -36,6 +41,10 @@ export default class NavBarComponent extends HTMLElement {
             </div>
         </nav>
         `;
+
+        // Load element selectors
+        const elements = this.elements();
+        this.attachEventListeners(elements);
     }
 
     attachEventListeners() {
@@ -66,13 +75,15 @@ export default class NavBarComponent extends HTMLElement {
             </div>`
     }
 
-    UserSection(user) {
+    UserSection(currentUser) {
+        const user = currentUser.user;
         const id = user.id || "#";
         const img = user.profile_image || "/static/assets/images/default-user1.png";
+        const url = `/users/${id}`;
 
         return /*html*/`
             <div id="user" class="col nav-section navbar-user">
-                <navlink-c id="profile-link" class="profile-link" data-to='${id}' data-img=${img}></navlink-c>
+                <navlink-c id="profile-link" class="profile-link" data-to='${url}' data-img=${img}></navlink-c>
                 <button id="logout-btn" class="button logout-button navbar-button">Log out</button>
             </div>
             `
@@ -86,74 +97,27 @@ export default class NavBarComponent extends HTMLElement {
         }
     }
 
-    getCurrentUser() {
-        const user = this.dataset.user;
-        if (user) {
-            try {
-                return JSON.parse(user);
-            } catch (error) {
-                return null
-            }
-        } return null;
-    }
-
-
-    showAuthModal(event, elements) {
-        event.preventDefault();
+    showAuthModal(e) {
+        const modal = document.createElement("modal-c");
         const auth = document.createElement("auth-c");
-        elements.modal.appendChild(auth);
 
-        const target = event.target;
+        modal.appendChild(auth);
+        this.shadowRoot.appendChild(modal);
+
+        const target = e.target;
         if (target.id === "login-btn") {
             auth.setActiveForm(auth.formId.login); // Activate login form
         } else if (target.id === "signup-btn") {
             auth.setActiveForm(auth.formId.signup); // Activate signup form
         }
 
-        // Auth login-success event
-        auth.addEventListener("auth-finished", e => this.handleAuthSuccess(e, elements));
-        elements.modal.show();
-
+        modal.show();
     }
 
 
-    handleAuthSuccess(e) {
-        const { user } = e.detail.data;
-        const elements = this.elements();
-
-        const authEvent = new CustomEvent("auth-finished", {detail: user});
-        this.dispatchEvent(authEvent)
-
-        elements.modal.hide();
+    handleLogout() {
+        state.updateCurrentUser(null);
     }
-
-
-    setCurrentUser(currentUser, elements) {
-        this.currentUser = currentUser;
-        elements.userManagement.innerHTML = this.renderUserManagement();
-        this.attachEventListeners = this.attachEventListeners.bind(this);
-        const auth = elements.modal.querySelector("auth-c");
-        elements.modal.removeChild(auth);
-        elements.modal.hide();
-
-    }
-
-
-    syncUserDetails(elements) {
-        const userProfileImg = this.currentUser.user.profile_image;
-        elements.profileLink.setImg(userProfileImg || '/static/assets/images/default-user1.png');
-        elements.profileLink.to = `/users/${this.currentUser.user.id}`;
-    }
-
-
-    handleLogout(event) {
-        event.preventDefault();
-        window.localStorage.removeItem("currentUser");
-        const logoutEvent = new CustomEvent("logout");
-        this.dispatchEvent(logoutEvent);
-    }
-
-
 
     elements() {
         const _auth = document.createElement("auth-c"); // Create the Auth component

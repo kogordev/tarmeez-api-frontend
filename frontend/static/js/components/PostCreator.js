@@ -1,83 +1,83 @@
-import Controller from "/static/js/controllers/controller.js"
+import Controller from "/static/js/controllers/controller.js";
+import state from "/static/js/utils/state.js";
 
 export default class PostCreator extends HTMLElement {
     constructor() {
         super();
         this.shadow = this.attachShadow({ mode: "open" });
         this.controller = new Controller();
-        this.loader = document.querySelector("screenloader-c");
+        this.currentUser = null; // Initial value
     }
 
     connectedCallback() {
-        const img = this.dataset.img;
-        this.render(img);
+        this.currentUser = state.getCurrentUser();
+        if(!this.currentUser) return;
+        this.setup();
+    }
+
+    setup(){
+        this.render();
         this.attachEventListeners();
     }
 
-    render(img) {
+    render() {
+        const img = this.currentUser?.user?.profile_image || "";
         this.shadow.innerHTML = /*html*/`
-        <link rel="stylesheet" href="/static/css/common.css"/>
-        <link rel="stylesheet" href="/static/css/postcreator.css"/>
-        <div class="card">
-            <div class="input-wrapper grid col-3-custom container">
-                <div class="col flex justify-content-center align-items-start">
-                    <img id="profile-img" src=${img} alt="user profile image"/>
+            <link rel="stylesheet" href="/static/css/common.css"/>
+            <link rel="stylesheet" href="/static/css/postcreator.css"/>
+            <div class="card">
+                <div class="input-wrapper grid col-3-custom container">
+                    <div class="col flex justify-content-center align-items-start">
+                        <img id="profile-img" src='${img}' alt="user profile image"/>
+                    </div>
+                    <div class="col">
+                        <p>
+                            <textarea  placeholder="What's on your mind?"></textarea>
+                        </p>
+                    </div>
+                    <div id="upload-section" class="col flex">
+                        <input id="file-input" type="file" accept="image/png, image/jpg, image/jpeg, image/gif"/>
+                        <button id="upload-btn" type="button">Upload Image</button>
+                        <button id="delete-btn" type="button" style="display: none;">Delete Image</button>
+                    </div>
                 </div>
-                <div class="col">
-                    <p>
-                        <textarea  placeholder="What's on your mind?"></textarea>
-                    </p>
-                </div>
-                <div id="upload-section" class="col flex">
-                    <input id="file-input" type="file" accept="image/png, image/jpg, image/jpeg, image/gif"/>
-                    <button id="upload-btn"></button>
-                    <button id="delete-btn"></button>
+                <div class="submit-wrapper flex justify-content-end">
+                    <button id="submit-btn" disabled>Post</button>
                 </div>
             </div>
-            <div class="submit-wrapper flex justify-content-end">
-                <button id="submit-btn" disabled=true>Post</button>
-            </div>
-        </div>
-        `
+        `;
     }
 
     attachEventListeners() {
         const elements = this.getElements();
-        this.addEventListener("click",e => e.stopPropagation())
-        elements.textarea.addEventListener("input", e => this.handleInput(e, elements.textarea, elements.submitBtn));
-        elements.fileInput.addEventListener("change", e => {
-            this.handleFileSelection(e)
-            console.log("clicked");
-        });
-        elements.uploadBtn.addEventListener("click", () => {
-            elements.fileInput.click()
-        });
-        elements.deleteBtn.addEventListener("click", this.handleDelete.bind(this))
+        this.addEventListener("click", e => e.stopPropagation());
+
+        elements.textarea.addEventListener("input", () => this.handleInput(elements.textarea, elements.submitBtn));
+        elements.fileInput.addEventListener("change", e => this.handleFileSelection(e));
+        elements.uploadBtn.addEventListener("click", () => elements.fileInput.click());
+        elements.deleteBtn.addEventListener("click", this.handleDelete.bind(this));
         elements.submitBtn.addEventListener("click", this.handlePostSubmit.bind(this));
     }
 
-    handleInput(e, textarea, btn) {
+    handleInput(textarea, btn) {
         this.resize(textarea);
-        this.toggleSubmitBtn(textarea, btn);
+        this.toggleSubmitBtn();
     }
 
     resize(textarea) {
         const p = textarea.parentElement;
-        const minHeight = "5rem"; // Minimum height when the textarea is empty
+        const minHeight = "5rem";
 
         // Reset height to auto to allow recalculation
         p.style.height = minHeight;
 
-        // Check if the textarea is empty and adjust height accordingly
-        if (textarea.value.trim() === '') {
-            p.style.height = minHeight; // Set to minimum height when empty
-        } else {
-            const scHeight = textarea.scrollHeight;
-            p.style.height = scHeight + "px"; // Set to content's scroll height
+        // Set to content's scroll height if not empty
+        if (textarea.value.trim()) {
+            p.style.height = `${textarea.scrollHeight}px`;
         }
     }
 
-    handleDelete(){
+    handleDelete() {
         const elements = this.getElements();
         elements.fileInput.value = "";
         elements.uploadBtn.classList.remove("active");
@@ -95,25 +95,19 @@ export default class PostCreator extends HTMLElement {
         }
 
         if (!isEmpty || elements.fileInput.files.length > 0) {
-            elements.submitBtn.removeAttribute("disabled");          
-        } 
-        else {
+            elements.submitBtn.removeAttribute("disabled");
+        } else {
             elements.submitBtn.setAttribute("disabled", true);
         }
     }
 
     handleFileSelection(e) {
-        const elements = this.getElements();
-        if (e.target.files.length > 0) {
-        //   console.log("file selected: ", e.target.files[0]);
-        this.handleInput(e, elements.textarea, elements.submitBtn);
-        }
+        this.toggleSubmitBtn(); // Update the submit button state based on file selection
     }
 
     async handlePostSubmit() {
         const content = this.shadow.querySelector("textarea").value.trim();
-
-        if (content === "") {
+        if (!content) {
             console.log("Post content is empty!");
             return;
         }
@@ -122,50 +116,44 @@ export default class PostCreator extends HTMLElement {
 
         try {
             const frmData = new FormData();
-            const content = this.shadow.querySelector("textarea").value.trim();
             frmData.append("body", content);
 
             const fileInput = this.shadow.querySelector("#file-input").files;
             if (fileInput.length > 0) frmData.append("image", fileInput[0]);
 
             const customHeader = {
-                "Authorization": `Bearer ${this.dataset.token}`,
-            }
+                "Authorization": `Bearer ${this.currentUser.token}`,
+            };
 
-            response = await this.controller.
-            request("/posts", "POST", frmData, customHeader);
-
-
+            response = await this.controller.request("/posts", "POST", frmData, customHeader);
         } catch (error) {
-            console.log(error)
+            console.error("Error while submitting post:", error);
         }
 
-        const event = new CustomEvent("finished", {detail: response});
+        const event = new CustomEvent("finished", { detail: response });
         this.dispatchEvent(event);
-
-        // Clear the content after posting
-        this.clearPost();
+        this.clearPost(); // Clear after successful post
     }
 
     clearPost() {
         const elements = this.getElements();
-
         elements.textarea.value = "";
         elements.fileInput.value = "";
-        this.handleInput(null, elements.textarea, elements.submitBtn);
+        elements.uploadBtn.classList.remove("active");
+        elements.deleteBtn.style.display = "none";
+        this.handleInput(elements.textarea, elements.submitBtn);
     }
 
-
-    getElements(){
+    getElements() {
         return {
-             textarea : this.shadow.querySelector("textarea"),
-             submitBtn : this.shadow.querySelector("#submit-btn"),
-             fileInput : this.shadow.querySelector("#file-input"),
-             uploadBtn : this.shadow.querySelector("#upload-btn"),
-             deleteBtn : this.shadow.querySelector("#delete-btn")
-        }
+            textarea: this.shadow.querySelector("textarea"),
+            submitBtn: this.shadow.querySelector("#submit-btn"),
+            fileInput: this.shadow.querySelector("#file-input"),
+            uploadBtn: this.shadow.querySelector("#upload-btn"),
+            deleteBtn: this.shadow.querySelector("#delete-btn"),
+        };
     }
-
 }
 
-window.customElements.define("postcreator-c", PostCreator)
+window.customElements.define("postcreator-c", PostCreator);
+

@@ -39,3 +39,15 @@
 /* #root{
     padding-top: calc(var(--nav-h) + 2rem);
 } */
+
+
+.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.wrapper {
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+}

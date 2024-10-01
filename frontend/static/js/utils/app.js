@@ -10,6 +10,7 @@ import CommentCreator from "/static/js/components/CommentCreator.js";
 import DashboardComponent from "/static/js/components/DashboardComponent.js";
 import MainLayout from "/static/js/layouts/MainLayout.js";
 import ConfirmationComponent from "/static/js/components/ConfirmationComponent.js";
+import PostsWrapperComponent from "/static/js/components/PostsWrapperComponent.js";
 import PostDetailsComponent from "/static/js/components/PostDetails.js";
 
 import {router} from "/static/js/utils/router.js";

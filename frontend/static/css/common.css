@@ -95,3 +95,7 @@
 .col-3-custom{
     grid-template-columns: 45px 1fr 45px;
 }
+
+.bg-transparent{
+    background-color: transparent;
+}

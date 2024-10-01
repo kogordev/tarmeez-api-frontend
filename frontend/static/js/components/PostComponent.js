@@ -1,4 +1,5 @@
 import Controller from "/static/js/controllers/controller.js"
+import state from "/static/js/utils/state.js";
 
 export default class PostComponent extends HTMLElement {
     constructor() {
@@ -11,24 +12,43 @@ export default class PostComponent extends HTMLElement {
 
     elements() {
         return {
+            postBody: this.shadowRoot.querySelector(".post__body"),
+            menuBtn: this.shadowRoot.querySelector(".post__button"),
+            menuBtnSvg: this.shadowRoot.querySelector(".post__button__svg"),
             editBtn: this.shadowRoot.querySelector("#edit-btn"),
             deleteBtn: this.shadowRoot.querySelector("#delete-btn"),
         }
     }
 
     connectedCallback() {
+        this.currentUser = state.getCurrentUser();
         this.render();
         const elements = this.elements();
         this.attachEventListeneres(elements);
     }
 
     attachEventListeneres(elements) {
+
+        this.shadowRoot.getElementById("comments-link")?.addEventListener("click", this.showComments.bind(this))
+
         document.addEventListener("click", e => this.handleMenuToggle(e));
         if (elements.editBtn) {
             elements.editBtn.addEventListener("click", this.editPost.bind(this));
         }
         if (elements.deleteBtn) {
             elements.deleteBtn.addEventListener("click", this.triggerDelete.bind(this));
+        }
+    }
+
+    async showComments() {
+        try {
+            const url = `/posts/${this.state.id}`;
+            const response = await this.controller.request(url);
+            const comments = response.data.comments || [];
+            console.log(comments)
+            
+        } catch (error) {
+
         }
     }
 
@@ -51,7 +71,6 @@ export default class PostComponent extends HTMLElement {
 
         if (isConfirm) {
             // Delete 
-            console.log("post id:", this.state.id)
             const token = this.currentUser.token;
             const url = `/posts/${this.state.id}`
             try {
@@ -59,6 +78,7 @@ export default class PostComponent extends HTMLElement {
                     "Authorization": `Bearer ${token}`,
                 }
                 const response = await this.controller.request(url, "DELETE", null, customHeader);
+
                 if (response.status >= 200 && response.status < 300) {
                     this._dispatchEvent("post-deleted", { detail: { isDeleted: true } })
                 } else {
@@ -173,7 +193,7 @@ export default class PostComponent extends HTMLElement {
                     <img src="${postImage}" alt="" class="post__img">
                 </div>
                 <div class="post__comments__wrapper">
-                    <a href="#" class="post__comments__link"><span>${this.state.comments_count}</span> comments</a>
+                    <a href="#" id="comments-link" class="post__comments__link"><span>${this.state.comments_count}</span> comments</a>
                 </div>
             </article>
         `;
@@ -290,6 +310,13 @@ export default class PostComponent extends HTMLElement {
     // Gets the CSS styles for the component
     getCSS() {
         return `
+            a{
+                color: rgb(var(--clr-main-foreground));
+                text-decoration: none;
+            }
+            a:hover{
+                text-decoration: underline;
+            }   
             .navlink-img::part(wrapper):hover {
                 background-color: inherit;
             }
@@ -336,7 +363,6 @@ export default class PostComponent extends HTMLElement {
             .post__profile__img{
                 width: 50px;
                 margin-right: .5rem;
-                overflow: hidden;
                 position:relative;
             }
 
@@ -474,8 +500,9 @@ export default class PostComponent extends HTMLElement {
                 -webkit-filter: drop-shadow(0px 15px 10px rgba(0, 0, 0, .4));
                 filter: drop-shadow(0px 15px -6px rgba(0, 0, 0, .4));
                 position: relative;
-                right: -8.94rem;
+                right: -12.9rem;
                 z-index: 2;
+                transform: rotate(180deg)
             }
 
             .post__menu__body {

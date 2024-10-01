@@ -5,6 +5,7 @@
 .container{
     height: auto;
     padding: 1rem;
+    overflow: hidden;
 }
 
 p{

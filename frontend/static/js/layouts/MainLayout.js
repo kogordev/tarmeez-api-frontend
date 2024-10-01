@@ -1,4 +1,5 @@
 import { navigateTo } from "/static/js/utils/router.js";
+import state from '/static/js/utils/state.js'; // Import your state manager
 
 export default class MainLayout extends HTMLElement {
     constructor() {
@@ -8,93 +9,63 @@ export default class MainLayout extends HTMLElement {
 
     connectedCallback() {
         this.attachShadow({ mode: "open" });
-        this.render();
+        const currentUserStr = state.getCurrentUserAsStrring();
+        this.render(currentUserStr);
+        this.subscribeToState(); // Subscribe to state changes
     }
 
-    render() {
-        this.shadowRoot.innerHTML = "";
+    subscribeToState() {
+        state.subscribe(currentUser => {
+            if (currentUser) {
+                navigateTo("/users/" + currentUser.user.id);
+            } else {
+                navigateTo("/")
+            }
+            console.log("feedback recieved");
+        });
+    }
+
+    render(currentUserStr = null) {
         this.shadowRoot.innerHTML = /*html*/`
             <link rel="stylesheet" href="/static/css/common.css"/>
             <link rel="stylesheet" href="/static/css/mainlayout.css"/>
-            <div id="root" class="wrapper padding-view ">
-                ${this.renderNavbar()}
-
+            <div id="root" class="wrapper padding-view">
+                <navbar-c></navbar-c>
             </div>
         `;
         this.root = this.shadowRoot.querySelector("#root");
-
-        this.setupEventListeners();
     }
 
-    getCurrentUser() {
-        // Load and set up current user if exists
-        const storedUser = window.localStorage.getItem("currentUser");
-        if (storedUser) {
-            const currentUser = storedUser;
-            return currentUser
-        } else return null
-    }
 
-    renderNavbar() {
-        const user = this.getCurrentUser();
-        return /*html*/`
-        <navbar-c data-user=${user}></navbar-c>
-        `
-    }
-
-    // Setup general event listeners
-    setupEventListeners() {
-
-        const navbar = this.shadowRoot.querySelector("navbar-c");
-        navbar.addEventListener("logout", e => this.handleLogout(e));
-        navbar.addEventListener("auth-finished", e => this.handleAuth(e));
-    }
-
-    // Method to render the passed view component within the root
     renderView(view) {
-        // Clear all children except navbar
+        const screenLoader = document.getElementById('appLoader');
+        if (screenLoader) screenLoader.show(); // Show loader before rendering
+
+        this.root.classList.add("hidden"); // Hide content during rendering
+        this.root.classList.remove("wrapper");
+
+        // Use a DocumentFragment to batch DOM updates
+        const fragment = document.createDocumentFragment();
+
         const navbar = this.shadowRoot.querySelector("navbar-c");
-        Array.from(this.root.children).forEach(child => {
-            if (child !== navbar) {
-                this.root.removeChild(child);
-            }
-        });
+        if (navbar) fragment.appendChild(navbar.cloneNode(true)); // Keep existing navbar
 
-        // Append postCreator if user is logged in and in home page
-        const isHome = window.location.pathname === "/";
-        let data = this.parseJson(this.getCurrentUser());
+        // Render the new view in the fragment
+        const viewNode = view;
+        fragment.appendChild(viewNode);
 
-        if (isHome && data) {
-            view.isLoggedIn = true;
-            view.data = data;
-        }
+        // Replace root content with the fragment
+        this.root.innerHTML = '';
+        this.root.appendChild(fragment);
 
-        this.root.appendChild(view);
+        // Show content and hide loader after rendering
+        setTimeout(() => {
+            this.root.classList.remove("hidden");
+            this.root.classList.add("wrapper");
+            if (screenLoader) screenLoader.hide();
+        },300); // Optional delay to ensure smooth transitions
     }
 
-    handleAuth(e) {
-        this.shadowRoot.innerHTML = "";
-        this.render();
-        if (e.detail?.hasOwnProperty("id")) {
-            navigateTo("/users/" + e.detail.id);
-        }
-    }
-
-    handleLogout() {
-        this.shadowRoot.innerHTML = "";
-        this.render();
-
-        navigateTo("/");
-    }
-
-
-    parseJson(str) {
-        try {
-            return JSON.parse(str);
-        } catch (error) {
-            return null
-        }
-    }
 
 }
 

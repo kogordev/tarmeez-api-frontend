@@ -1,27 +1,31 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-:host{
+:host {
     display: block;
     height: auto;
-    width: 100%;
+    overflow-y: hidden;
 }
 
-h1{
+.profile-view{
+    background-color: rgb(var(--clr-main-background));
+    padding-bottom: 2rem;
+}
+
+h1 {
     font-size: 5.5rem;
     font-weight: 500;
 }
 
-.header{
+.header {
     height: 200px;
     background-color: rgba(var(--clr-secondary-background), .5);
 }
 
 
-.section{
+.section {
     width: 70%;
 }
-

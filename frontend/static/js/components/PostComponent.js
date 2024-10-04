@@ -10,6 +10,18 @@ export default class PostComponent extends HTMLElement {
         this.currentUser = null;
     }
 
+    static get observedAttributes() {
+        return ["data-comments-count"];
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        console.log(name + " changed into " + newValue);
+        switch (name) {
+            case "data-comments-count":
+                this.updateCommentCount(newValue);
+        }
+    }
+
     elements() {
         return {
             postBody: this.shadowRoot.querySelector(".post__body"),
@@ -20,7 +32,17 @@ export default class PostComponent extends HTMLElement {
         }
     }
 
+
     connectedCallback() {
+        if (this.dataset?.state) {
+            try {
+                console.log(this.dataset)
+                const state = JSON.parse(this.dataset.state);
+                this.state = state;
+            } catch (error) {
+                console.log("failed to convert state attribute into json", error);
+            }
+        }
         this.currentUser = state.getCurrentUser();
         this.render();
         const elements = this.elements();
@@ -28,8 +50,10 @@ export default class PostComponent extends HTMLElement {
     }
 
     attachEventListeneres(elements) {
+        if (!this.getAttribute("withCount")) {
+            this.shadowRoot.getElementById("comments-link")?.addEventListener("click", this.showComments.bind(this))
+        }
 
-        this.shadowRoot.getElementById("comments-link")?.addEventListener("click", this.showComments.bind(this))
 
         document.addEventListener("click", e => this.handleMenuToggle(e));
         if (elements.editBtn) {
@@ -42,13 +66,28 @@ export default class PostComponent extends HTMLElement {
 
     async showComments() {
         try {
-            const url = `/posts/${this.state.id}`;
-            const response = await this.controller.request(url);
-            const comments = response.data.comments || [];
-            console.log(comments)
-            
-        } catch (error) {
+            const postDetails = document.createElement("post-details");
+            postDetails.id = this.state.id;
+            this.shadowRoot.appendChild(postDetails);
+            postDetails.addEventListener("closed", e => {
+                this.state = e.detail;
+                this.updateCommentCount(this.state.comments_count);
+                this.dispatchEvent(new CustomEvent("state-updated", { detail: this.state }))
+            })
 
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    updateCommentCount(value) {
+        const commentsLink = this.shadowRoot.querySelector("#comments-link");
+        if (commentsLink) {
+            try {
+                commentsLink.querySelector("span").textContent = value;
+            } catch (error) {
+                console.log("failed to update comments count", error)
+            }
         }
     }
 
@@ -67,9 +106,10 @@ export default class PostComponent extends HTMLElement {
 
     async handleDeleteConfrimation(e, element) {
         const { isConfirm } = e.detail;
-        this.disposeElement(element);
-
         if (isConfirm) {
+            const screenloader = document.createElement("screen-loader");
+            document.body.appendChild(screenloader);
+            screenloader.show();
             // Delete 
             const token = this.currentUser.token;
             const url = `/posts/${this.state.id}`
@@ -88,7 +128,10 @@ export default class PostComponent extends HTMLElement {
             } catch (error) {
                 console.log(error);
                 this._dispatchEvent("post-deleted", { detail: { isDeleted: false } })
+            } finally {
+                this.disposeElem();
             }
+            screenloader.hide();
 
         }
     }
@@ -581,11 +624,10 @@ export default class PostComponent extends HTMLElement {
             }
 
             .post__img__wrapper {
-                background-color: rgb(var(--clr-image-background));
                 max-height: 750px;
                 display: flex;
-                align-items: center;
                 justify-content: center;
+                align-items: center;
                 overflow: hidden;
                 cursor: pointer;
             }
@@ -613,6 +655,15 @@ export default class PostComponent extends HTMLElement {
             day: "numeric"
         });
         this.shadowRoot.querySelector('.post__info__time__link').innerText = formattedDate;
+    }
+
+    disposeElem() {
+        this.style.transition = "visibility .3s";
+        this.style.visibility = "hidden";
+        setTimeout(() => {
+            this.remove();
+            console.log("post component closeset modal", this.closest("post-details"))
+        }, 100);
     }
 }
 

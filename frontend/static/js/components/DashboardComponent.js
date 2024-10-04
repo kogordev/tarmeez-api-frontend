@@ -9,13 +9,37 @@ export default class DashboardComponent extends HTMLElement {
     }
 
     async connectedCallback() {
-        this.load();
+        try {
+            //await this.initializeComponent();
+            await this.load();
+        } catch (error) {
+            console.error("Error initializing component:", error);
+        }
     }
 
+    async load() {
+        this.renderLoadingState(); // Initial loading state with smooth transition
+
+        const id = this.dataset.id;
+        if (!id) {
+            console.error("No data-id attribute provided!");
+            this.renderError("User ID is missing");
+            return;
+        }
+
+        await this.setUser(id); // Fetch user data
+        if (this.user) {
+            this.render(); // Render only if user data is successfully fetched
+            this.transitionIn(); // Add smooth transition for visibility
+        } else {
+            this.renderError("User data could not be loaded");
+        }
+    }
+
+    // Fetch user data from the API
     async setUser(id) {
-        // Parse and store user data from the dataset
         try {
-            const url = `/users/${id}`
+            const url = `/users/${id}`;
             const json = await this.controller.request(url);
             this.user = json.data;
         } catch (error) {
@@ -24,11 +48,38 @@ export default class DashboardComponent extends HTMLElement {
         }
     }
 
+    // Render the loading state with smooth transition
+    renderLoadingState() {
+        this.clearShadowDOM();
+        this.shadowRoot.innerHTML = /*html*/ `
+            <link rel="stylesheet" href="/static/css/common.css"/>
+            <link rel="stylesheet" href="/static/css/dashboard.css"/>
+            <div class="loading-wrapper">
+                <screen-loader></screen-loader>
+            </div>
+        `;
+        const loader = this.shadowRoot.querySelector("screen-loader");
+        if (loader) loader.show();
+    }
+
+    // Render error message if user data is not available
+    renderError(message) {
+        this.clearShadowDOM();
+        this.shadowRoot.innerHTML = /*html*/ `
+            <div class="error-message">
+                <h2>Error</h2>
+                <p>${this.escapeHTML(message)}</p>
+            </div>
+        `;
+    }
+
+    // Render the main content of the dashboard
     render() {
-        if (!this.user){
-            console.log("user not found");
+        if (!this.user) {
+            console.error("User data is not available.");
             return;
-        };
+        }
+
         // Clear the shadow DOM before rendering
         this.clearShadowDOM();
 
@@ -41,17 +92,6 @@ export default class DashboardComponent extends HTMLElement {
         this.shadowRoot.innerHTML = '';
     }
 
-    async load(){
-        try {
-            const id = this.dataset.id;
-            await this.setUser(id);
-            this.render();
-        } catch (error) {
-            console.log("make sure data-id is provided!");
-            return;
-        }
-    }
-
     attachStyles() {
         const styles = /*html*/ `
             <link rel="stylesheet" href="/static/css/common.css"/>
@@ -61,24 +101,28 @@ export default class DashboardComponent extends HTMLElement {
     }
 
     attachHTML() {
-        const { profile_image, username, email, posts_count, comments_count } = this.user;
+        let { profile_image, username, email, posts_count, comments_count } = this.user;
+        if (typeof profile_image === "object"){
+            profile_image = "/static/assets/images/default-user1.png"
+        }
 
+        // Build the template for the dashboard
         const template = /*html*/ `
-            <div class="card padding grid col-3">
+            <div class="card padding grid col-3 transition-opacity hidden">
                 <div class="col padding flex flex-col gap">
                     <div class="flex flex-col flex-center">
-                        <img src="${profile_image}" alt="Profile image of ${username}" />
-                        <h2>${this.escapeHTML(username)}</h2>
-                        <h2>${this.escapeHTML(email)}</h2>
+                        <img src="${profile_image}" alt="Profile image of ${username}" class="profile-image"/>
+                        <h2 class="username">${this.escapeHTML(username)}</h2>
+                        <h2 class="email">${this.escapeHTML(email)}</h2>
                     </div>
                 </div>
                 <div class="col padding flex flex-col flex-center">
                     <span class="number">${posts_count}</span>
-                    <sub class="label">Post</sub>
+                    <sub class="label">Posts</sub>
                 </div>
                 <div class="col padding flex flex-col flex-center">
                     <span class="number">${comments_count}</span>
-                    <span class="label">Comment</span>
+                    <span class="label">Comments</span>
                 </div>
             </div>
         `;
@@ -86,11 +130,22 @@ export default class DashboardComponent extends HTMLElement {
         this.shadowRoot.innerHTML += template;
     }
 
+    // Utility method to escape HTML characters
     escapeHTML(str) {
-        // Basic function to escape HTML content
         const div = document.createElement('div');
         div.textContent = str;
         return div.textContent;
+    }
+
+    // Smooth transition to reveal the content
+    transitionIn() {
+        const cardElement = this.shadowRoot.querySelector('.card');
+        if (cardElement) {
+            // Add a small delay to trigger CSS transition
+            setTimeout(() => {
+                cardElement.classList.remove('hidden'); // Remove the hidden class to start transition
+            }, 50); // Adjust delay as necessary
+        }
     }
 }
 

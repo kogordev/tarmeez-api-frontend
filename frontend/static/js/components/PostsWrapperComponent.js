@@ -49,6 +49,11 @@ export default class PostsWrapperComponent extends HTMLElement {
 
     render() {
         this.shadowRoot.innerHTML = /*html*/ `
+            <style>
+                .posts-wrapper{
+                    transition: .2s
+                }
+            </style>
             <link rel="stylesheet" href="/static/css/common.css"/>
             <div id="posts-wrapper" class="card flex flex-col justify-content-center gap bg-transparent"></div>
         `;
@@ -97,7 +102,11 @@ export default class PostsWrapperComponent extends HTMLElement {
         else if (sort === "asc") {
             postsWrapper.append(postComp);
         }
+        
 
+        postComp.addEventListener("state-updated", e => {
+            this.dispatchEvent(new CustomEvent("comment-added", {detail: e.detail}));
+        })
         // Listen for post deletion and handle it
         postComp.addEventListener('post-deleted', (e) => this.handlePostDelete(e, postComp));
     }
@@ -106,7 +115,7 @@ export default class PostsWrapperComponent extends HTMLElement {
     handlePostDelete(event, postComp) {
         const { detail } = event;
         if (detail?.isDeleted) {
-            postComp.remove();
+            postComp.disposeElem();
             this.posts = this.posts.filter(p => p.id !== postComp.id);
 
             // Dispatch post-removed event

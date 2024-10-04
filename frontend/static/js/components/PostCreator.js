@@ -113,8 +113,11 @@ export default class PostCreator extends HTMLElement {
         }
 
         let response = null;
+        const screenloader = document.createElement("screen-loader");
 
         try {
+            document.body.appendChild(screenloader);
+            screenloader.show();
             const frmData = new FormData();
             frmData.append("body", content);
 
@@ -128,11 +131,13 @@ export default class PostCreator extends HTMLElement {
             response = await this.controller.request("/posts", "POST", frmData, customHeader);
         } catch (error) {
             console.error("Error while submitting post:", error);
+        }finally{
+            this.clearPost(); // Clear after successful post
+            screenloader.hide();
+            const event = new CustomEvent("finished", { detail: response });
+            this.dispatchEvent(event);
         }
 
-        const event = new CustomEvent("finished", { detail: response });
-        this.dispatchEvent(event);
-        this.clearPost(); // Clear after successful post
     }
 
     clearPost() {

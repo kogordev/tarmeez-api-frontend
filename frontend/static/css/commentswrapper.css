@@ -1,0 +1,54 @@
+.comments-wrapper{
+    border-top: 1px solid rgba(var(--clr-secondary-foreground),.5);
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    gap: 1.5rem;
+}
+
+ul{
+    list-style: none;
+}
+
+.comment{
+    font-size: 1.6rem;
+    width: auto;
+}
+
+img{
+    height: 3.5rem;
+    width: 3.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.body{
+    display: inline-block;
+    background-color: rgb(var(--clr-hover));
+    border-radius: 1.2rem;
+    padding: 1rem;
+    width: auto;
+}
+
+span{
+    font-size: 1rem;
+    color: rgb(var(--clr-secondary-foreground))
+}
+
+.delete-btn{
+    visibility: hidden;
+    height: 2.5rem;
+    width: 2.5rem;
+    border: none;
+    border-radius: 50%;
+    mask-image: url("/static/assets/images/trash.svg");
+    mask-position: center;
+    mask-repeat: no-repeat;
+    background-color: rgb(var(--clr-hover));
+    transition: visibility .3s, background-color .3s;
+    cursor: pointer;
+}
+
+.comment:hover > .body-wrapper > .body-content > .delete-btn{
+    visibility: visible;
+    background-color: red;
+}

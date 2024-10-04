@@ -30,7 +30,7 @@ export default class ProfileView extends HTMLElement {
         this.shadowRoot.innerHTML = /*html*/ `
             <link rel="stylesheet" href="/static/css/common.css" />
             <link rel="stylesheet" href="/static/css/profileview.css" />
-            <div class="wrapper main-color flex flex-col align-items-center gap">
+            <div class="profile-view wrapper main-color flex flex-col align-items-center gap">
                 <dashboard-c data-id=${this.params.id}></dashboard-c>
                 ${this.renderPostCreator()}
                 <postswrapper-c id="posts-wrapper"></postswrapper-c>
@@ -46,6 +46,7 @@ export default class ProfileView extends HTMLElement {
         if (this.postsWrapper) {
             this.postsWrapper.addEventListener("post-removed", this.updateDashboard.bind(this));
             this.postsWrapper.addEventListener("post-added", this.updateDashboard.bind(this));
+            this.postsWrapper.addEventListener("comment-added", this.updateDashboard.bind(this))
         }
     }
 

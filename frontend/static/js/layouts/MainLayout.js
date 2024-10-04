@@ -21,7 +21,6 @@ export default class MainLayout extends HTMLElement {
             } else {
                 navigateTo("/")
             }
-            console.log("feedback recieved");
         });
     }
 

@@ -12,6 +12,8 @@
 img{
     height: 100px;
     width: 100px;
+    object-fit: cover;
+    border-radius: var(--br);
 }
 
 .number{
@@ -24,3 +26,14 @@ img{
     color: rgb(var(--clr-options))
 }
 
+.username{
+    font-weight: 600;
+    letter-spacing: .2rem;
+    text-transform: capitalize;
+    margin-top: .5rem;
+}
+
+.email{
+    font-size: 1.4rem;
+    font-weight: 500;
+}

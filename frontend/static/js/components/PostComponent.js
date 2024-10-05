@@ -15,11 +15,14 @@ export default class PostComponent extends HTMLElement {
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-        console.log(name + " changed into " + newValue);
-        switch (name) {
-            case "data-comments-count":
-                this.updateCommentCount(newValue);
+        if (oldValue != newValue) {
+            switch (name) {
+                case "data-comments-count":
+                    this.updateCommentCount(newValue);
+                    console.log(name + " changed from " + oldValue + " into " + newValue);
+            }
         }
+
     }
 
     elements() {
@@ -34,15 +37,18 @@ export default class PostComponent extends HTMLElement {
 
 
     connectedCallback() {
-        if (this.dataset?.state) {
-            try {
-                console.log(this.dataset)
-                const state = JSON.parse(this.dataset.state);
-                this.state = state;
-            } catch (error) {
-                console.log("failed to convert state attribute into json", error);
-            }
-        }
+        this.initializeComponent();
+    }
+
+    initializeComponent() {
+        // if (this.dataset?.state) {
+        //     try {
+        //         const state = JSON.parse(this.dataset.state);
+        //         this.state = state;
+        //     } catch (error) {
+        //         console.log("failed to convert state attribute into json", error);
+        //     }
+        // }
         this.currentUser = state.getCurrentUser();
         this.render();
         const elements = this.elements();
@@ -92,7 +98,9 @@ export default class PostComponent extends HTMLElement {
     }
 
     editPost() {
-        console.log("post edit:", this.state.id);
+        const postEdit = document.createElement("post-edit");
+        postEdit.state = this.state;
+        this.shadowRoot.appendChild(postEdit);
     }
 
     triggerDelete() {
@@ -107,9 +115,6 @@ export default class PostComponent extends HTMLElement {
     async handleDeleteConfrimation(e, element) {
         const { isConfirm } = e.detail;
         if (isConfirm) {
-            const screenloader = document.createElement("screen-loader");
-            document.body.appendChild(screenloader);
-            screenloader.show();
             // Delete 
             const token = this.currentUser.token;
             const url = `/posts/${this.state.id}`
@@ -128,12 +133,9 @@ export default class PostComponent extends HTMLElement {
             } catch (error) {
                 console.log(error);
                 this._dispatchEvent("post-deleted", { detail: { isDeleted: false } })
-            } finally {
-                this.disposeElem();
             }
-            screenloader.hide();
-
         }
+        this.shadowRoot.querySelector("confirmation-c")?.remove();
     }
 
     _dispatchEvent(name, value) {
@@ -213,6 +215,35 @@ export default class PostComponent extends HTMLElement {
         return `/users/${this.state.author.id}`;
     }
 
+    setState(state) {
+        this.state = state;
+        this.updateValues();
+    }
+
+    updateValues() {
+        //
+        const profileImage = this.shadowRoot.querySelector("#profile-img"); // data-img data-to
+        profileImage.setAttribute("data-img", this.getProfileImage());
+        profileImage.setAttribute("data-to", this.getProfileUrl());
+
+        const usernameLink = this.shadowRoot.querySelector("#username-link");
+        usernameLink.textContent = this.state.author.username;
+
+        const createdAtLink = this.shadowRoot.querySelector("#created-at-link");
+        createdAtLink.textContent = this.state.created_at;
+
+        const body = this.shadowRoot.querySelector("#body");
+        body.textContent = this.state.body;
+
+        const postImg = this.shadowRoot.querySelector("#post-img");
+        postImg.src = this.getPostImage();
+
+        const commentsCount = this.shadowRoot.querySelector("#comments-count");
+        commentsCount.textContent = this.state.comments_count;
+    }
+
+
+
     // Generates the HTML structure for the post component
     getHTMLTemplate(profileImage, postImage, profileUrl) {
         return /*html*/ `
@@ -220,44 +251,27 @@ export default class PostComponent extends HTMLElement {
             <article class="post shadow">
                 <div class="post__header">
                     <div class="post__profile__img flex flex-center">
-                        <navlink-c class="navlink-img" data-img="${profileImage}" data-to="${profileUrl}"></navlink-c>
-                        ${this.getPopupTemplate(profileImage)}
+                        <navlink-c id="profile-img" class="navlink-img" data-img="${profileImage}" data-to="${profileUrl}"></navlink-c>
                     </div>
                     <div class="post__info">
-                        ${this.getUsernameTemplate(profileImage)}
+                        ${this.getUsernameTemplate()}
                         <div class="post__info__wrapper post__info__time">
-                            <a href="#" class="post__info__time__link">${this.state.created_at}</a>
+                            <a id="created-at-link href="#" class="post__info__time__link">${this.state.created_at}</a>
                         </div>
                     </div>
                     ${this.getPostMenu()}
                 </div>
-                <p class="post__body">${this.state.body}</p>
-                <div class="post__img__wrapper">
-                    <img src="${postImage}" alt="" class="post__img">
+                <p id="body" class="post__body">${this.state.body}</p>
+                <div  class="post__img__wrapper">
+                    <img id="post-img" src="${postImage}" alt="" class="post__img">
                 </div>
                 <div class="post__comments__wrapper">
-                    <a href="#" id="comments-link" class="post__comments__link"><span>${this.state.comments_count}</span> comments</a>
+                    <a href="#" id="comments-link" class="post__comments__link"><span id="comments-count">${this.state.comments_count}</span> comments</a>
                 </div>
             </article>
         `;
     }
 
-    // Returns the popup HTML template
-    getPopupTemplate(profileImage) {
-        return /*html*/ `
-            <div class="post__popup shadow-lg">
-                <a href="#">
-                    <img class="post__popup__img" src="${profileImage}" alt="" width="96" height="96">
-                </a>
-                <div class="post__popup__main">
-                    <a class="post__popup__link" href="#">${this.state.author.username}</a>
-                    <div class="post__popup__wrapper">
-                        ${this.getPopupInfo()}
-                    </div>
-                </div>
-            </div>
-        `;
-    }
 
     getCurrentUser() {
         try {
@@ -303,14 +317,14 @@ export default class PostComponent extends HTMLElement {
     getMenuItems() {
         return /*html*/ `
             <label id="edit-btn" class="post__menu__item" for="chbx">
-                <svg class="post__menu__svg" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <svg class="post__menu__svg" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                     <path d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32z"></path>
                 </svg>
                 <span>Edit post</span>
             </label>
             <hr>
             <label id="delete-btn" class="post__menu__item" for="chbx">
-                <svg class="post__menu__svg" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <svg class="post__menu__svg" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                     <path d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z"></path>
                 </svg>
                 <span>Delete post</span>
@@ -332,12 +346,11 @@ export default class PostComponent extends HTMLElement {
     }
 
     // Returns the username template
-    getUsernameTemplate(profileImage) {
+    getUsernameTemplate() {
         return /*html*/ `
             <div class="post__info__wrapper post__info__username">
                 <div class="post__username">
-                    <a href="#" class="post__info__username__link">${this.state.author.username}</a>
-                    ${this.getPopupTemplate(profileImage)}
+                    <a id="username-link" href="#" class="post__info__username__link">${this.state.author.username}</a>
                 </div>
             </div>
         `;
@@ -409,11 +422,11 @@ export default class PostComponent extends HTMLElement {
                 position:relative;
             }
 
-            .post__profile__img:hover>.post__popup{
-                visibility: visible;
-                top: 92%;
-                left: -252%;
-                }
+            /*.post__profile__img:hover>.post__popup{
+              *  visibility: visible;
+               * top: 92%;
+                *left: -252%;
+                *}*/
 
             .post__link__img {
                 margin-right: 10px;
@@ -483,11 +496,11 @@ export default class PostComponent extends HTMLElement {
                 position:relative;
             }
 
-            .post__username:hover>.post__popup{
-                visibility: visible;
-                top: 100%;
-                left: -200%;
-            }
+            /*.post__username:hover>.post__popup{
+              *  visibility: visible;
+              *  top: 100%;
+               * left: -200%;
+            *}*/
 
             .post__info__username {
                 margin: 8px 0 0;
@@ -550,6 +563,7 @@ export default class PostComponent extends HTMLElement {
 
             .post__menu__body {
                 width: 150px;
+                font-size: 12px;
                 font-weight: 600;
                 padding: 5px 7px;
                 display: flex;

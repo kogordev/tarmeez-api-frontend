@@ -10,7 +10,6 @@ export default class DashboardComponent extends HTMLElement {
 
     async connectedCallback() {
         try {
-            //await this.initializeComponent();
             await this.load();
         } catch (error) {
             console.error("Error initializing component:", error);
@@ -54,12 +53,8 @@ export default class DashboardComponent extends HTMLElement {
         this.shadowRoot.innerHTML = /*html*/ `
             <link rel="stylesheet" href="/static/css/common.css"/>
             <link rel="stylesheet" href="/static/css/dashboard.css"/>
-            <div class="loading-wrapper">
-                <screen-loader></screen-loader>
-            </div>
         `;
-        const loader = this.shadowRoot.querySelector("screen-loader");
-        if (loader) loader.show();
+        // login is removed
     }
 
     // Render error message if user data is not available

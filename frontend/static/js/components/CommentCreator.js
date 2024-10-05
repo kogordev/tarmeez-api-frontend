@@ -1,3 +1,4 @@
+import { navigateTo } from "/static/js/utils/router.js";
 import Controller from "/static/js/controllers/controller.js";
 import state from "/static/js/utils/state.js"
 
@@ -21,16 +22,19 @@ class CommentCreator extends HTMLElement {
     }
 
     render() {
-        this.shadowRoot.innerHTML = this.getHTMLTemplate();
+        console.log(this.currentUser)
+        const img = this.currentUser.user.profile_image;
+        const profileImg = typeof img === "object" ? "/static/assets/images/default-user1.png" : img;
+        this.shadowRoot.innerHTML = this.getHTMLTemplate(profileImg, this.currentUser.user.id);
     }
 
-    getHTMLTemplate() {
+    getHTMLTemplate(profileImg, userId) {
         return /*html*/`
         <link rel="stylesheet" href="/static/css/commentcreator.css">
         <link rel="stylesheet" href="/static/css/common.css">
         <div class="comment-creator">
             <div class="col flex justify-content-center">
-                <img class="img" src="/static/assets/images/default-user1.png" alt="profile image"/>
+                <img class="img" data-user-id=${userId} src=${profileImg} alt="profile image"/>
             </div>
             <div class="col main">
                 <input-c id="comment-input"></input-c>
@@ -45,7 +49,8 @@ class CommentCreator extends HTMLElement {
     getElements() {
         return {
             input: this.shadowRoot.querySelector("input-c"),
-            btn: this.shadowRoot.querySelector("button")
+            btn: this.shadowRoot.querySelector("button"),
+            profileImg: this.shadowRoot.querySelector(".img")
         }
     }
 
@@ -56,6 +61,7 @@ class CommentCreator extends HTMLElement {
         });
 
         elements.btn.addEventListener("click", this.addComment.bind(this));
+        elements.profileImg.addEventListener("click", e => navigateTo(`/users/${e.target.dataset.userId}`))
     }
 
     handleInput() {

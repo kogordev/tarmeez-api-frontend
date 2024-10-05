@@ -13,6 +13,7 @@
 .profile-view{
     background-color: rgb(var(--clr-main-background));
     padding-bottom: 2rem;
+    transition: visibility .3s;
 }
 
 h1 {

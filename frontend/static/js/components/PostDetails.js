@@ -1,3 +1,4 @@
+import { loader } from "/static/js/utils/loader.js";
 import Controller from "/static/js/controllers/controller.js";
 class PostDetailsComponent extends HTMLElement {
 
@@ -20,11 +21,10 @@ class PostDetailsComponent extends HTMLElement {
     }
 
     async connectedCallback() {
-        this.state = await this.getPostDetails(this.id);
-        if (this.state) {
-            this.render();
-        }
+        await this.render()
     }
+
+
 
     scrollToComments() {
         const postBody = this.shadowRoot.querySelector(".body");
@@ -36,31 +36,24 @@ class PostDetailsComponent extends HTMLElement {
 
     disconnectedCallback() {
         document.body.style.overflowY = "auto";
-        this.dispatchEvent(new CustomEvent("closed", { detail: this.state}));
+        this.dispatchEvent(new CustomEvent("closed", { detail: this.state }));
     }
 
     async render() {
+        document.body.style.overflowY = "hidden";
+        this.state = await this.getPostDetails(this.id);
+        
+        if (!this.state) return;
+
         const username = this.state.author.username;
         const state = JSON.stringify(this.state);
-        console.log(state.length)
-        this.shadowRoot.innerHTML = this.getHTMLTemplate(username, state);
+        this.shadowRoot.innerHTML = await this.getHTMLTemplate(username, state);
         const postWrapper = this.shadowRoot.querySelector("#post-wrapper");
-        const postComp = document.createElement("post-c");
+        const postComp = await document.createElement("post-c");
         postComp.state = this.state;
         postComp.setAttribute("withCount", "true");
         postWrapper.appendChild(postComp);
 
-        document.body.style.overflowY = "hidden";
-        //add screenloader 
-        const screenloader = document.createElement("screen-loader");
-        document.body.appendChild(screenloader);
-        screenloader.show();
-        //
-        this.shadowRoot.querySelector(".post-details").classList.add("hidden");
-        this.shadowRoot.querySelector(".post-details").classList.remove("hidden");
-        setTimeout(() => {
-            screenloader.hide();
-        },200);
         this.attachEventListeners();
     }
 
@@ -95,7 +88,7 @@ class PostDetailsComponent extends HTMLElement {
 
         this.shadowRoot.querySelector("comments-wrapper").addEventListener("comments-updated", e => {
             this.state = e.detail;
-            this.shadowRoot.querySelector("post-c").setAttribute("data-comments-count", this.state.comments_count) 
+            this.shadowRoot.querySelector("post-c").setAttribute("data-comments-count", this.state.comments_count)
         });
 
         this.shadowRoot.querySelector("post-c").addEventListener("post-deleted", e => {
@@ -119,14 +112,8 @@ class PostDetailsComponent extends HTMLElement {
     async handlelCommentAdded(e) {
         //
         const commentsWrapper = this.shadowRoot.querySelector("comments-wrapper");
-        const screenloader = document.createElement("screen-loader");
-        this.shadowRoot.appendChild(screenloader);
-        screenloader.show();
+
         await commentsWrapper.render();
-        setTimeout(() => {
-            screenloader.hide();
-            screenloader.remove();
-        }, 200);
         this.scrollToComments();
     }
 

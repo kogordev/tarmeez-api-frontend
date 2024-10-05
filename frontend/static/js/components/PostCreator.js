@@ -1,3 +1,4 @@
+import { navigateTo } from "/static/js/utils/router.js";
 import Controller from "/static/js/controllers/controller.js";
 import state from "/static/js/utils/state.js";
 
@@ -22,13 +23,14 @@ export default class PostCreator extends HTMLElement {
 
     render() {
         const img = this.currentUser?.user?.profile_image || "";
+        const userId = this.currentUser.user.id;
         this.shadow.innerHTML = /*html*/`
             <link rel="stylesheet" href="/static/css/common.css"/>
             <link rel="stylesheet" href="/static/css/postcreator.css"/>
             <div class="card">
                 <div class="input-wrapper grid col-3-custom container">
                     <div class="col flex justify-content-center align-items-start">
-                        <img id="profile-img" src='${img}' alt="user profile image"/>
+                        <img id="profile-img" data-user-id=${userId} src='${img}' alt="user profile image"/>
                     </div>
                     <div class="col">
                         <p>
@@ -57,6 +59,7 @@ export default class PostCreator extends HTMLElement {
         elements.uploadBtn.addEventListener("click", () => elements.fileInput.click());
         elements.deleteBtn.addEventListener("click", this.handleDelete.bind(this));
         elements.submitBtn.addEventListener("click", this.handlePostSubmit.bind(this));
+        elements.profileImg.addEventListener("click", e => navigateTo(`/users/${e.target.dataset.userId}`))
     }
 
     handleInput(textarea, btn) {
@@ -113,11 +116,9 @@ export default class PostCreator extends HTMLElement {
         }
 
         let response = null;
-        const screenloader = document.createElement("screen-loader");
 
         try {
-            document.body.appendChild(screenloader);
-            screenloader.show();
+
             const frmData = new FormData();
             frmData.append("body", content);
 
@@ -133,7 +134,6 @@ export default class PostCreator extends HTMLElement {
             console.error("Error while submitting post:", error);
         }finally{
             this.clearPost(); // Clear after successful post
-            screenloader.hide();
             const event = new CustomEvent("finished", { detail: response });
             this.dispatchEvent(event);
         }
@@ -156,6 +156,7 @@ export default class PostCreator extends HTMLElement {
             fileInput: this.shadow.querySelector("#file-input"),
             uploadBtn: this.shadow.querySelector("#upload-btn"),
             deleteBtn: this.shadow.querySelector("#delete-btn"),
+            profileImg: this.shadow.querySelector("#profile-img")
         };
     }
 }

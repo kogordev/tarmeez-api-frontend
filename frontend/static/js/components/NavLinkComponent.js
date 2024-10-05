@@ -12,6 +12,21 @@ export default class NavLinkComponent extends HTMLElement {
         this.render();
     }
 
+    static get oberservedAttributes(){
+        return ["data-img", "data-to"];
+    }
+
+    attributeChangedCallback(name, oldValue, newValue){
+        switch(name){
+            case "data-img": 
+                this.setImg(newValue);
+                break;
+            case "data-to":
+                this.setTo(newValue);
+                break;
+        }
+    }
+
     render() {
         return new Promise((res, rej) => {
             try {

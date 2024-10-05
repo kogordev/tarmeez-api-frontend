@@ -36,7 +36,7 @@ class ScreenLoader extends HTMLElement {
                 left: 0;
                 width: 100%;
                 height: 100%;
-                z-index: 999999; /* High z-index to appear above other elements */
+                z-index: 99999999; /* High z-index to appear above other elements */
                 pointer-events: none; /* Prevent interaction when visible */
             
                 display: flex;
@@ -53,7 +53,7 @@ class ScreenLoader extends HTMLElement {
             .loader-wrapper.visible {
                 visibility: visible;
                 opacity: 1;
-                transition: visibility 0s linear 0s, opacity 0.5s ease-in-out;
+                transition: visibility 0s linear 0.5s, opacity 0.5s ease-in-out;
             }
 
             .loader-image {
@@ -89,19 +89,6 @@ class ScreenLoader extends HTMLElement {
         }
     }
 
-    // Helper method to hide loader with a promise for better control
-    hideWithPromise() {
-        return new Promise((resolve) => {
-            if (this._isVisible) {
-                this.hide();
-                this.wrapper.addEventListener('transitionend', () => {
-                    resolve();
-                }, { once: true });
-            } else {
-                resolve(); // Resolve immediately if already hidden
-            }
-        });
-    }
 }
 
 // Define the custom element

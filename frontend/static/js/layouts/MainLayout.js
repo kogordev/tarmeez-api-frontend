@@ -1,16 +1,20 @@
+import { loader } from "/static/js/utils/loader.js";
 import { navigateTo } from "/static/js/utils/router.js";
 import state from '/static/js/utils/state.js'; // Import your state manager
 
 export default class MainLayout extends HTMLElement {
     constructor() {
         super();
+        this.attachShadow({ mode: "open" });
         this.root = null;
     }
 
     connectedCallback() {
-        this.attachShadow({ mode: "open" });
-        const currentUserStr = state.getCurrentUserAsStrring();
-        this.render(currentUserStr);
+        this.initializeComponent();
+    }
+
+    initializeComponent(){
+        this.render();
         this.subscribeToState(); // Subscribe to state changes
     }
 
@@ -24,7 +28,7 @@ export default class MainLayout extends HTMLElement {
         });
     }
 
-    render(currentUserStr = null) {
+    render() {
         this.shadowRoot.innerHTML = /*html*/`
             <link rel="stylesheet" href="/static/css/common.css"/>
             <link rel="stylesheet" href="/static/css/mainlayout.css"/>
@@ -32,16 +36,16 @@ export default class MainLayout extends HTMLElement {
                 <navbar-c></navbar-c>
             </div>
         `;
-        this.root = this.shadowRoot.querySelector("#root");
     }
 
-
     renderView(view) {
-        const screenLoader = document.getElementById('appLoader');
-        if (screenLoader) screenLoader.show(); // Show loader before rendering
+        loader(() => this.viewCallback(view), this.timeoutCallback.bind(this));
+    }
 
-        this.root.classList.add("hidden"); // Hide content during rendering
-        this.root.classList.remove("wrapper");
+    viewCallback(view) {
+        const root = this.shadowRoot.querySelector("#root");
+        root.classList.add("hidden"); // Hide content during rendering
+        root.classList.remove("wrapper");
 
         // Use a DocumentFragment to batch DOM updates
         const fragment = document.createDocumentFragment();
@@ -54,18 +58,16 @@ export default class MainLayout extends HTMLElement {
         fragment.appendChild(viewNode);
 
         // Replace root content with the fragment
-        this.root.innerHTML = '';
-        this.root.appendChild(fragment);
-
-        // Show content and hide loader after rendering
-        setTimeout(() => {
-            this.root.classList.remove("hidden");
-            this.root.classList.add("wrapper");
-            if (screenLoader) screenLoader.hide();
-        },300); // Optional delay to ensure smooth transitions
+        root.innerHTML = '';
+        root.appendChild(fragment);
     }
 
-
+    timeoutCallback() {
+        const root = this.shadowRoot.querySelector("#root");
+        root.classList.remove("hidden");
+        root.classList.add("wrapper");
+    }
 }
+
 
 window.customElements.define("main-layout", MainLayout);

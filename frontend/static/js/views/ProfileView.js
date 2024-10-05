@@ -1,12 +1,11 @@
 import state from '/static/js/utils/state.js';
 import Controller from '/static/js/controllers/controller.js';
-import { navigateTo } from "/static/js/utils/router.js"
+import { loader } from "/static/js/utils/loader.js";
 
 export default class ProfileView extends HTMLElement {
     constructor(params) {
         super();
         this.attachShadow({ mode: "open" });
-        this.loader = document.getElementById('appLoader');
         this.params = params;
         this.controller = new Controller();
         this.currentUser = null;
@@ -22,7 +21,7 @@ export default class ProfileView extends HTMLElement {
         this.clear();
         this.renderTemplate();
         await this.loadUserPosts();
-        this.attachEventListener();
+        this.attachEvents();
     }
 
 
@@ -38,15 +37,15 @@ export default class ProfileView extends HTMLElement {
         `;
     }
 
-    attachEventListener() {
+    attachEvents() {
         const postcreator = this.shadowRoot.querySelector("postcreator-c");
         if (postcreator) {
-            postcreator.addEventListener("finished", e => this.handlePostCreated(e));
+            postcreator.addEventListener("finished", this.update.bind(this));
         }
         if (this.postsWrapper) {
-            this.postsWrapper.addEventListener("post-removed", this.updateDashboard.bind(this));
-            this.postsWrapper.addEventListener("post-added", this.updateDashboard.bind(this));
-            this.postsWrapper.addEventListener("comment-added", this.updateDashboard.bind(this))
+            this.postsWrapper.addEventListener("post-removed", this.update.bind(this));
+            this.postsWrapper.addEventListener("post-added", this.update.bind(this));
+            this.postsWrapper.addEventListener("comment-added", this.update.bind(this))
         }
     }
 
@@ -66,19 +65,10 @@ export default class ProfileView extends HTMLElement {
         this.postsWrapper.setPosts(posts); // Call setPosts method defined in the component
     }
 
-
-    handlePostCreated(e) {
-        try {
-            const post = e.detail?.data;
-            this.postsWrapper.addPost(post)
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    updateDashboard() {
+    async update() {
         const dashboard = this.shadowRoot.querySelector("dashboard-c");
-        dashboard.load(); // Update dashboard
+        await dashboard.load(); // Update dashboard
+        await this.loadUserPosts();
     }
 
     renderPostCreator() {
@@ -89,10 +79,6 @@ export default class ProfileView extends HTMLElement {
         return ""
     }
 
-    rerender() {
-        this.clear();
-        this.render();
-    }
 
     clear() {
         this.shadowRoot.innerHTML = '';

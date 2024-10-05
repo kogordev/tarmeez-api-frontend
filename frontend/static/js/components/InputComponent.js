@@ -19,6 +19,13 @@ class InputComponent extends HTMLElement {
 
     getHTMLTemplate() {
         const placeholder = this.dataset?.placeholder || "What's on your mind?";
+        if (Object(this.dataset)?.hasOwnProperty("inputValue")) {
+            return /*html*/`
+            <p>
+                <textarea>${this.dataset.inputValue}</textarea>
+            </p>
+            `
+        }
         return /*html*/`
         <p>
             <textarea  placeholder="${placeholder}"></textarea>
@@ -94,19 +101,25 @@ class InputComponent extends HTMLElement {
     }
 
 
-    set inputValue(value){
+    set inputValue(value) {
         this._inputValue = value;
         this.setupInput();
     }
 
-    get inputValue(){
+    get inputValue() {
         return this._inputValue;
     }
 
-    setupInput(){
+    setupInput() {
         const textarea = this.shadowRoot.querySelector("textarea");
         textarea.value = this._inputValue;
         this.resize(textarea)
+    }
+
+    focusInput(){
+        const textarea = this.shadowRoot.querySelector("textarea");
+        this.resize(textarea);
+        textarea.focus();
     }
 }
 

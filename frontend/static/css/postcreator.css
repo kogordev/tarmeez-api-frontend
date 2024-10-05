@@ -31,6 +31,7 @@ textarea{
     width: 45px;
     border-radius: 50%;
     object-fit: cover;
+    cursor: pointer;
 }
 
 #file-input{

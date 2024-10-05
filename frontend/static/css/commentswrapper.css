@@ -19,6 +19,12 @@ img{
     width: 3.5rem;
     border-radius: 50%;
     object-fit: cover;
+    cursor: pointer;
+}
+
+span{
+    font-size: 1rem;
+    color: rgb(var(--clr-secondary-foreground))
 }
 
 .body{
@@ -29,9 +35,14 @@ img{
     width: auto;
 }
 
-span{
-    font-size: 1rem;
-    color: rgb(var(--clr-secondary-foreground))
+.username{
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: .2rem;
+}
+
+.content{
+    font-size: 1.5rem;
 }
 
 .delete-btn{

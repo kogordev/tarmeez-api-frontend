@@ -1,0 +1,18 @@
+[build]
+  publish = "frontend"  # The directory containing the static files
+  command = "npm run build"  # Build command if applicable (optional)
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "max-age=31536000, immutable"

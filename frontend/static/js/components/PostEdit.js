@@ -159,7 +159,9 @@ class PostEdit extends HTMLElement {
 
   buildFormData(body, uploadInput) {
     const thereIsFile = uploadInput.files.length > 0;
-    if (typeof this.state.image === "string" && !thereIsFile) {
+    const thereIsImg = this.shadow.querySelector(".post-img")?.getAttribute("src");
+
+    if (typeof this.state.image === "string" && !thereIsFile && !thereIsImg) {
       // Display an error if there is no image selected and the original post has an image
       this.displayError("Please upload an image to proceed.");
       return null;  // Return `null` to indicate form data creation failed

@@ -3,123 +3,157 @@ import Controller from "/static/js/controllers/controller.js";
 import { navigateTo } from "/static/js/utils/router.js";
 
 class CommentsWrapper extends HTMLElement {
-    constructor() {
-        super();
-        this.attachShadow({ mode: "open" });
-        this.controller = new Controller();
-        this.postId = null;
-        this.post = null;
-        this.comments = [];
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+    this.controller = new Controller();
+    this.postId = null;
+    this.post = null;
+    this.comments = [];
+  }
+
+  connectedCallback() {
+    this.postId = this.dataset?.postId || null;
+    if (this.postId) {
+      this.render();
+    } else {
+      console.error("Post ID not provided.");
     }
+  }
 
-    connectedCallback() {
-        this.postId = this.dataset?.postId || null;
-        if (!this.postId) return;
-        this.render();
+  async loadComments() {
+    const url = `/posts/${this.postId}`;
+    try {
+      const response = await this.controller.request(url);
+      const post = response.data;
+      this.post = post;
+      return post?.comments || [];
+    } catch (error) {
+      console.error("Failed to load comments:", error);
+      return [];
     }
+  }
 
-    async loadComments() {
-        try {
-            const url = `/posts/${this.postId}`;
-            const response = await this.controller.request(url);
-            this.post = response.data;
-            if (response.data?.hasOwnProperty("comments")) {
-                return response.data.comments;
-            }
-            return [];
-        } catch (error) {
-            console.log(error);
-            return [];
-        }
+  async render() {
+    this.shadowRoot.innerHTML = this.getHTMLTemplate();
+    try {
+      this.comments = await this.loadComments();
+      this.renderComments(this.comments);
+      this.dispatchEvent(
+        new CustomEvent("comments-updated", { detail: this.post })
+      );
+    } catch (error) {
+      this.displayError("Unable to render comments.");
     }
+  }
 
-    async render() {
-        // loader(this.renderCallback.bind(this), this.renderTimeoutCallback.bind(this));
-        this.shadowRoot.innerHTML = await this.getHTMLTemplate();
-       // this.shadowRoot.querySelector(".comments-wrapper").classList.add("hidden");
-        this.comments = await this.loadComments();
-        this.renderComments(this.comments);
-        this.dispatchEvent(new CustomEvent("comments-updated", { detail: this.post }))
+  async update() {
+    try {
+      // Fetch the latest comments
+      const newComments = await this.loadComments();
+
+      // Filter new comments that are not already in the current list
+      const newOnlyComments = newComments.filter(
+        (newComment) =>
+          !this.comments.some((existingComment) => existingComment.id === newComment.id)
+      );
+
+      // Render the new comments only
+      newOnlyComments.forEach((comment) => this.renderSingleComment(comment));
+
+      // Update the current comments list with the new ones
+      this.comments = [...this.comments, ...newOnlyComments];
+
+      console.log("Comments updated successfully.");
+    } catch (error) {
+      console.error("Error updating comments:", error);
     }
+  }
 
-    // async renderCallback() {
-    //     this.shadowRoot.innerHTML = await this.getHTMLTemplate();
-    //     this.shadowRoot.querySelector(".comments-wrapper").classList.add("hidden");
-    //     this.comments = await this.loadComments();
-    //     this.renderComments(this.comments);
-    //     this.dispatchEvent(new CustomEvent("comments-updated", { detail: this.post }))
-    // }
+  getHTMLTemplate() {
+    return `
+            <style>
+                @import "/static/css/common.css";
+                @import "/static/css/commentswrapper.css";
+            </style>
+            <div class="comments-wrapper">
+                <ul id="comments-list" class="flex flex-col gap"></ul>
+            </div>
+        `;
+  }
 
-    // renderTimeoutCallback(){
-    //     this.shadowRoot.querySelector(".comments-wrapper").classList.remove("hidden");
-    // }
+  renderComments(comments) {
+    const commentsList = this.shadowRoot.querySelector("#comments-list");
+    commentsList.innerHTML = ""; // Clear previous comments
+    comments.forEach((comment) => this.renderSingleComment(comment));
+  }
 
-    getHTMLTemplate() {
-        return /*html*/`
-        <link rel="stylesheet" href="/static/css/common.css">
-        <link rel="stylesheet" href="/static/css/commentswrapper.css">
-        <div class="comments-wrapper">
-            <ul id="comments-list" class="flex flex-col gap"></ul>
-        </div>
-        `
-    }
+  renderSingleComment(comment) {
+    const commentsList = this.shadowRoot.querySelector("#comments-list");
 
-    renderComments(comments) {
-        for (let comment of comments) {
-            this.renderSingleComment(comment);
-        }
-    }
+    const commentItem = document.createElement("li");
+    commentItem.id = comment.id;
+    commentItem.className = "comment flex gap";
 
-    renderSingleComment(comment) {
-        const commentsList = this.shadowRoot.querySelector("ul");
-        if (!commentsList) {
-            console.log("comment list not found");
-            return
-        };
-        const template = document.createElement("template");
-        template.innerHTML = /*html*/`
-        <li id=${comment.id} class="comment flex gap">
+    commentItem.innerHTML = `
             <div class="flex justify-content-center">
                 ${this.getProfileImage(comment)}
             </div>
             <div class="body-wrapper">
-                <div class="body-content flex gap">
-                    <p class="col body flex flex-col align-items-center justify-content-start">
-                        <span class="username">${comment.author.username}</span></br>
-                        <span class="content">${comment.body}</span>
+                <div class="body-content flex-col gap">
+                    <p class="col body flex flex-col justify-content-start">
+                        <span class="username">${comment.author.username}</span>
+                        <span class="content">${this.sanitizeText(comment.body)}</span>
                     </p>
                     <button id="delete-btn" class="delete-btn"></button>
                 </div>
-                <p><span>${comment.author.created_at}</span></p>
+                <p><span>${new Date(
+                  comment.author.created_at
+                ).toLocaleString()}</span></p>
             </div>
+        `;
 
-        </li>`
-        const elem = template.content.cloneNode(true);
+    commentsList.appendChild(commentItem);
 
-        commentsList.appendChild(elem);
-        this.shadowRoot.getElementById(`${comment.id}`).addEventListener("click", (e) => {
-            console.log(e.target)
-            if (e.target.id === "delete-btn") {
-                console.log(e.target)
-                console.log("comment id: ", comment.id, "post id: ", this.postId)
-            } else if (e.target.matches(".profile-img")) {
-                console.log("profile image clicked user id :", e.target);
-                const id = e.target.id;
-                const authorId = e.target.getAttribute("author");
-                navigateTo(`/users/${authorId}`);
-            }
-        });
+    commentItem.addEventListener("click", (e) =>
+      this.handleCommentClick(e, comment)
+    );
+  }
 
+  getProfileImage(comment) {
+    let imgSrc =  comment?.author?.profile_image;
+    if (typeof imgSrc === "object"){
+      imgSrc =  "/static/assets/images/default-user1.png"
     }
+    return `<img class="profile-img" id="profile-${comment.id}" author="${comment.author.id}" src="${imgSrc}" alt="profile image"/>`;
+  }
 
-    getProfileImage(comment) {
-        let img = comment?.author?.profile_image;
-        const profileImg = typeof img == "object" ? "/static/assets/images/default-user1.png" : img;
-        const id = comment.id;
-        const authorId = comment.author.id;
-        return `<img class="profile-img" id=${id} author=${authorId} src=${profileImg} alt="profile image"/>`
+  handleCommentClick(event, comment) {
+    const target = event.target;
+
+    if (target.id === "delete-btn") {
+      console.log(`Delete comment id: ${comment.id}, post id: ${this.postId}`);
+    } else if (target.matches(".profile-img")) {
+      const authorId = target.getAttribute("author");
+      navigateTo(`/users/${authorId}`);
     }
+  }
 
+  sanitizeText(text) {
+    const div = document.createElement("div");
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  displayError(message) {
+    const commentsList = this.shadowRoot.querySelector("#comments-list");
+    commentsList.innerHTML = `<li class="error">${message}</li>`;
+  }
+
+  addComment(comment) {
+    this.renderSingleComment(comment);
+    this.comments.push(comment); // Ensure comments list stays updated
+  }
 }
 
 export default CommentsWrapper;

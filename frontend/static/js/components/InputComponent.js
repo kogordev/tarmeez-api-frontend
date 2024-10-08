@@ -1,46 +1,59 @@
 class InputComponent extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+    this._inputValue = null;
+  }
 
-    constructor() {
-        super();
-        this.attachShadow({ mode: "open" });
-        this._inputValue = null;
+  set inputValue(value) {
+    this._inputValue = value;
+    this.setupInput();
+  }
+
+  get inputValue() {
+    return this._inputValue;
+  }
+
+
+  connectedCallback() {
+    this.initiallizeInputValue();
+    this.render();
+    this.setupInput();
+    this.addStyle();
+    this.attachEvents();
+  }
+
+
+  initiallizeInputValue(){
+    if (this.dataset?.hasOwnProperty("inputValue")){
+      this._inputValue = this.dataset.inputValue;
     }
+  }
 
+  render() {
+    this.shadowRoot.innerHTML = this.getHTMLTemplate();
+    this.shadowRoot.querySelector("textarea").addEventListener("input", e =>{
+      this.inputValue = e.target.value;
+    })
+  }
 
-    connectedCallback() {
-        this.render();
-        this.addStyle();
-        this.attachEvents();
-    }
-
-    render() {
-        this.shadowRoot.innerHTML = this.getHTMLTemplate();
-    }
-
-    getHTMLTemplate() {
-        const placeholder = this.dataset?.placeholder || "What's on your mind?";
-        if (Object(this.dataset)?.hasOwnProperty("inputValue")) {
-            return /*html*/`
-            <p>
-                <textarea>${this.dataset.inputValue}</textarea>
-            </p>
-            `
-        }
-        return /*html*/`
+  getHTMLTemplate() {
+    const placeholder = this.dataset?.placeholder || "What's on your mind?";
+    return /*html*/ `
         <p>
-            <textarea  placeholder="${placeholder}"></textarea>
+            <textarea part="input"  placeholder="${placeholder}"></textarea>
         </p>
-        `
-    }
+        `;
+  }
 
-    addStyle() {
-        const style = document.createElement("style");
-        style.textContent = this.getCSS();
-        this.shadowRoot.appendChild(style);
-    }
+  addStyle() {
+    const style = document.createElement("style");
+    style.textContent = this.getCSS();
+    this.shadowRoot.appendChild(style);
+  }
 
-    getCSS() {
-        return /*css*/`
+  getCSS() {
+    return /*css*/ `
         *{
             padding: 0;
             margin: 0;
@@ -68,61 +81,54 @@ class InputComponent extends HTMLElement {
             background-color: rgb(var(--clr-hover));
             color: rgb(var(--clr-main-foreground));
         }
-        `
+        `;
+  }
+
+  attachEvents() {
+    const textarea = this.shadowRoot.querySelector("textarea");
+    textarea.addEventListener("input", (e) => {
+      this.handleInput(textarea);
+      this.dispatchEvent(
+        new CustomEvent("input-changed", { detail: e.target.value })
+      );
+    });
+  }
+
+  handleInput(textarea) {
+    try {
+      this.inputValue = textarea.value;
+      this.resize(textarea);
+    } catch (error) {
+      this.inputValue = null;
     }
+  }
 
-    attachEvents() {
-        const textarea = this.shadowRoot.querySelector("textarea");
-        textarea.addEventListener("input", () => {
-            this.handleInput(textarea);
-        });
+  resize(textarea) {
+    const p = textarea.parentElement;
+    const minHeight = "5rem";
+
+    // Reset height to auto to allow recalculation
+    p.style.height = minHeight;
+
+    // Set to content's scroll height if not empty
+    if (textarea.value.trim()) {
+      p.style.height = `${textarea.scrollHeight}px`;
     }
-
-    handleInput(textarea) {
-        try {
-            this.inputValue = textarea.value;
-            this.resize(textarea);
-        } catch (error) {
-            this.inputValue = null;
-        }
-    }
-
-    resize(textarea) {
-        const p = textarea.parentElement;
-        const minHeight = "5rem";
-
-        // Reset height to auto to allow recalculation
-        p.style.height = minHeight;
-
-        // Set to content's scroll height if not empty
-        if (textarea.value.trim()) {
-            p.style.height = `${textarea.scrollHeight}px`;
-        }
-    }
+  }
 
 
-    set inputValue(value) {
-        this._inputValue = value;
-        this.setupInput();
-    }
+  setupInput() {
+    const textarea = this.shadowRoot.querySelector("textarea");
+    textarea.value = this._inputValue;
+    this.resize(textarea);
+  }
 
-    get inputValue() {
-        return this._inputValue;
-    }
-
-    setupInput() {
-        const textarea = this.shadowRoot.querySelector("textarea");
-        textarea.value = this._inputValue;
-        this.resize(textarea)
-    }
-
-    focusInput(){
-        const textarea = this.shadowRoot.querySelector("textarea");
-        this.resize(textarea);
-        textarea.focus();
-    }
+  focusInput() {
+    const textarea = this.shadowRoot.querySelector("textarea");
+    this.resize(textarea);
+    textarea.focus();
+  }
 }
-
 
 export default InputComponent;
 

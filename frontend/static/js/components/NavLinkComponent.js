@@ -48,6 +48,8 @@ export default class NavLinkComponent extends HTMLElement {
                 const linkImg = document.createElement("img");
                 linkImg.src = this.img;
                 linkImg.alt = "logo";
+                linkImg.height ="54";
+                linkImg.width ="54";
                 linkImg.setAttribute("part", "img");
 
                 this.shadowRoot.append(wrapper);

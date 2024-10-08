@@ -1,5 +1,6 @@
 :host {
     display: block;
+    transition: visibility .3s;
 }
 
 .backdrop {
@@ -26,11 +27,13 @@
 
 
 .body{
-    padding-block: 1rem;
+    padding: 2rem 1rem;
     max-height: 75vh;
-    overflow-y: auto;
+    width: auto;
+    overflow: hidden auto;
     scroll-behavior: smooth;
 }
+
 
 .shadow{
     box-shadow: 0 0 .5rem rgba(0 ,0, 0, 0.3);

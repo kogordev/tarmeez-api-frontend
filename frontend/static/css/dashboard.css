@@ -7,13 +7,15 @@
     background-color: rgb(var(--clr-hover));
     box-shadow: var(--box-shadow-light);
     overflow: hidden;
+    border-radius: var(--br);
 }
 
 img{
-    height: 100px;
-    width: 100px;
+    /* height: 100px;
+    width: 100px; */
     object-fit: cover;
     border-radius: var(--br);
+    cursor: pointer;
 }
 
 .number{

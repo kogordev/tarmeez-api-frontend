@@ -29,22 +29,22 @@ class ScreenLoader extends HTMLElement {
         const style = document.createElement('style');
         style.textContent = /*css*/`
 
-
-            .loader-wrapper {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
+            :host{
+                position: fixed;
+                inset: 0 0 0 0;
+                height: 100vh;
+                width: 100vw;
                 z-index: 99999999; /* High z-index to appear above other elements */
                 pointer-events: none; /* Prevent interaction when visible */
-            
+                background: rgb(var(--clr-secondary-background));
+            }
+            .loader-wrapper {
+                height: 100%;
+                width: 100%;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                width: 100%;
-                height: 100%;
-                background: rgba(var(--clr-secondary-background), 0.9);
+
                 visibility: hidden;
                 opacity: 0;
                 transition: visibility 0s linear 0.5s, opacity 0.5s ease-in-out;

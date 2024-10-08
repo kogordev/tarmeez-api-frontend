@@ -15,15 +15,18 @@
 }
 
 .img {
-    height: 4rem;
-    width: 4rem;
+    /* height: 4rem;
+    width: 4rem; */
+    margin-right: 1rem;
     border-radius: 50%;
     object-fit: cover;
     cursor: pointer;
+    transition: .2s;
 }
 
 .main{
     background-color: rgb(var(--clr-hover));
+    border-radius: var(--br);
 }
 
 button{

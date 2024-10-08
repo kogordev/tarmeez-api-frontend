@@ -9,11 +9,12 @@ import CommentCreator from "/static/js/components/CommentCreator.js";
 import CommentsWrapper from "/static/js/components/CommentsWrapper.js";
 import DashboardComponent from "/static/js/components/DashboardComponent.js";
 import ConfirmationComponent from "/static/js/components/ConfirmationComponent.js";
-import PostsWrapperComponent from "/static/js/components/PostsWrapperComponent.js";
-import PostDetailsComponent from "/static/js/components/PostDetails.js";
+import PostsWrapper from "/static/js/components/PostsWrapper.js";
+import PostDetails from "/static/js/components/PostDetails.js";
 import InputComponent from "/static/js/components/InputComponent.js";
 import PostEdit from "/static/js/components/PostEdit.js";
 import MainLayout from "/static/js/layouts/MainLayout.js";
+import ImageViewer from "/static/js/components/ImageViewer.js";
 
 import { router } from "/static/js/utils/router.js";
 

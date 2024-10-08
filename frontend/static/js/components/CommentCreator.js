@@ -16,13 +16,14 @@ class CommentCreator extends HTMLElement {
         this.postId = this.dataset.postId;
         if (!(this.currentUser && this.postId)) return;
 
+        this.style.visibility = "hidden";
         this.render();
         const elements = this.getElements();
         this.attachEvents(elements);
+        this.style.visibility = "visible";
     }
 
     render() {
-        console.log(this.currentUser)
         const img = this.currentUser.user.profile_image;
         const profileImg = typeof img === "object" ? "/static/assets/images/default-user1.png" : img;
         this.shadowRoot.innerHTML = this.getHTMLTemplate(profileImg, this.currentUser.user.id);
@@ -33,8 +34,8 @@ class CommentCreator extends HTMLElement {
         <link rel="stylesheet" href="/static/css/commentcreator.css">
         <link rel="stylesheet" href="/static/css/common.css">
         <div class="comment-creator">
-            <div class="col flex justify-content-center">
-                <img class="img" data-user-id=${userId} src=${profileImg} alt="profile image"/>
+            <div class="col flex justify-content-center overflow-hidden">
+                <img class="img" height="40" width="40" data-user-id=${userId}  src=${profileImg} alt="profile image"/>
             </div>
             <div class="col main">
                 <input-c id="comment-input"></input-c>
@@ -97,8 +98,6 @@ class CommentCreator extends HTMLElement {
                 { body: commentText },
                 { Authorization: `Bearer ${this.currentUser.token}` }
             );
-            console.log(response)
-
             if (response?.data?.id) {
                 this.dispatchEvent(new CustomEvent("comment-added", {detail: response.data}))
                 this.clearInput();
@@ -125,4 +124,4 @@ class CommentCreator extends HTMLElement {
 }
 
 export default CommentCreator;
-window.customElements.define("commentcreator-c", CommentCreator);
+window.customElements.define("comment-creator", CommentCreator);

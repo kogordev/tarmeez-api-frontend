@@ -37,6 +37,10 @@ html {
     scroll-behavior: smooth;
 }
 
+body { 
+    position: relative;
+}
+
 :root {
     font-size: 10px;
 
@@ -68,6 +72,7 @@ html {
     --clr-logout: 225, 50, 0;
     --clr-logout-foreground: 255, 255, 255;
     --clr-hover: 242, 242, 242;
+    --clr-hover: 235, 235, 235;
     --clr-icon: 98, 103, 113;
     --clr-options: 28, 29, 33;
     --clr-popup-time-background: 60, 60, 60;
@@ -93,6 +98,7 @@ html {
             --clr-secondary-foreground: 167, 169, 173;
             --clr-accent: 255, 255, 0;
             --clr-hover: 58, 59, 60;
+            --clr-disabled: 52,52,52;
             --clr-icon: 98, 103, 113;
             --clr-options: 231, 233, 236;
             --clr-popup-time-background: 202, 202, 203;
@@ -163,6 +169,10 @@ html {
 
         .justify-content-end {
             justify-content: end;
+        }
+
+        .justify-space-around{
+            justify-content: space-around;
         }
 
         .align-items-start {

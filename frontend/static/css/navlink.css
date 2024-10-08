@@ -16,10 +16,10 @@ div{
 div:hover{
     background-color: rgb(var(--clr-hover));
 }
-div img{
+/* div img{
     height: 54px;
     width: 54px;
-}
+} */
 div span{
     padding-right: 1.5rem;
     letter-spacing: .4rem;

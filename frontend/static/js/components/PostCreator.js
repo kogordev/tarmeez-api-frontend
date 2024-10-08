@@ -12,9 +12,11 @@ export default class PostCreator extends HTMLElement {
   }
 
   connectedCallback() {
+    this.style.visibility = "hidden";
     this.currentUser = state.getCurrentUser();
     if (!this.currentUser) return; // Ensure user is logged in
     this.setup();
+    this.style.visibility = "visible";
   }
 
   setup() {
@@ -120,6 +122,7 @@ export default class PostCreator extends HTMLElement {
 
       if (!content) {
         console.log("Post content is empty!");
+        this.renderError("Post content is empty!");
         return;
       }
 
@@ -145,8 +148,15 @@ export default class PostCreator extends HTMLElement {
   renderError(message) {
     const errorDiv = document.createElement("div");
     errorDiv.className = "error-message";
-    errorDiv.innerHTML = `<h2>Error</h2><p>${this.escapeHTML(message)}</p>`;
+    errorDiv.innerHTML = /*html*/`
+    <div class="error">     
+      <h2>Error</h2><p>${this.escapeHTML(message)}</p>
+    </div>
+    `;
     this.shadow.appendChild(errorDiv);
+    setTimeout(() => {
+      errorDiv.remove();
+    }, 5000);
   }
 
   clearPost() {

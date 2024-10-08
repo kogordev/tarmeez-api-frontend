@@ -26,10 +26,12 @@ export default class PostComponent extends HTMLElement {
 	}
 
 	initializeComponent() {
+		this.style.visibility = "hidden";
 		this.currentUser = state.getCurrentUser();
 		this.render();
 		const elements = this.elements();
 		this.attachEventListeneres(elements);
+		this.style.visibility = "visible";
 	}
 
 	attachEventListeneres(elements) {

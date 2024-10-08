@@ -35,6 +35,7 @@ class CommentsWrapper extends HTMLElement {
   }
 
   async render() {
+    this.style.visibility = "hidden";
     this.shadowRoot.innerHTML = this.getHTMLTemplate();
     try {
       this.comments = await this.loadComments();
@@ -44,7 +45,7 @@ class CommentsWrapper extends HTMLElement {
       );
     } catch (error) {
       this.displayError("Unable to render comments.");
-    }
+    } finally { this.style.visibility = "visible"; }
   }
 
   async update() {
@@ -108,8 +109,8 @@ class CommentsWrapper extends HTMLElement {
                     <button id="delete-btn" class="delete-btn"></button>
                 </div>
                 <p><span>${new Date(
-                  comment.author.created_at
-                ).toLocaleString()}</span></p>
+      comment.author.created_at
+    ).toLocaleString()}</span></p>
             </div>
         `;
 
@@ -121,9 +122,9 @@ class CommentsWrapper extends HTMLElement {
   }
 
   getProfileImage(comment) {
-    let imgSrc =  comment?.author?.profile_image;
-    if (typeof imgSrc === "object"){
-      imgSrc =  "/static/assets/images/default-user1.png"
+    let imgSrc = comment?.author?.profile_image;
+    if (typeof imgSrc === "object") {
+      imgSrc = "/static/assets/images/default-user1.png"
     }
     return `<img class="profile-img" id="profile-${comment.id}" author="${comment.author.id}" src="${imgSrc}" alt="profile image"/>`;
   }

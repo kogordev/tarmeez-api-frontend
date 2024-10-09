@@ -40,6 +40,7 @@ export default class DashboardComponent extends HTMLElement {
     try {
       const response = await this.controller.request(`/users/${id}`);
       this.user = response.data;
+      this.dispatchEvent(new CustomEvent("user-loaded", { detail: this.user }));
     } catch (error) {
       this.user = null;
       console.error("Error fetching user data:", error.message);
@@ -57,7 +58,7 @@ export default class DashboardComponent extends HTMLElement {
     this.style.visibility = "hidden";
     this.clearShadowDOM();
     this.attachTemplate();
-    this.shadowRoot.querySelector("#profile-img").addEventListener("click", ()=>{
+    this.shadowRoot.querySelector("#profile-img").addEventListener("click", () => {
       const profileImg = document.createElement("img-viewer");
       profileImg.image = this.getProfileImage(this.user.profile_image);
       document.body.appendChild(profileImg);
@@ -163,6 +164,11 @@ export default class DashboardComponent extends HTMLElement {
     const id = this.dataset.id;
     await this.fetchUserData(id);
     if (this.user) this.refreshUI();
+  }
+
+  getUser() {
+    console.log("dashboard:", this.user)
+    return this.user;
   }
 
   /**

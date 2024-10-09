@@ -1,249 +1,282 @@
 import Controller from "/static/js/controllers/controller.js";
 import state from "/static/js/utils/state.js";
+import {navigateTo} from "/static/js/utils/router.js";
 
 export default class PostComponent extends HTMLElement {
-	constructor() {
-		super();
-		this.attachShadow({ mode: "open" });
-		this.state = null;
-		this.controller = new Controller();
-		this.currentUser = null;
-	}
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+    this.state = null;
+    this.controller = new Controller();
+    this.currentUser = null;
+  }
 
-	elements() {
-		return {
-			postBody: this.shadowRoot.querySelector(".post__body"),
-			postImg: this.shadowRoot.querySelector("#post-img"),
-			menuBtn: this.shadowRoot.querySelector(".post__button"),
-			menuBtnSvg: this.shadowRoot.querySelector(".post__button__svg"),
-			editBtn: this.shadowRoot.querySelector("#edit-btn"),
-			deleteBtn: this.shadowRoot.querySelector("#delete-btn"),
-		};
-	}
+  elements() {
+    return {
+      usernameWrapper: this.shadowRoot.querySelector(".post__username"),
+      usernameLink: this.shadowRoot.querySelector("#username-link"),
+      postBody: this.shadowRoot.querySelector(".post__body"),
+      postImg: this.shadowRoot.querySelector("#post-img"),
+      menuBtn: this.shadowRoot.querySelector(".post__button"),
+      menuBtnSvg: this.shadowRoot.querySelector(".post__button__svg"),
+      editBtn: this.shadowRoot.querySelector("#edit-btn"),
+      deleteBtn: this.shadowRoot.querySelector("#delete-btn"),
+    };
+  }
 
-	connectedCallback() {
-		this.initializeComponent();
-	}
+  connectedCallback() {
+    this.initializeComponent();
+  }
 
-	initializeComponent() {
-		this.style.visibility = "hidden";
-		this.currentUser = state.getCurrentUser();
-		this.render();
-		const elements = this.elements();
-		this.attachEventListeneres(elements);
-		this.style.visibility = "visible";
-	}
+  initializeComponent() {
+    this.style.visibility = "hidden";
+    this.currentUser = state.getCurrentUser();
+    this.render();
+    const elements = this.elements();
+    this.attachEventListeneres(elements);
+    this.style.visibility = "visible";
+  }
 
-	attachEventListeneres(elements) {
-		if (!this.getAttribute("withCount")) {
-			this.shadowRoot
-				.getElementById("comments-link")
-				?.addEventListener("click", this.showComments.bind(this));
-		}
+  attachEventListeneres(elements) {
+    if (!this.getAttribute("withCount")) {
+      this.shadowRoot
+        .getElementById("comments-link")
+        ?.addEventListener("click", this.showComments.bind(this));
+    }
 
-		document.addEventListener("click", (e) => this.handleMenuToggle(e));
-		if (elements.editBtn) {
-			elements.editBtn.addEventListener("click", this.editPost.bind(this));
-		}
+    document.addEventListener("click", (e) => this.handleMenuToggle(e));
+    if (elements.editBtn) {
+      elements.editBtn.addEventListener("click", this.editPost.bind(this));
+    }
 
-		if (elements.deleteBtn) {
-			elements.deleteBtn.addEventListener(
-				"click",
-				this.triggerDelete.bind(this)
-			);
-		}
+    if (elements.deleteBtn) {
+      elements.deleteBtn.addEventListener(
+        "click",
+        this.triggerDelete.bind(this)
+      );
+    }
 
-		if (elements.postImg) {
-			elements.postImg.addEventListener("click", () => {
-				const imgViewer = document.createElement("img-viewer");
-				imgViewer.image = this.state.image;
-				this.shadowRoot.appendChild(imgViewer)
-			})
-		}
-	}
+    if (elements.postImg) {
+      elements.postImg.addEventListener("click", () => {
+        const imgViewer = document.createElement("img-viewer");
+        imgViewer.image = this.state.image;
+        this.shadowRoot.appendChild(imgViewer)
+      })
+    }
 
-	async showComments() {
-		try {
-			const postDetails = document.createElement("post-details");
-			postDetails.dataset.postId = this.state.id;
-			this.shadowRoot.appendChild(postDetails);
-			postDetails.addEventListener("closed", (e) => {
-				if (e.detail.isChanged) {
-					console.log("post state is changed");
-					this.updateState();
-					this.dispatchEvent(new CustomEvent("state-changed", { detail: this.state }));
-				}
-			});
-			postDetails.addEventListener("post-deleted", () => {
-				this._dispatchEvent("post-deleted", { detail: this.state });
-				this.remove();
-			});
-		} catch (error) {
-			console.log(error);
-		}
-	}
+    // Handle links inside the post body correctly
+    elements.postBody?.addEventListener("click", this.handleLinkClick.bind(this));
 
-	updateCommentCount(value) {
-		const commentsLink = this.shadowRoot.querySelector("#comments-link");
-		if (commentsLink) {
-			try {
-				commentsLink.querySelector("span").textContent = value;
-			} catch (error) {
-				console.log("failed to update comments count", error);
-			}
-		}
-	}
+    // Handle links inside the post body correctly
+    elements.usernameWrapper?.addEventListener("click", this.handleLinkClick.bind(this));
 
-	editPost() {
-		const postEdit = document.createElement("post-edit");
-		postEdit.state = this.state;
-		postEdit.addEventListener("post-edited", e => {
-			this.updateState();
-			postEdit.remove();
-		})
-		this.shadowRoot.appendChild(postEdit);
-	}
+    // Handle username link 
+    elements.usernameLink.addEventListener("click", () => navigateTo(`/users/${this.state.author.id}`))
+  }
 
-	triggerDelete() {
-		const confirmationComp = document.createElement("confirmation-c");
-		confirmationComp.msg = "Are you sure you want to delete this post?";
-		this.shadowRoot.appendChild(confirmationComp);
-		confirmationComp.addEventListener("delete-confirm", (e) =>
-			this.handleDeleteConfrimation(e, confirmationComp)
-		);
-	}
+  // Prevent default event handling for anchor tags to ensure links open correctly
+  handleLinkClick(event) {
+    if (event.target.tagName.toLowerCase() === 'a') {
+      event.stopPropagation();
+      return;
+    }
+  }
 
-	async handleDeleteConfrimation(e, confirmationComp) {
-		const { isConfirm } = e.detail;
-		if (isConfirm) {
-			// Delete
-			const token = this.currentUser.token;
-			const url = `/posts/${this.state.id}`;
-			try {
-				const customHeader = {
-					Authorization: `Bearer ${token}`,
-				};
-				const response = await this.controller.request(
-					url,
-					"DELETE",
-					null,
-					customHeader
-				);
+  async showComments() {
+    try {
+      const postDetails = document.createElement("post-details");
+      postDetails.dataset.postId = this.state.id;
+      this.shadowRoot.appendChild(postDetails);
+      postDetails.addEventListener("closed", (e) => {
+        if (e.detail.isChanged) {
+          //	console.log("post state is changed");
+          this.updateState();
+          this.dispatchEvent(new CustomEvent("state-changed", { detail: this.state }));
+        }
+      });
+      postDetails.addEventListener("post-deleted", () => {
+        this._dispatchEvent("post-deleted", { detail: this.state });
+        this.remove();
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-				if (response.status >= 200 && response.status < 300) {
-					this._dispatchEvent("post-deleted", { detail: response.data });
-				}
-			} catch (error) {
-				console.log(error);
-			}
-		}
-		confirmationComp.remove();
-	}
+  updateCommentCount(value) {
+    const commentsLink = this.shadowRoot.querySelector("#comments-link");
+    if (commentsLink) {
+      try {
+        commentsLink.querySelector("span").textContent = value;
+      } catch (error) {
+        console.log("failed to update comments count", error);
+      }
+    }
+  }
 
-	_dispatchEvent(name, value) {
-		const event = new CustomEvent(name, value);
-		this.dispatchEvent(event);
-	}
+  editPost() {
+    const postEdit = document.createElement("post-edit");
+    postEdit.state = this.state;
+    postEdit.addEventListener("post-edited", e => {
+      this.updateState();
+      postEdit.remove();
+    })
+    this.shadowRoot.appendChild(postEdit);
+  }
 
-	handleMenuToggle(e) {
-		const chbx = this.shadowRoot.querySelector("#chbx");
-		const menuBtn = this.shadowRoot.querySelector(".post__button");
-		const menu = this.shadowRoot.querySelector(".post__menu");
+  triggerDelete() {
+    const confirmationComp = document.createElement("confirmation-c");
+    confirmationComp.msg = "Are you sure you want to delete this post?";
+    this.shadowRoot.appendChild(confirmationComp);
+    confirmationComp.addEventListener("delete-confirm", (e) =>
+      this.handleDeleteConfrimation(e, confirmationComp)
+    );
+  }
 
-		e.preventDefault();
-		e.stopPropagation();
+  async handleDeleteConfrimation(e, confirmationComp) {
+    const { isConfirm } = e.detail;
+    if (isConfirm) {
+      // Delete
+      const token = this.currentUser.token;
+      const url = `/posts/${this.state.id}`;
+      try {
+        const customHeader = {
+          Authorization: `Bearer ${token}`,
+        };
+        const response = await this.controller.request(
+          url,
+          "DELETE",
+          null,
+          customHeader
+        );
 
-		if (!menu) return;
+        if (response.status >= 200 && response.status < 300) {
+          this._dispatchEvent("post-deleted", { detail: response.data });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    confirmationComp.remove();
+  }
 
-		//check if user click outside menu to close it
-		if (
-			menu.contains(e.composedPath()[0]) ||
-			menuBtn.contains(e.composedPath()[0])
-		) {
-			chbx.checked = !chbx.checked;
-		} else {
-			chbx.checked = false;
-		}
-	}
+  _dispatchEvent(name, value) {
+    const event = new CustomEvent(name, value);
+    this.dispatchEvent(event);
+  }
 
-	// Renders the component's HTML structure
-	render() {
-		if (!this.state) return;
+  handleMenuToggle(e) {
+    const chbx = this.shadowRoot.querySelector("#chbx");
+    const menuBtn = this.shadowRoot.querySelector(".post__button");
+    const menu = this.shadowRoot.querySelector(".post__menu");
 
-		this.style.visibility = "hidden";
-		this.id = this.state.id;
-		const profileImage = this.getProfileImage();
-		const postImage = this.getPostImage();
-		const profileUrl = this.getProfileUrl();
+    e.preventDefault();
+    e.stopPropagation();
 
-		this.shadowRoot.innerHTML = this.getHTMLTemplate(
-			profileImage,
-			postImage,
-			profileUrl
-		);
-		this.setFormattedDate();
-		this.style.visibility = "visible";
+    if (!menu) return;
 
-	}
+    //check if user click outside menu to close it
+    if (
+      menu.contains(e.composedPath()[0]) ||
+      menuBtn.contains(e.composedPath()[0])
+    ) {
+      chbx.checked = !chbx.checked;
+    } else {
+      chbx.checked = false;
+    }
+  }
 
-	// Gets the author’s profile image or returns the default image
-	getProfileImage() {
-		return typeof this.state.author.profile_image === "string"
-			? this.state.author.profile_image
-			: "/static/assets/images/default-user1.png";
-	}
+  /**
+   * Convert URLs in the given text to clickable links
+   * @param {string} text - The post content text
+   * @returns {string} - Text with URLs converted to <a> tags
+   */
+  formatLinks(text) {
+    const urlPattern = /(https?:\/\/[^\s]+)/g; // Match HTTP or HTTPS URLs
+    return text.replace(urlPattern, (url) => `<a href="${url}" target="_blank">${url}</a>`);
+  }
 
-	// Gets the post image or returns null
-	getPostImage() {
-		return typeof this.state.image === "string" ? this.state.image : null;
-	}
+  // Renders the component's HTML structure
+  render() {
+    if (!this.state) return;
 
-	// Returns the URL to the author's profile
-	getProfileUrl() {
-		return `/users/${this.state.author.id}`;
-	}
+    this.style.visibility = "hidden";
+    this.id = this.state.id;
+    const profileImage = this.getProfileImage();
+    const postImage = this.getPostImage();
+    const profileUrl = this.getProfileUrl();
+    // Convert URLs in the post content to clickable links
+    const formattedBody = this.formatLinks(this.state.body);
 
-	async update() {
-		try {
-			const response = await this.controller.request("/posts/" + this.state.id);
-			if (response?.status >= 200 && response?.status < 300) {
-				this.state = response.data;
-			}
-		} catch (error) {
-			console.log("failed to load post data", error);
-		}
-	}
+    this.shadowRoot.innerHTML = this.getHTMLTemplate(
+      profileImage,
+      formattedBody,
+      postImage,
+      profileUrl
+    );
+    //	this.setFormattedDate();
+    this.style.visibility = "visible";
 
-	updateHTML() {
-		//
-		const profileImage = this.shadowRoot.querySelector("#profile-img"); // data-img data-to
-		profileImage.setAttribute("data-img", this.getProfileImage());
-		profileImage.setAttribute("data-to", this.getProfileUrl());
+  }
 
-		const usernameLink = this.shadowRoot.querySelector("#username-link");
-		usernameLink.textContent = this.state.author.username;
+  // Gets the author’s profile image or returns the default image
+  getProfileImage() {
+    return typeof this.state.author.profile_image === "string"
+      ? this.state.author.profile_image
+      : "/static/assets/images/default-user1.png";
+  }
 
-		const createdAtLink = this.shadowRoot.querySelector("#created-at-link");
-		if (createdAtLink) createdAtLink.textContent = this.state.created_at;
+  // Gets the post image or returns null
+  getPostImage() {
+    return typeof this.state.image === "string" ? this.state.image : null;
+  }
 
-		const body = this.shadowRoot.querySelector("#body");
-		body.textContent = this.state.body;
+  // Returns the URL to the author's profile
+  getProfileUrl() {
+    return `/users/${this.state.author.id}`;
+  }
 
-		const postImg = this.shadowRoot.querySelector("#post-img");
-		postImg.src = this.getPostImage();
+  async update() {
+    try {
+      const response = await this.controller.request("/posts/" + this.state.id);
+      if (response?.status >= 200 && response?.status < 300) {
+        this.state = response.data;
+      }
+    } catch (error) {
+      console.log("failed to load post data", error);
+    }
+  }
 
-		const commentsCount = this.shadowRoot.querySelector("#comments-count");
-		commentsCount.textContent = this.state.comments_count;
-	}
+  updateHTML() {
+    //
+    const profileImage = this.shadowRoot.querySelector("#profile-img"); // data-img data-to
+    profileImage.setAttribute("data-img", this.getProfileImage());
+    profileImage.setAttribute("data-to", this.getProfileUrl());
 
-	async updateState() {
-		await this.update();
-		this.updateHTML();
-	}
+    const usernameLink = this.shadowRoot.querySelector("#username-link");
+    usernameLink.textContent = this.state.author.username;
 
-	// Generates the HTML structure for the post component
-	getHTMLTemplate(profileImage, postImage, profileUrl) {
-		return /*html*/ `
+    const createdAtLink = this.shadowRoot.querySelector("#created-at-link");
+    if (createdAtLink) createdAtLink.textContent = this.state.created_at;
+
+    const body = this.shadowRoot.querySelector("#body");
+    body.innerHTML = this.formatLinks(this.state.body.trim());
+
+    const postImg = this.shadowRoot.querySelector("#post-img");
+    postImg.src = this.getPostImage();
+
+    const commentsCount = this.shadowRoot.querySelector("#comments-count");
+    commentsCount.textContent = this.state.comments_count;
+  }
+
+  async updateState() {
+    await this.update();
+    this.updateHTML();
+  }
+
+  // Generates the HTML structure for the post component
+  getHTMLTemplate(profileImage, formattedBody, postImage, profileUrl) {
+    return /*html*/ `
             <link rel="stylesheet" href="/static/css/common.css">
             <link rel="stylesheet" href="/static/css/post.css">
             <article class="post shadow">
@@ -259,7 +292,7 @@ export default class PostComponent extends HTMLElement {
                     </div>
                     ${this.getPostMenu()}
                 </div>
-                <p id="body" class="post__body">${this.state.body}</p>
+                <p id="body" class="post__body">${formattedBody}</p>
                 <div  class="post__img__wrapper">
                     <img id="post-img" src="${postImage}" height="auto" width="auto" alt="" class="post__img">
                 </div>
@@ -271,27 +304,27 @@ export default class PostComponent extends HTMLElement {
                 </div>
             </article>
         `;
-	}
+  }
 
-	getCurrentUser() {
-		try {
-			const localStorage = window.localStorage.getItem("currentUser");
-			if (localStorage) {
-				const currentUser = JSON.parse(localStorage);
-				return currentUser;
-			} else {
-				return null;
-			}
-		} catch (error) {
-			return null;
-		}
-	}
+  getCurrentUser() {
+    try {
+      const localStorage = window.localStorage.getItem("currentUser");
+      if (localStorage) {
+        const currentUser = JSON.parse(localStorage);
+        return currentUser;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      return null;
+    }
+  }
 
-	// Returns the post menu
-	getPostMenu() {
-		const currentUser = this.getCurrentUser();
-		if (this.state.author?.id === currentUser?.user?.id) {
-			return /*html*/ `
+  // Returns the post menu
+  getPostMenu() {
+    const currentUser = this.getCurrentUser();
+    if (this.state.author?.id === currentUser?.user?.id) {
+      return /*html*/ `
             <input type="checkbox" id="chbx">
             <div class="post__menu">
                 <svg class="post__menu__caret" height="12" viewBox="0 0 21 12" width="21" fill="currentColor">
@@ -309,13 +342,13 @@ export default class PostComponent extends HTMLElement {
                 </svg>
             </label>
         `;
-		}
-		return "";
-	}
+    }
+    return "";
+  }
 
-	// Returns the menu items
-	getMenuItems() {
-		return /*html*/ `
+  // Returns the menu items
+  getMenuItems() {
+    return /*html*/ `
             <label id="edit-btn" class="post__menu__item" for="chbx">
                 <svg class="post__menu__svg" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                     <path d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32z"></path>
@@ -330,11 +363,11 @@ export default class PostComponent extends HTMLElement {
                 <span>Delete post</span>
             </label>
         `;
-	}
+  }
 
-	// Returns the popup info template
-	getPopupInfo() {
-		return /*html*/ `
+  // Returns the popup info template
+  getPopupInfo() {
+    return /*html*/ `
             <div class="post__popup__info">
                 <svg class="post__popup__svg" height="20" width="20" viewBox="0 0 512 512">
                     <path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zM291.7 90.3L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"></path>
@@ -343,35 +376,35 @@ export default class PostComponent extends HTMLElement {
                 <span class="post__popup__label">post</span>
             </div>
         `;
-	}
+  }
 
-	// Returns the username template
-	getUsernameTemplate() {
-		return /*html*/ `
+  // Returns the username template
+  getUsernameTemplate() {
+    return /*html*/ `
             <div class="post__info__wrapper post__info__username">
                 <div class="post__username">
-                    <a id="username-link" href="#" class="post__info__username__link">${this.state.author.username}</a>
+                    <a id="username-link" class="post__info__username__link">${this.state.author.username}</a>
                 </div>
             </div>
         `;
-	}
+  }
 
-	// Converts the post creation date and updates the component
-	setFormattedDate() {
-		let [postDate] = this.state.author.created_at.split("T");
-		let [year, month, day] = postDate.split("-");
-		const formattedDate = new Date(year, month - 1, day).toLocaleDateString(
-			"en-us",
-			{
-				weekday: "long",
-				year: "numeric",
-				month: "long",
-				day: "numeric",
-			}
-		);
-		this.shadowRoot.querySelector(".post__info__time__link").innerText =
-			formattedDate;
-	}
+  // Converts the post creation date and updates the component
+  setFormattedDate() {
+    let [postDate] = this.state.author.created_at.split("T");
+    let [year, month, day] = postDate.split("-");
+    const formattedDate = new Date(year, month - 1, day).toLocaleDateString(
+      "en-us",
+      {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }
+    );
+    this.shadowRoot.querySelector(".post__info__time__link").innerText =
+      formattedDate;
+  }
 
 }
 

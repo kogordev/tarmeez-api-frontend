@@ -29,7 +29,7 @@ export default class NavBarComponent extends HTMLElement {
     render() {
         this.shadow.innerHTML = /*html*/`
         <link rel="stylesheet" href="/static/css/navbar.css"/>
-        <nav class="nav">
+        <nav class="nav shadow">
             <div class="col">
                 <navlink-c data-to="/" data-img="/static/assets/images/logo.png" data-text="TARMEEZ"></navlink-c>
             </div>

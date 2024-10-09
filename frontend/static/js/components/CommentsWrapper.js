@@ -65,7 +65,7 @@ class CommentsWrapper extends HTMLElement {
       // Update the current comments list with the new ones
       this.comments = [...this.comments, ...newOnlyComments];
 
-      console.log("Comments updated successfully.");
+     // console.log("Comments updated successfully.");
     } catch (error) {
       console.error("Error updating comments:", error);
     }
@@ -108,9 +108,6 @@ class CommentsWrapper extends HTMLElement {
                     </p>
                     <button id="delete-btn" class="delete-btn"></button>
                 </div>
-                <p><span>${new Date(
-      comment.author.created_at
-    ).toLocaleString()}</span></p>
             </div>
         `;
 

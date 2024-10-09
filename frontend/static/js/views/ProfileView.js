@@ -1,6 +1,5 @@
 import state from "/static/js/utils/state.js";
 import Controller from "/static/js/controllers/controller.js";
-import { loader } from "/static/js/utils/loader.js";
 
 export default class ProfileView extends HTMLElement {
   constructor(params) {
@@ -19,7 +18,7 @@ export default class ProfileView extends HTMLElement {
 
   async render() {
     this.clear();
-    this.renderTemplate();
+    await this.renderTemplate();
     this.setupEventHandlers();
   }
 
@@ -72,6 +71,15 @@ export default class ProfileView extends HTMLElement {
     postsWrapper.addEventListener("post-added", this.updateDashboard);
     postsWrapper.addEventListener("comment-added", this.updateDashboard);
     postsWrapper.addEventListener("state-changed", this.updateDashboard);
+
+    this.shadowRoot.querySelector("dashboard-c")?.addEventListener("user-loaded", e => {
+      const {username} = e.detail;
+      document.title = "Tarmeez | " + this._capitalizeFirstLetter(username) + "'s Profile";
+    })
+  }
+
+  _capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
   /**
@@ -109,85 +117,3 @@ export default class ProfileView extends HTMLElement {
 }
 
 window.customElements.define("profile-view", ProfileView);
-
-// import state from "/static/js/utils/state.js";
-// import Controller from "/static/js/controllers/controller.js";
-// import { loader } from "/static/js/utils/loader.js";
-
-// export default class ProfileView extends HTMLElement {
-//   constructor(params) {
-//     super();
-//     this.attachShadow({ mode: "open" });
-//     this.params = params;
-//     this.controller = new Controller();
-//     this.currentUser = null;
-//     this.update = this.update.bind(this);
-//   }
-
-//   async connectedCallback() {
-//     this.currentUser = state.getCurrentUser();
-//     await this.render();
-//   }
-
-//   async render() {
-//     this.clear();
-//     this.renderTemplate();
-//     this.attachEvents();
-//   }
-
-//   renderTemplate() {
-//     const url = `/users/${this.params.id}/posts`;
-
-//     this.shadowRoot.innerHTML = /*html*/ `
-//             <link rel="stylesheet" href="/static/css/common.css" />
-//             <link rel="stylesheet" href="/static/css/profileview.css" />
-//             <div class="profile-view wrapper main-color flex flex-col align-items-center gap">
-//                 <dashboard-c data-id=${this.params.id}></dashboard-c>
-//                 ${this.renderPostCreator()}
-//                 <posts-wrapper sort="desc" data-pathname=${url}></posts-wrapper>
-//             </div>
-//         `;
-//   }
-
-//   attachEvents() {
-//     const postcreator = this.shadowRoot.querySelector("post-creator");
-//     const postsWrapper = this.shadowRoot.querySelector("posts-wrapper");
-
-//     if (postcreator) {
-//       postcreator.addEventListener("post-created", (e) => {
-//         this.shadowRoot.querySelector("posts-wrapper").addPost(e.detail);
-//         this.update();
-//       });
-//     }
-//     if (postsWrapper) {
-//       postsWrapper.addEventListener("post-deleted", () => {
-//         console.log("deleted");
-//         this.update();
-//       });
-//       postsWrapper.addEventListener("post-added", this.update);
-//       postsWrapper.addEventListener("state-updated", (e) => {
-//         this.update();
-//         console.log(e.detail, "comment added")
-//       });
-//     }
-//   }
-
-//   async update() {
-//     const dashboard = this.shadowRoot.querySelector("dashboard-c");
-//     await dashboard.update(); // Update dashboard
-//   }
-
-//   renderPostCreator() {
-//     if (this.params.id == this.currentUser?.user?.id) {
-//       return `<post-creator></post-creator>`;
-//     }
-
-//     return "";
-//   }
-
-//   clear() {
-//     this.shadowRoot.innerHTML = "";
-//   }
-// }
-
-// window.customElements.define("profile-view", ProfileView);

@@ -1,5 +1,4 @@
 import Controller from "/static/js/controllers/controller.js";
-import { loader } from "/static/js/utils/loader.js";
 
 class PostDetails extends HTMLElement {
   constructor() {
@@ -171,6 +170,15 @@ class PostDetails extends HTMLElement {
     this.isChanged = true;
     this.scrollToComments();
   }
+
+    scrollToComments() {
+    const postBody = this.shadowRoot.querySelector(".body");
+    const scrHeight = postBody.scrollHeight;
+    setTimeout(() => {
+      postBody.scroll({ behavior: "smooth", top: scrHeight });
+    }, 200);
+  }
+  
 }
 
 export default PostDetails;

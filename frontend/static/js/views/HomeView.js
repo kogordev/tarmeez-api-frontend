@@ -1,6 +1,7 @@
 export default class HomeView extends HTMLElement {
   constructor(params) {
     super();
+    document.title = "Tarmeez | Home"
     this.attachShadow({ mode: "open" });
 
     // Bind methods

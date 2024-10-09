@@ -10,8 +10,10 @@ export default class HomeView extends HTMLElement {
 
   async connectedCallback() {
     this.style.visibility = "hidden";
-    await this.initializeComponent();
-    this.style.visibility = "visible";
+    setTimeout(async () => {
+      await this.initializeComponent();
+      this.style.visibility = "visible";
+    }, 30);
   }
 
   async initializeComponent() {

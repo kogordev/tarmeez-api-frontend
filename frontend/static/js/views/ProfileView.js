@@ -18,9 +18,11 @@ export default class ProfileView extends HTMLElement {
 
   async render() {
     this.style.visibility = "hidden";
-    this.clear();
-    await this.renderTemplate();
-    this.style.visibility = "visible";
+    setTimeout(async () => {
+      this.clear();
+      await this.renderTemplate();
+      this.style.visibility = "visible";
+    }, 30);
     this.setupEventHandlers();
   }
 
@@ -32,11 +34,10 @@ export default class ProfileView extends HTMLElement {
       <link rel="stylesheet" href="/static/css/profileview.css" />
       <div class="profile-view wrapper main-color flex flex-col align-items-center gap">
           <dashboard-c data-id="${this.params.id}"></dashboard-c>
-          ${
-            this.shouldRenderPostCreator()
-              ? `<post-creator></post-creator>`
-              : ""
-          }
+          ${this.shouldRenderPostCreator()
+        ? `<post-creator></post-creator>`
+        : ""
+      }
           <posts-wrapper sort="desc" data-pathname="${postsUrl}"></posts-wrapper>
       </div>
     `;
@@ -75,7 +76,7 @@ export default class ProfileView extends HTMLElement {
     postsWrapper.addEventListener("state-changed", this.updateDashboard);
 
     this.shadowRoot.querySelector("dashboard-c")?.addEventListener("user-loaded", e => {
-      const {username} = e.detail;
+      const { username } = e.detail;
       document.title = "Tarmeez | " + this._capitalizeFirstLetter(username) + "'s Profile";
     })
   }

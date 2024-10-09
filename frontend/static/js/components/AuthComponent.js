@@ -17,7 +17,9 @@ export default class AuthComponent extends HTMLElement {
     }
 
     async connectedCallback() {
-        this.render();
+        this.style.visibility = "hidden";
+        await this.render();
+        this.style.visibility = "visible";
     }
 
     render() {

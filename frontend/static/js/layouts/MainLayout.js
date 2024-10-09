@@ -10,12 +10,14 @@ export default class MainLayout extends HTMLElement {
     }
 
     connectedCallback() {
-        this.style.visibility = "hidden";
-        this.initializeComponent();
-        this.style.visibility = "visible";
+        setTimeout(() => {
+            this.style.visibility = "hidden";
+            this.initializeComponent();
+            this.style.visibility = "visible";
+        }, 30);
     }
 
-    initializeComponent(){
+    initializeComponent() {
         this.render();
         this.subscribeToState(); // Subscribe to state changes
     }

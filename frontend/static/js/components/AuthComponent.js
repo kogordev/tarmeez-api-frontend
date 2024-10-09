@@ -17,6 +17,7 @@ export default class AuthComponent extends HTMLElement {
     }
 
     async connectedCallback() {
+        this.style.visibility = "hidden"; // will be visible after setActiveForm
         this.render();
     }
 
@@ -158,6 +159,7 @@ export default class AuthComponent extends HTMLElement {
         const forms = Array.from(this.shadowRoot.querySelectorAll(".form"));
         forms.forEach(form => form.classList.remove("active"));
         this.shadowRoot.querySelector(`#${formId}`).classList.add("active");
+        this.style.visibility = "visible";
     }
 
     clearInputs() {

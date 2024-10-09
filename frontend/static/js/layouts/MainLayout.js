@@ -11,10 +11,7 @@ export default class MainLayout extends HTMLElement {
 
     connectedCallback() {
         this.style.visibility = "hidden";
-        setTimeout(() => {
-            this.initializeComponent();
-            this.style.visibility = "visible";
-        }, 30);
+        this.initializeComponent();
     }
 
     initializeComponent() {
@@ -70,6 +67,7 @@ export default class MainLayout extends HTMLElement {
         const root = this.shadowRoot.querySelector("#root");
         root.classList.remove("hidden");
         root.classList.add("wrapper");
+        this.style.visibility = "visible";
     }
 }
 

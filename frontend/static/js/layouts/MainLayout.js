@@ -10,7 +10,9 @@ export default class MainLayout extends HTMLElement {
     }
 
     connectedCallback() {
+        this.style.visibility = "hidden";
         this.initializeComponent();
+        this.style.visibility = "visible";
     }
 
     initializeComponent(){

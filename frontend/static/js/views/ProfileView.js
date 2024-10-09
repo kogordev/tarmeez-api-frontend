@@ -17,8 +17,10 @@ export default class ProfileView extends HTMLElement {
   }
 
   async render() {
+    this.style.visibility = "hidden";
     this.clear();
     await this.renderTemplate();
+    this.style.visibility = "visible";
     this.setupEventHandlers();
   }
 

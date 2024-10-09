@@ -32,8 +32,8 @@ class ScreenLoader extends HTMLElement {
             :host{
                 position: fixed;
                 inset: 0 0 0 0;
-                height: 100vh;
-                width: 100vw;
+                height: 100%;
+                width: 100%;
                 z-index: 99999999; /* High z-index to appear above other elements */
                 pointer-events: none; /* Prevent interaction when visible */
                 background: rgb(var(--clr-secondary-background));

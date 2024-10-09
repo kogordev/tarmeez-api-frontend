@@ -10,7 +10,7 @@ export default class MainLayout extends HTMLElement {
     }
 
     connectedCallback() {
-        loader(this.initializeComponent())
+        this.initializeComponent();
     }
 
     initializeComponent() {
@@ -66,7 +66,6 @@ export default class MainLayout extends HTMLElement {
         const root = this.shadowRoot.querySelector("#root");
         root.classList.remove("hidden");
         root.classList.add("wrapper");
-        this.style.visibility = "visible";
     }
 }
 

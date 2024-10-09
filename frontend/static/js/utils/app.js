@@ -15,6 +15,7 @@ import InputComponent from "/static/js/components/InputComponent.js";
 import PostEdit from "/static/js/components/PostEdit.js";
 import MainLayout from "/static/js/layouts/MainLayout.js";
 import ImageViewer from "/static/js/components/ImageViewer.js";
+import Processing from "/static/js/components/Processing.js";
 
 import { router } from "/static/js/utils/router.js";
 

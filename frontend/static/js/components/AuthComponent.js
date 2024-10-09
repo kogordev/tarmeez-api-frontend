@@ -17,15 +17,14 @@ export default class AuthComponent extends HTMLElement {
     }
 
     async connectedCallback() {
-        this.style.visibility = "hidden"; // will be visible after setActiveForm
         this.render();
     }
 
     render() {
         this.shadowRoot.innerHTML = /*html*/`
         <link rel="stylesheet" href="/static/css/auth.css"/>
-        <div class="wrapper">
-            <form id="${this.formId.signup}" class="form container active">
+        <div class="wrapper hidden">
+            <form id="${this.formId.signup}" class="form container ">
                 <div class="header flex flex-center">
                     <h2>Join <span>TARMEEZ</span></h2>
                 </div>
@@ -159,7 +158,7 @@ export default class AuthComponent extends HTMLElement {
         const forms = Array.from(this.shadowRoot.querySelectorAll(".form"));
         forms.forEach(form => form.classList.remove("active"));
         this.shadowRoot.querySelector(`#${formId}`).classList.add("active");
-        this.style.visibility = "visible";
+        this.shadowRoot.querySelector(".wrapper").classList.remove("hidden");
     }
 
     clearInputs() {

@@ -65,7 +65,7 @@ class CommentsWrapper extends HTMLElement {
       // Update the current comments list with the new ones
       this.comments = [...this.comments, ...newOnlyComments];
 
-     // console.log("Comments updated successfully.");
+      // console.log("Comments updated successfully.");
     } catch (error) {
       console.error("Error updating comments:", error);
     }
@@ -89,8 +89,20 @@ class CommentsWrapper extends HTMLElement {
     comments.forEach((comment) => this.renderSingleComment(comment));
   }
 
+  /**
+ * Convert URLs in the given text to clickable links
+ * @param {string} text - The post content text
+ * @returns {string} - Text with URLs converted to <a> tags
+ */
+  formatLinks(text) {
+    const urlPattern = /(https?:\/\/[^\s]+)/g; // Match HTTP or HTTPS URLs
+    return text.replace(urlPattern, (url) => `<a href="${url}" target="_blank">${url}</a>`);
+  }
+
+
   renderSingleComment(comment) {
     const commentsList = this.shadowRoot.querySelector("#comments-list");
+    const formatedBody = this.formatLinks(comment.body);
 
     const commentItem = document.createElement("li");
     commentItem.id = comment.id;
@@ -104,7 +116,7 @@ class CommentsWrapper extends HTMLElement {
                 <div class="body-content flex-col gap">
                     <p class="col body flex flex-col justify-content-start">
                         <span class="username">${comment.author.username}</span>
-                        <span class="content">${this.sanitizeText(comment.body)}</span>
+                        <span class="content">${formatedBody}</span>
                     </p>
                     <button id="delete-btn" class="delete-btn"></button>
                 </div>
@@ -116,7 +128,18 @@ class CommentsWrapper extends HTMLElement {
     commentItem.addEventListener("click", (e) =>
       this.handleCommentClick(e, comment)
     );
+
+    commentItem.querySelector(".content")?.addEventListener("click", e => this.handleLinkClick(e));
   }
+
+  // Prevent default event handling for anchor tags to ensure links open correctly
+  handleLinkClick(event) {
+    if (event.target.tagName.toLowerCase() === 'a') {
+      event.stopPropagation();
+      return;
+    }
+  }
+
 
   getProfileImage(comment) {
     let imgSrc = comment?.author?.profile_image;

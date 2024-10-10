@@ -20,10 +20,6 @@ export default class AuthComponent extends HTMLElement {
         this.render();
         this.setupEventListeners();
         this.setActiveForm(this.formId.signup); // Set default active form
-        
-        setTimeout(() => {
-            this.style.visibility = "visible";
-        }, 0);
     }
 
     disconnectedCallback() {
@@ -240,6 +236,9 @@ export default class AuthComponent extends HTMLElement {
             event.preventDefault();
             this.setActiveForm(this.formId.signup);
         }
+        setTimeout(() => {
+            this.style.visibility = "visible";
+        }, 0);
     }
 
     handleSubmit(event) {

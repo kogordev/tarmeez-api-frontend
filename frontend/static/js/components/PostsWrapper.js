@@ -31,6 +31,7 @@ export default class PostsWrapper extends HTMLElement {
   }
 
   async initializeComponent() {
+    this.addStyle();
     this.renderTemplate();
     if (this.getAttribute("pagination")) {
       this.setupInfiniteScrolling();
@@ -38,13 +39,49 @@ export default class PostsWrapper extends HTMLElement {
     await this.renderPosts(); // Initial posts load
   }
 
+  getCss(){
+    return /*css*/`
+    .card {
+      width: 680px;
+      background-color: rgb(var(--clr-secondary-background));
+      color: rgb(var(--clr-main-foreground));
+      border-radius: var(--br);
+    }
+    .flex {
+      display: flex;
+    }  
+    .flex-col {
+      flex-direction: column;
+    }
+    .justify-content-center {
+      justify-content: center;
+    }
+    .gap {
+        gap: 1rem;
+    }
+    .bg-transparent {
+      background-color: transparent;
+    }
+    `
+  }
+
+  addStyle() {
+    const style = document.createElement("style");
+    style.textContent = this.getCss().trim();
+    this.shadowRoot.appendChild(style);
+  }
+
+  getHTMLTemplate() {
+    return /*html*/ `
+    <div id="posts-wrapper" class="card flex flex-col justify-content-center gap bg-transparent"></div>
+    <div id="loading-spinner" style="display:none;" class="spinner">Loading...</div>
+    <div id="load-more-trigger" class="load-more-trigger"></div>`
+  }
+
   renderTemplate() {
-    this.shadowRoot.innerHTML = /*html*/ `
-      <link rel="stylesheet" href="/static/css/common.css"/>
-      <div id="posts-wrapper" class="card flex flex-col justify-content-center gap bg-transparent"></div>
-      <div id="loading-spinner" style="display:none;" class="spinner">Loading...</div>
-      <div id="load-more-trigger" class="load-more-trigger"></div>
-    `;
+    const template = document.createElement("template");
+    template.innerHTML = this.getHTMLTemplate().trim();
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
 
   setupInfiniteScrolling() {

@@ -19,26 +19,84 @@ export default class ProfileView extends HTMLElement {
   async render() {
     this.style.display = "none";
     this.clear();
+    this.addStyle();
     await this.renderTemplate();
     this.setupEventHandlers();
     this.style.display = "block";
   }
 
+  getCss(){
+    return /*css*/`
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    }
+    :host {
+        display: block;
+        height: auto;
+        overflow-y: hidden;
+    }
+    .profile-view{
+        background-color: rgb(var(--clr-main-background));
+        padding-bottom: 2rem;
+        transition: visibility .3s;
+    }
+    h1 {
+        font-size: 5.5rem;
+        font-weight: 500;
+    }
+    .header {
+        height: 200px;
+        background-color: rgba(var(--clr-secondary-background), .5);
+    }
+    .section {
+        width: 70%;
+    }
+    .main-color {
+      background-color: rgb(var(--clr-main-background));
+      color: rgb(var(--clr-main-foreground));
+    }
+    .flex {
+      display: flex;
+    }
+    
+    .flex-col {
+        flex-direction: column;
+    }
+    .gap {
+      gap: 1rem;
+    } 
+    .align-items-center {
+      align-items: center;
+    }
+      `
+  }
+
+  addStyle(){
+    const style = document.createElement("style");
+    style.textContent = this.getCss().trim();
+    this.shadowRoot.appendChild(style);
+  }
+
+  getHTMLTemplate(postsUrl){
+    return /*html*/`
+    <div class="profile-view wrapper main-color flex flex-col align-items-center gap">
+    <dashboard-c data-id="${this.params.id}"></dashboard-c>
+    ${this.shouldRenderPostCreator()
+    ? `<post-creator></post-creator>`
+      : ""
+    }
+      <posts-wrapper sort="desc" data-pathname="${postsUrl}"></posts-wrapper>
+    </div>
+    `
+  }
+
   renderTemplate() {
     const postsUrl = `/users/${this.params.id}/posts`;
-
-    this.shadowRoot.innerHTML = `
-      <link rel="stylesheet" href="/static/css/common.css" />
-      <link rel="stylesheet" href="/static/css/profileview.css" />
-      <div class="profile-view wrapper main-color flex flex-col align-items-center gap">
-          <dashboard-c data-id="${this.params.id}"></dashboard-c>
-          ${this.shouldRenderPostCreator()
-        ? `<post-creator></post-creator>`
-        : ""
-      }
-          <posts-wrapper sort="desc" data-pathname="${postsUrl}"></posts-wrapper>
-      </div>
-    `;
+    const template = document.createElement("template");
+    template.innerHTML = this.getHTMLTemplate(postsUrl).trim();
+    this.shadowRoot.appendChild(template.content.cloneNode(true))
   }
 
   /**

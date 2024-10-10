@@ -16,6 +16,7 @@ export default class MainLayout extends HTMLElement {
     }
 
     initializeComponent() {
+        this.addStyle();
         this.render();
         this.subscribeToState(); // Subscribe to state changes
     }
@@ -30,14 +31,48 @@ export default class MainLayout extends HTMLElement {
         });
     }
 
+    getCss(){
+        return /*css*/`
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :host{
+            display: block;
+            height: 100%;
+            background-color:rgb(var(--clr-main-background));
+            position: relative;
+        }        
+        .wrapper {
+            height: 100%;
+            width: 100%;
+            opacity: 1;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .padding-view {
+            padding-top: calc(var(--nav-h) + 4rem);
+        }
+        
+        `
+    }
+
+    addStyle(){
+        const style = document.createElement("style");
+        style.textContent = this.getCss().trim();
+    }
+
+    getHTMLTemplate(){
+        return /*html*/`
+        <div id="root" class="wrapper padding-view">
+            <navbar-c></navbar-c>
+        </div>`;
+    }
+
     render() {
-        this.shadowRoot.innerHTML = /*html*/`
-            <link rel="stylesheet" href="/static/css/common.css"/>
-            <link rel="stylesheet" href="/static/css/mainlayout.css"/>
-            <div id="root" class="wrapper padding-view">
-                <navbar-c></navbar-c>
-            </div>
-        `;
+        const template = document.createElement("template");
+        template.innerHTML = this.getHTMLTemplate().trim();
+        this.shadowRoot.appendChild(template.content.cloneNode(true));
     }
 
     renderView(view) {

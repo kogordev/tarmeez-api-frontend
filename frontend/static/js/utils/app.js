@@ -16,6 +16,8 @@ import PostEdit from "/static/js/components/PostEdit.js";
 import MainLayout from "/static/js/layouts/MainLayout.js";
 import ImageViewer from "/static/js/components/ImageViewer.js";
 import Processing from "/static/js/components/Processing.js";
+import UpdateProfile from "/static/js/components/UpdateProfile.js";
+import ThemesMenu from "/static/js/components/ThemesMenu.js";
 
 import { router } from "/static/js/utils/router.js";
 

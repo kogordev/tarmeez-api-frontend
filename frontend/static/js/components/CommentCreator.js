@@ -17,22 +17,99 @@ class CommentCreator extends HTMLElement {
         this.postId = this.dataset.postId;
         if (!(this.currentUser && this.postId)) return;
 
+        this.addStyle();
         this.render();
         const elements = this.getElements();
         this.attachEvents(elements);
         this.style.display = "block";
     }
 
+    getCss() {
+        return /*css*/`
+        :host{
+            display: block;
+        }
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }       
+        .comment-creator{
+            display: grid;
+            grid-template-columns: 5rem 1fr;
+            width: 100%;
+            height: auto;
+        }       
+        .img {
+            /* height: 4rem;
+            width: 4rem; */
+            margin-right: 1rem;
+            border-radius: 50%;
+            object-fit: cover;
+            cursor: pointer;
+            transition: .2s;
+        }       
+        .main{
+            background-color: rgb(var(--clr-tertiary-background));
+            color: rgb(var(--clr-tertiary-foreground));
+            border-radius: var(--br);
+        }       
+        button{
+            height: 2.5rem;
+            width: 2.5rem;
+            mask-image: url("/static/assets/images/send.svg");
+            mask-position: center;
+            mask-size: cover;
+            mask-repeat: no-repeat;
+            border: none;
+            cursor: pointer;
+            transition: .5s;
+            transform: rotate( 0deg);
+        }       
+        button:disabled{
+            background-color: rgb(var(--clr-secondary-disabled-background));
+            transform: rotate(0deg);
+        }        
+        .active{
+            background-color: rgb(var(--clr-tarmeez-light));
+            transform: rotate(45deg);
+        }       
+        .main{
+            padding-right: 2rem;
+            padding-bottom: 1rem;
+        }
+        .overflow-hidden{
+            overflow: hidden;
+        }
+        .flex {
+            display: flex;
+        }
+        .justify-content-center {
+            justify-content: center;
+        }
+        .justify-content-end {
+            justify-content: end;
+        }
+        `
+    }
+
+    addStyle() {
+        const style = document.createElement("style");
+        style.textContent = this.getCss().trim();
+        this.shadowRoot.appendChild(style);
+    }
+
     render() {
         const img = this.currentUser.user.profile_image;
         const profileImg = typeof img === "object" ? "/static/assets/images/default-user1.png" : img;
-        this.shadowRoot.innerHTML = this.getHTMLTemplate(profileImg, this.currentUser.user.id);
+        const template = document.createElement("template");
+        template.innerHTML = this.getHTMLTemplate(profileImg, this.currentUser.user.id);
+        this.shadowRoot.appendChild(template.content.cloneNode(true));
     }
+
 
     getHTMLTemplate(profileImg, userId) {
         return /*html*/`
-        <link rel="stylesheet" href="/static/css/commentcreator.css">
-        <link rel="stylesheet" href="/static/css/common.css">
         <div class="comment-creator">
             <div class="col flex justify-content-center overflow-hidden">
                 <img class="img" height="40" width="40" data-user-id=${userId}  src=${profileImg} alt="profile image"/>
@@ -99,7 +176,7 @@ class CommentCreator extends HTMLElement {
                 { Authorization: `Bearer ${this.currentUser.token}` }
             );
             if (response?.data?.id) {
-                this.dispatchEvent(new CustomEvent("comment-added", {detail: response.data}))
+                this.dispatchEvent(new CustomEvent("comment-added", { detail: response.data }))
                 this.clearInput();
                 this.handleInput();
             } else {

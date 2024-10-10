@@ -16,6 +16,7 @@ class CommentsWrapper extends HTMLElement {
     this.style.display = "none";
     this.postId = this.dataset?.postId || null;
     if (this.postId) {
+      this.addStyle();
       this.render();
     } else {
       console.error("Post ID not provided.");
@@ -36,9 +37,110 @@ class CommentsWrapper extends HTMLElement {
     }
   }
 
+  getCss() {
+    return /*css*/`
+    *{
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    .flex {
+      display: flex;
+    }    
+    .flex-col {
+        flex-direction: column;
+    }
+    .gap {
+      gap: 1rem;
+    }
+    .justify-content-center {
+      justify-content: center;
+    }
+    .justify-content-start {
+      justify-content: start;
+    }
+    .comments-wrapper{
+      border-top: 1px solid rgba(var(--clr-secondary-foreground),.5);
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      gap: 1.5rem;
+      /*background: yellow*/
+    }   
+    ul{
+        list-style: none;
+    }    
+    .comment{
+        font-size: 1.6rem;
+        width: auto;
+        /*background: green*/
+    }    
+    img{
+        height: 3.5rem;
+        width: 3.5rem;
+        border-radius: 50%;
+        object-fit: cover;
+        cursor: pointer;
+    }   
+    span{
+        font-size: 1rem;
+        color: rgb(var(--clr-secondary-foreground))
+    }   
+    .body{
+        display: inline-block;
+        background-color: rgb(var(--clr-tertiary-background));
+        color: rgb(var(--clr-tertiary-foreground));
+        border-radius: 1.2rem;
+        padding: 1rem;
+        width: auto;
+    }    
+    .username{
+        display: block;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        letter-spacing: .1rem;
+    }   
+    .content{
+        display: block;
+        font-size: 1.5rem;
+        text-indent: .5rem;
+    }   
+    /*.delete-btn{
+        visibility: hidden;
+        height: 2.5rem;
+        width: 2.5rem;
+        border: none;
+        border-radius: 50%;
+        mask-image: url("/static/assets/images/trash.svg");
+        mask-position: center;
+        mask-repeat: no-repeat;
+        transition: visibility .3s, background-color .3s;
+        cursor: pointer;
+    }   
+    .comment:hover > .body-wrapper > .body-content > .delete-btn{
+        visibility: visible;
+        background-color: red;
+    }*/  
+    .profile-img{
+     /* background: red*/
+    }
+    .body-wrapper{
+      /*background: blue*/
+    }
+    `
+  }
+
+  addStyle(){
+    const style = document.createElement("style");
+    style.textContent = this.getCss().trim();
+    this.shadowRoot.appendChild(style);
+  }
+
   async render() {
     this.style.visibility = "hidden";
-    this.shadowRoot.innerHTML = this.getHTMLTemplate();
+    const template = document.createElement("template");
+    template.innerHTML = this.getHTMLTemplate();
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
     try {
       this.comments = await this.loadComments();
       this.renderComments(this.comments);
@@ -75,10 +177,6 @@ class CommentsWrapper extends HTMLElement {
 
   getHTMLTemplate() {
     return `
-            <style>
-                @import "/static/css/common.css";
-                @import "/static/css/commentswrapper.css";
-            </style>
             <div class="comments-wrapper">
                 <ul id="comments-list" class="flex flex-col gap"></ul>
             </div>
@@ -108,7 +206,7 @@ class CommentsWrapper extends HTMLElement {
 
     const commentItem = document.createElement("li");
     commentItem.id = comment.id;
-    commentItem.className = "comment flex gap";
+    commentItem.className = "comment flex gap align-items-start";
 
     commentItem.innerHTML = `
             <div class="flex justify-content-center">

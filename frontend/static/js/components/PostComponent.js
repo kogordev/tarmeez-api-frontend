@@ -30,8 +30,8 @@ export default class PostComponent extends HTMLElement {
     this.style.display = "block";
   }
 
-  getCss(){
-    return `
+  getCss() {
+    return /*css*/`
     a {
     color: rgb(var(--clr-main-foreground));
     text-decoration: none;
@@ -332,12 +332,15 @@ export default class PostComponent extends HTMLElement {
         align-items: center;
         justify-content: end;
     }
+    .clickable{
+      color: rgb(var(--clr-clickable-link));
+    }
 
     /* Add other styles here */
         `;
   }
 
-  addStyle(){
+  addStyle() {
     const style = document.createElement("style");
     style.textContent = this.getCss().trim();
     this.shadowRoot.appendChild(style);
@@ -371,10 +374,9 @@ export default class PostComponent extends HTMLElement {
       postImage,
       profileUrl
     );
-    
+
     this.shadowRoot.appendChild(template.content.cloneNode(true));
     this.style.visibility = "visible";
-
   }
 
   // Gets the author’s profile image or returns the default image
@@ -401,7 +403,7 @@ export default class PostComponent extends HTMLElement {
    */
   formatLinks(text) {
     const urlPattern = /(https?:\/\/[^\s]+)/g; // Match HTTP or HTTPS URLs
-    return text.replace(urlPattern, (url) => `<a href="${url}" target="_blank">${url}</a>`);
+    return text.replace(urlPattern, (url) => `<a href="${url}" class="clickable" target="_blank">${url}</a>`);
   }
 
 

@@ -10,6 +10,7 @@ export default class NavBarComponent extends HTMLElement {
     connectedCallback() {
         this.style.display = "none";
         this.currentUser = state.getCurrentUser(); // Set currentUser value
+        this.addStyle();
         this.render();
         this.style.display = "block";
         this.subscribeToState();
@@ -27,22 +28,118 @@ export default class NavBarComponent extends HTMLElement {
         });
     }
 
-    render() {
-        this.shadow.innerHTML = /*html*/`
-        <link rel="stylesheet" href="/static/css/navbar.css"/>
+    getCss() {
+        return /*css*/`
+        :host{
+            display: block;
+        }
+        
+        .nav{
+            width: 100%;
+            position: fixed;
+            inset: 0 0 0 0;
+            height: var(--nav-h);
+            background-color: rgb(var(--clr-secondary-background));
+            color: rgb(var(--clr-main-foreground));
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            z-index: 100;
+        }
+        
+        .col{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .button{
+            border: 0;
+            padding: .6rem;
+            margin-inline: 1rem;
+            color: rgb(var(--clr-tarmeez));
+            border-radius: 2rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: box-shadow .3s, scale .3s;
+        }
+        
+        .button:hover{
+            box-shadow: 0 0 15px -5px rgb(var(--clr-main-foreground));
+            transform: scale(1.02);
+        }
+        
+        .accent-button{
+            background-color: rgb(var(--clr-accent));
+        }
+        
+        .tarmeez-button{
+            background-color: rgb(var(--clr-tarmeez));
+            color: rgb(var(--clr-tarmeez-foreground));
+        }
+        
+        .logout-button{
+            background-color: rgb(var(--clr-danger-background));
+            color: rgb(var(--clr-danger-foreground));
+            padding-inline: .5rem;
+        }
+        
+        .profile-link::part(wrapper){
+            --s: calc(var(--nav-h) - 1rem);
+            height: var(--s);
+            width: var(--s);
+            border-radius: 50%;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+        
+        .profile-link::part(img){
+            --s: calc(var(--nav-h) - 3rem);
+            height: var(--s);
+            width: var(--s);
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .hidden{
+            display:none;
+        }
+        
+        .active {
+            display: block;
+        }
+        
+        .shadow {
+            box-shadow: 0 0 6px rgba(0,0,0, .3);
+        }
+        `
+    }
+
+    addStyle() {
+        const style = document.createElement("style");
+        style.textContent = this.getCss().trim();
+        this.shadow.appendChild(style);
+    }
+
+    getHTMLTemplate(){
+        return /*html*/`
         <nav class="nav shadow">
             <div class="col">
                 <navlink-c data-to="/" data-img="/static/assets/images/logo.png" data-text="TARMEEZ"></navlink-c>
             </div>
             <div class="col">
-                <themetogglebtn-c data-ficn='/static/assets/images/dark-mode-button.svg' data-sicn='/static/assets/images/light-mode-button.svg'></themetogglebtn-c>
+                <themes-menu></themes-menu>
             </div>
             <div class="col user-management">
                 ${this.renderUserManagement()}
             </div>
-        </nav>
-        `;
+        </nav> 
+        `
+    }
 
+    render() {
+        const template = document.createElement("template");
+        template.innerHTML = this.getHTMLTemplate().trim();
+        this.shadow.appendChild(template.content.cloneNode(true));
         // Load element selectors
         const elements = this.elements();
         this.attachEventListeners(elements);

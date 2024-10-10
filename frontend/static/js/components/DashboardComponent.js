@@ -58,6 +58,7 @@ export default class DashboardComponent extends HTMLElement {
       return;
     }
     this.clearShadowDOM();
+    this.addStyle();
     this.attachTemplate();
     this.shadowRoot.querySelector("#profile-img").addEventListener("click", () => {
       const profileImg = document.createElement("img-viewer");
@@ -93,6 +94,92 @@ export default class DashboardComponent extends HTMLElement {
     `;
   }
 
+  getCss(){
+    return /*css*/`
+    :host{
+      display: block;
+    }  
+    *{
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    .col{
+        /* border-radius: var(--br); */
+        background-color: rgb(var(--clr-tertiary-background));
+        box-shadow: var(--box-shadow-light);
+        overflow: hidden;
+        border-radius: var(--br);
+    }  
+    img{
+        /* height: 100px;
+        width: 100px; */
+        object-fit: cover;
+        border-radius: 50%;
+        cursor: pointer;
+    } 
+    .number{
+        font-size: 5rem;
+        font-weight: 600;
+    }  
+    .label{
+        font-size: 1.2rem;
+        color: rgb(var(--clr-tertiary-foreground))
+    }  
+    .username{
+        font-weight: 600;
+        letter-spacing: .2rem;
+        text-transform: capitalize;
+        margin-top: 1rem;
+    }
+    .email{
+        font-size: 1.4rem;
+        font-weight: 500;
+    }
+    .padding {
+      padding: 2rem;
+    }
+    .grid {
+        display: grid;
+        gap: 1rem;
+    }
+    .col-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .hidden{
+      visibility:hidden;
+    }
+    .flex {
+        display: flex;
+    }
+    .flex-col {
+        flex-direction: column;
+    }
+    .flex-center {
+      justify-content: center;
+      align-items: center;
+    }
+    .gap {
+        gap: 1rem;
+    }
+    .card {
+      width: 680px;
+      background-color: rgb(var(--clr-secondary-background));
+      color: rgb(var(--clr-main-foreground));
+      border-radius: var(--br);
+    }
+    .img-col{
+      position: relative;
+    }
+      `
+    }
+
+  addStyle(){
+    const style = document.createElement("style");
+    style.textContent = this.getCss().trim();
+    this.shadowRoot.appendChild(style);
+  }
+
   /**
    * Clears the shadow DOM content.
    */
@@ -100,33 +187,37 @@ export default class DashboardComponent extends HTMLElement {
     this.shadowRoot.innerHTML = "";
   }
 
+  getHTMLTemplate(profile_image, username, email, posts_count, comments_count){
+    return /*html*/`
+    <div class="card padding grid col-3 transition-opacity hidden">
+      <div class="col padding flex flex-col gap">
+        <div class="img-col flex flex-col flex-center">
+          <img id="profile-img" height="120" width="120" src="${this.getProfileImage(profile_image)}" alt="Profile image of ${username}" class="profile-image"/>
+          <h2 id="username" class="username">${this.escapeHTML(username)}</h2>
+          <h2 id="email" class="email">${this.escapeHTML(email)}</h2>
+        </div>
+      </div>
+      <div class="col padding flex flex-col flex-center">
+        <span id="posts-count" class="number">${posts_count}</span>
+        <sub class="label">Posts</sub>
+      </div>
+      <div class="col padding flex flex-col flex-center">
+        <span id="comments-count" class="number">${comments_count}</span>
+        <span class="label">Comments</span>
+      </div>
+    </div>
+  `;
+  }
+  
   /**
    * Attaches the main component template.
    */
   attachTemplate() {
     const { profile_image, username, email, posts_count, comments_count } = this.user;
 
-    this.shadowRoot.innerHTML = `
-      <link rel="stylesheet" href="/static/css/common.css"/>
-      <link rel="stylesheet" href="/static/css/dashboard.css"/>
-      <div class="card padding grid col-3 transition-opacity hidden">
-        <div class="col padding flex flex-col gap">
-          <div class="flex flex-col flex-center">
-            <img id="profile-img" height="120" width="120" src="${this.getProfileImage(profile_image)}" alt="Profile image of ${username}" class="profile-image"/>
-            <h2 id="username" class="username">${this.escapeHTML(username)}</h2>
-            <h2 id="email" class="email">${this.escapeHTML(email)}</h2>
-          </div>
-        </div>
-        <div class="col padding flex flex-col flex-center">
-          <span id="posts-count" class="number">${posts_count}</span>
-          <sub class="label">Posts</sub>
-        </div>
-        <div class="col padding flex flex-col flex-center">
-          <span id="comments-count" class="number">${comments_count}</span>
-          <span class="label">Comments</span>
-        </div>
-      </div>
-    `;
+    const template = document.createElement("template");
+    template.innerHTML = this.getHTMLTemplate(profile_image, username, email, posts_count, comments_count).trim();
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
 
   /**

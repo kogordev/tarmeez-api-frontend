@@ -2,6 +2,7 @@ export default class ThemeToggleBtnComponent extends HTMLElement {
     constructor() {
         super();
         this.shadow = this.attachShadow({ mode: "open" });
+        this.activeMode = null;
     }
 
     connectedCallback() {
@@ -12,13 +13,19 @@ export default class ThemeToggleBtnComponent extends HTMLElement {
         this.initializeButton(ficn, sicn);
 
         // Apply the initial theme based on localStorage or system settings
-        this.applyInitialTheme();
+        const defaultTheme = this.getDefaultTheme();
+        const localTheme = localStorage.getItem("theme");
+        this.applyInitialTheme(localTheme, defaultTheme);
 
         // Setup event listener for toggling the theme
         this.addEventListener("click", (e) => {
             e.preventDefault();
             this.toggleTheme();
         });
+    }
+
+    getDefaultTheme(){
+        return indow.matchMedia("(prefers-color-scheme: dark)").matches === "true" ? "dark": "light";
     }
 
     // Attach styles dynamically to the shadow DOM
@@ -72,25 +79,29 @@ export default class ThemeToggleBtnComponent extends HTMLElement {
     // Toggle the theme between light and dark mode
     toggleTheme() {
         const body = document.body;
+        // toggle based on icon
 
-        body.classList.toggle("dark-mode");
+
+        body.classList.toggle("dark");
         this.button.classList.toggle("light-mode-button");
-        localStorage.setItem("dark", body.classList.contains("dark-mode"));
+        localStorage.setItem("dark", body.classList.contains("dark"));
     }
 
     // Apply the initial theme based on local storage or system preferences
-    applyInitialTheme() {
-        const isDarkMode = this.isDarkMode();
-
-        if (isDarkMode && !document.body.classList.contains("dark-mode")) {
-            this.toggleTheme();
+    applyInitialTheme(name, defaultTheme) {
+        document.body.className = "";
+        switch(name){
+            case "dark": 
+                document.body.classList.add("dark");
+                break;
+            case "light":
+                document.body.classList.add("light");
+                break;
+            default: 
+                document.body.classList.add(defaultTheme);
         }
     }
 
-    // Check if dark mode is enabled in local storage
-    isDarkMode() {
-        return localStorage.getItem("dark") === "true";
-    }
 }
 
 customElements.define("themetogglebtn-c", ThemeToggleBtnComponent);

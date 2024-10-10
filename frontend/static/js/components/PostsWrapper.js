@@ -12,14 +12,12 @@ export default class PostsWrapper extends HTMLElement {
   }
 
   async connectedCallback() {
-    this.style.visibility = "hidden";
     this.initializePathname();
     if (!this.pathname) {
       console.error("No data-pathname provided to posts-wrapper.");
       return;
     }
     await this.initializeComponent();
-    this.style.visibility = "visible";
   }
 
   disconnectedCallback() {

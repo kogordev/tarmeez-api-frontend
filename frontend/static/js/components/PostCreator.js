@@ -20,37 +20,172 @@ export default class PostCreator extends HTMLElement {
   }
 
   setup() {
+    this.addStyle();
     this.render();
     this.registerEventListeners();
   }
 
-  render() {
-    this.style.visibility = "hidden";
-    const profileImg = this.currentUser?.user?.profile_image || "";
-    const userId = this.currentUser.user.id;
-    this.shadow.innerHTML = /*html*/ `
-      <link rel="stylesheet" href="/static/css/common.css"/>
-      <link rel="stylesheet" href="/static/css/postcreator.css"/>
-      <div class="card">
-        <div class="input-wrapper grid col-3-custom container">
-          <div class="col flex justify-content-center align-items-start">
-            <img id="profile-img" height="45" width="45" data-user-id="${userId}" src="${profileImg}" alt="User profile image"/>
-          </div>
-          <div class="col">            
-              <textarea placeholder="What's on your mind?"></textarea>            
-          </div>
-          <div id="upload-section" class="col flex">
-            <input id="file-input" type="file" accept="image/*" hidden/>
-            <button id="upload-btn" type="button">Upload Image</button>
-            <button id="delete-btn" type="button" style="display: none;">Delete Image</button>
-          </div>
+  getCss() {
+    return /*css*/`
+    :host{
+      display: block;
+    } 
+    .container{
+        height: auto;
+        padding: 1rem;
+        overflow: hidden;
+    }    
+    p{
+        width: 100%;
+        height: 5rem;
+    }    
+    textarea{
+        width: 100%;
+        /* height: 100%; */
+        height: 5rem;
+        font-size: 1.8rem;
+        padding: 1.25rem;
+        outline: none;
+        resize: none;
+        border-radius: var(--br);
+        border: 0;
+        background-color: rgb(var(--clr-tertiary-background)) !important;
+        color: rgb(var(--clr-tertiary-foreground)) !important;
+    }    
+    #profile-img{
+        /* height: 45px;
+        width: 45px; */
+        border-radius: 50%;
+        object-fit: cover;
+        cursor: pointer;
+    }    
+    #file-input{
+        display: none;
+    }    
+    #upload-btn{
+        border: 0;
+        height: 25px;
+        width: 25px;
+        margin-top: 1.25rem;
+        mask-image: url("/static/assets/images/img.svg");
+        -webkit-mask-image: url("/static/assets/images/img.svg");
+        mask-position: center;
+        mask-size: cover;
+        background-color: rgb(var(--clr-main-foreground));
+        cursor: pointer;
+    }    
+    .submit-wrapper{
+        padding: 1rem;
+        padding-right: 2rem;
+        border-top: .5px solid rgb(var(--clr-tertiary-background));
+    }    
+    .active{
+        background-color: rgb(var(--clr-active-background)) !important;
+    }    
+    #submit-btn{
+        padding: 1rem;
+        font-size: 1.6rem;
+        font-weight: 600;  
+        border: 0;
+        background-color: rgb(var(--clr-active-background)); 
+        color: rgb(var(--clr-active-foreground));
+        border-radius: var(--br);
+        cursor: pointer;
+        transition: background-color .3s;
+    }    
+    #submit-btn:hover{
+        background-color: rgb(var(--clr-active-hover-background));
+    }    
+    #submit-btn:disabled{
+        background-color: rgb(var(--clr-main-disabled-background));
+        background-color: rgb(var(--clr-main-disabled-foreground));
+    }    
+    #upload-section{
+        position: relative;
+    }    
+    #delete-btn{
+        position: absolute;
+        display: none;
+        height: 16px;
+        width: 16px;
+        background-color: rgb(var(--clr-danger-background));
+        mask-image: url("/static/assets/images/trash.svg");
+        mask-position: center;
+        mask-size: cover;
+        cursor: pointer;
+        top: 0;
+        right: 0;
+        transition: background-color .3s, transform .3;
+    }
+    #delete-btn:hover{
+        background-color: rgb(255, 99, 99);
+        transform: scale(1.15);
+    }    
+    .error{
+        background: red;
+        color: white;
+        font-size: 1.4rem;
+        border-radius: var(--br);
+        padding: 1rem;
+        box-sizing: border-box;
+        height: auto;
+      }
+      .grid {
+        display: grid;
+        gap: 1rem;
+      }
+    .col-3-custom {
+      grid-template-columns: 45px 1fr 45px;
+      }
+      .flex {
+         display: flex;
+      }
+      .justify-content-center {
+        justify-content: center;
+      }
+      .justify-content-end {
+        justify-content: end;
+      }
+      `
+  }
+
+  addStyle() {
+    const style = document.createElement("style");
+    style.textContent = this.getCss().trim();
+    this.shadow.appendChild(style);
+  }
+
+  getHTMLTemplate(userId, profileImg){
+    return /*html*/`    
+    <link rel="stylesheet" href="/static/css/common.css"/>
+    <link rel="stylesheet" href="/static/css/postcreator.css"/>
+    <div class="card">
+      <div class="input-wrapper grid col-3-custom container">
+        <div class="col flex justify-content-center align-items-start">
+          <img id="profile-img" height="45" width="45" data-user-id="${userId}" src="${profileImg}" alt="User profile image"/>
         </div>
-        <div class="submit-wrapper flex justify-content-end">
-          <button id="submit-btn" disabled>Post</button>
+        <div class="col">            
+            <textarea placeholder="What's on your mind?"></textarea>            
+        </div>
+        <div id="upload-section" class="col flex">
+          <input id="file-input" type="file" accept="image/*" hidden/>
+          <button id="upload-btn" type="button">Upload Image</button>
+          <button id="delete-btn" type="button" style="display: none;">Delete Image</button>
         </div>
       </div>
-    `;
-    this.style.visibility = "visible";
+      <div class="submit-wrapper flex justify-content-end">
+        <button id="submit-btn" disabled>Post</button>
+      </div>
+    </div>
+    `
+  }
+
+  render() {
+    const userId = this.currentUser.user.id;
+    const profileImg = this.currentUser?.user?.profile_image || "";
+    const template = document.createElement("template");
+    template.innerHTML = this.getHTMLTemplate(userId, profileImg).trim();
+    this.shadow.appendChild(template.content.cloneNode(true));
   }
 
   registerEventListeners() {

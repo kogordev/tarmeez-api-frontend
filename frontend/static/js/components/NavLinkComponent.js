@@ -27,6 +27,45 @@ export default class NavLinkComponent extends HTMLElement {
         }
     }
 
+    getCss(){
+        return /*css*/`
+        :host{
+            display: inline-block;
+            user-select: none;
+        }
+        div{
+            width: 145px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--fs-header);
+            cursor: pointer;
+            border-radius: var(--br);
+            transition: background-color .3s;
+            overflow: hidden;
+        }
+        div:hover{
+            background-color: rgb(var(--clr-hover));
+        }
+        /* div img{
+            height: 54px;
+            width: 54px;
+        } */
+        div span{
+            padding-right: 1.5rem;
+            letter-spacing: .4rem;
+            margin-left: -1.2rem;
+        }
+        
+        `
+    }
+
+    addStyle(){
+        const style = document.createElement("style");
+        style.textContent = this.getCss().trim();
+        this.shadowRoot.appendChild(style);
+    }
+
     render() {
         return new Promise((res, rej) => {
             try {
@@ -35,11 +74,12 @@ export default class NavLinkComponent extends HTMLElement {
                 this.text = this.text || this.dataset["text"];
 
                 // Avoid appending stylesheet multiple times
-                if (!this.shadowRoot.querySelector('link[rel="stylesheet"]')) {
-                    const cssLink = document.createElement("link");
-                    cssLink.rel = "stylesheet";
-                    cssLink.href = "/static/css/navlink.css";
-                    this.shadowRoot.append(cssLink);
+                if (!this.shadowRoot.querySelector('style')) {
+                    this.addStyle();
+                    // const cssLink = document.createElement("link");
+                    // cssLink.rel = "stylesheet";
+                    // cssLink.href = "/static/css/navlink.css";
+                    // this.shadowRoot.append(cssLink);
                 }
 
                 const wrapper = document.createElement("div");

@@ -133,20 +133,21 @@ class PostEdit extends HTMLElement {
   
   #submit-btn {
       border: none;
-      background-color: rgb(var(--clr-tarmeez));
-      color: rgb(var(--clr-tarmeez-foreground));
+      background-color: rgb(var(--clr-active-background));
+      color: rgb(var(--clr-active-foreground));
       padding: 1.5rem;
       border-radius: var(--br);
       cursor: pointer;
+      transition: background-color .3s;
   }
   
   #submit-btn:hover {
-      background-color: rgb(var(--clr-tarmeez-light));
+      background-color: rgb(var(--clr-active-hover-background));
   }
   
   #submit-btn:disabled {
-      background-color: rgb(var(--clr-hover));
-      color: rgb(var(--clr-secondary-foreground));
+      background-color: rgb(var(--clr-main-disabled-background));
+      color: rgb(var(--clr-main-disabled-foreground));
   }
   
   
@@ -175,7 +176,7 @@ class PostEdit extends HTMLElement {
       border: none;
       padding: 1.5rem;
       mask-image: url("/static/assets/images/img.svg");
-      background-color: rgb(var(--clr-tarmeez-light));
+      background-color: rgb(var(--clr-active-background));
   }
   
   span {
@@ -187,12 +188,13 @@ class PostEdit extends HTMLElement {
   }
   
   input-c::part(input) {
-      background-color: rgb(var(--clr-secondary-background));
+      background-color: rgb(var(--clr-tertiary-background)) !important;
+      padding-top: 1.5rem;
       border: 1px solid rgb(var(--clr-secondary-foreground));
   }
   
   input-c::part(input):focus {
-      border-color: rgb(var(--clr-tarmeez-light));
+      border-color: rgb(var(--clr-active-background));
   }
   
   .error-msg {
@@ -272,8 +274,8 @@ class PostEdit extends HTMLElement {
     this.shadow.appendChild(template.content.cloneNode(true));
     this.toggleImageDisplay(typeof image !== "object");
     this.attachEvents();
-    this.shadow.querySelector("input-c").focusInput();
     this.style.visibility = "visible";
+    this.shadow.querySelector("input-c").focusInput();
   }
 
   getHTMLTemplate(profileImg, username, content, img, created_at) {

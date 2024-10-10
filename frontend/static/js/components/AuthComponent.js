@@ -13,15 +13,9 @@ export default class AuthComponent extends HTMLElement {
     }
 
     async connectedCallback() {
-        this.style.visibility = "hidden";
-        this.style.opacity = 0;
         document.body.style.overflowY = "hidden";
         this.addStyle();
         this.render();
-        setTimeout(() => {
-            this.style.visibility = "visible";
-            this.style.opacity = 1;
-        }, 100);
         this.setupEventListeners();
         this.setActiveForm(this.formId.signup); // Set default active form
     }
@@ -37,7 +31,7 @@ export default class AuthComponent extends HTMLElement {
     }
 
     getCSS() {
-        return `
+        return /*css*/`
         *{
             margin: 0;
             padding: 0;
@@ -84,6 +78,9 @@ export default class AuthComponent extends HTMLElement {
             gap: 1rem;
         }
         .input,.button,.custom-file-upload{
+            background-color: rgb(var(--clr-tertiary-background));
+            color: rgb(var(--clr-tertiary-foreground));
+            border: none;
             height: 4rem;
             width: 280px;
             padding: 2rem 1rem;
@@ -96,8 +93,8 @@ export default class AuthComponent extends HTMLElement {
             padding: 1rem;
         }
         input[type="file"]::-webkit-file-upload-button{
-            background-color: rgb(var(--clr-popup-background));
-            color: rgb(var(--clr-popup-foreground));
+            background-color: rgb(var(--clr-tertiary-background));
+            color: rgb(var(--clr-tertiary-foreground));
             padding: .5rem;
             height: auto;
             text-align: center;
@@ -106,23 +103,25 @@ export default class AuthComponent extends HTMLElement {
         }
         .button{
             width: 30%;
-            background-color: rgb(var(--clr-accent));
+            background-color: rgb(var(--clr-submit-background));
+            color: rgb(var(--clr-submit-foreground));
+            border: none;
             text-align: center;
             cursor: pointer;
             margin-top: .5rem;
             font-size: 1.6rem;
             font-weight: 600;
-            transition: var(--tr-hover);
+            transition: background-color .3s;
         }
         .button:hover{
-            background-color: rgba(var(--clr-accent), .9);
+            background-color: rgb(var(--clr-submit-hover-background));
             transform: scale(1.01);
         }
         .custom-file-upload{
             display: inline-block;
             padding-block: 12px;
             height: 6rem;
-            background-color: rgb(var(--clr-hover));
+            background-color: rgb(var(--clr-tertiary-background));
         }
         .footer{
             font-size: 1.6rem;
@@ -139,11 +138,17 @@ export default class AuthComponent extends HTMLElement {
             padding-inline: 10rem;
         }
         .login .body{
-            background-color: rgb(var(--clr-hover));
+            background-color: rgb(var(--clr-tertiary-background));
             padding-block: 7rem 5rem;
+            border-radius: var(--br)
         }
         .login input{
             width: 280px;
+            background-color: rgb(var(--clr-secondary-background)) 
+        }
+        input:focus{
+            border: 1px solid rgb(var(--clr-active-background));
+            background-color: rgb(var(--clr-secondary-background))
         }
         a{
             color: var(--clr-main-foreground);

@@ -236,9 +236,6 @@ export default class AuthComponent extends HTMLElement {
             event.preventDefault();
             this.setActiveForm(this.formId.signup);
         }
-        setTimeout(() => {
-            this.style.visibility = "visible";
-        }, 0);
     }
 
     handleSubmit(event) {
@@ -281,6 +278,9 @@ export default class AuthComponent extends HTMLElement {
             form.classList.toggle("active", form.id === formId);
         });
         this.clearInputs();
+        setTimeout(() => {
+            this.style.visibility = "visible";
+        }, 10);
     }
 
     clearDisplayInfo(event) {

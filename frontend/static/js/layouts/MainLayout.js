@@ -60,6 +60,7 @@ export default class MainLayout extends HTMLElement {
     addStyle(){
         const style = document.createElement("style");
         style.textContent = this.getCss().trim();
+        this.shadowRoot.appendChild(style);
     }
 
     getHTMLTemplate(){

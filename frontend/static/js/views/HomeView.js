@@ -4,12 +4,15 @@ export default class HomeView extends HTMLElement {
     document.title = "Tarmeez | Home"
     this.attachShadow({ mode: "open" });
 
+
     // Bind methods
     this.handlePostCreated = this.handlePostCreated.bind(this);
   }
 
   connectedCallback() {
-      this.initializeComponent();
+    this.style.display = "none";
+    this.initializeComponent();
+    this.style.display = "block";
   }
 
   async initializeComponent() {

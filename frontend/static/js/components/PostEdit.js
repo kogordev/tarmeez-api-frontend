@@ -25,12 +25,14 @@ class PostEdit extends HTMLElement {
 
   async connectedCallback() {
     this.saveScrollPosition();
+    this.style.display = "none";
     try {
       this.currentUser = await state.getCurrentUser();
       this.render();
     } catch (error) {
       this.displayError("Failed to load user information. Please try again later.");
     }
+    this.style.display = "block";
     this.restoreScrollPosition();
   }
 

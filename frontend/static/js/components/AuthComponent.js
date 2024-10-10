@@ -10,13 +10,19 @@ export default class AuthComponent extends HTMLElement {
             signup: "signup-form"
         });
         this.attachShadow({ mode: "open" });
-        this.screenLoader = document.createElement("screen-loader");
     }
 
     async connectedCallback() {
+        this.style.display = "none"; 
+        document.body.style.overflowY = "hidden";
         this.render();
+        this.style.display = "block"; 
         this.setupEventListeners();
         this.setActiveForm(this.formId.signup); // Set default active form
+    }
+
+    disconnectedCallback(){
+        document.body.style.overflowY = "auto";
     }
 
     render() {

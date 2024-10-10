@@ -13,12 +13,14 @@ class CommentsWrapper extends HTMLElement {
   }
 
   connectedCallback() {
+    this.style.display = "none";
     this.postId = this.dataset?.postId || null;
     if (this.postId) {
       this.render();
     } else {
       console.error("Post ID not provided.");
     }
+    this.style.display = "block";
   }
 
   async loadComments() {

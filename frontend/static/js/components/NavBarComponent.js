@@ -8,9 +8,10 @@ export default class NavBarComponent extends HTMLElement {
     }
 
     connectedCallback() {
-
+        this.style.display = "none";
         this.currentUser = state.getCurrentUser(); // Set currentUser value
         this.render();
+        this.style.display = "block";
         this.subscribeToState();
     }
 

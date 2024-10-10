@@ -17,13 +17,11 @@ export default class ProfileView extends HTMLElement {
   }
 
   async render() {
-    this.style.visibility = "hidden";
-    setTimeout(async () => {
-      this.clear();
-      await this.renderTemplate();
-      this.style.visibility = "visible";
-    }, 30);
+    this.style.display = "none";
+    this.clear();
+    await this.renderTemplate();
     this.setupEventHandlers();
+    this.style.display = "block";
   }
 
   renderTemplate() {

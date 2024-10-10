@@ -12,11 +12,11 @@ export default class PostCreator extends HTMLElement {
   }
 
   connectedCallback() {
-    this.style.visibility = "hidden";
+    this.style.display = "none";
     this.currentUser = state.getCurrentUser();
     if (!this.currentUser) return; // Ensure user is logged in
     this.setup();
-    this.style.visibility = "visible";
+    this.style.display = "block";
   }
 
   setup() {

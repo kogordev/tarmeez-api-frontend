@@ -12,15 +12,15 @@ class CommentCreator extends HTMLElement {
     }
 
     connectedCallback() {
+        this.style.display = "none";
         this.currentUser = state.getCurrentUser();
         this.postId = this.dataset.postId;
         if (!(this.currentUser && this.postId)) return;
 
-        this.style.visibility = "hidden";
         this.render();
         const elements = this.getElements();
         this.attachEvents(elements);
-        this.style.visibility = "visible";
+        this.style.display = "block";
     }
 
     render() {

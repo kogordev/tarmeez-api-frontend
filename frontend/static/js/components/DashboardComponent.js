@@ -9,11 +9,13 @@ export default class DashboardComponent extends HTMLElement {
   }
 
   async connectedCallback() {
+    this.style.display = "none";
     try {
       await this.load();
     } catch (error) {
       console.error("Error initializing component:", error);
     }
+    this.style.display = "block";
   }
 
   /**
@@ -55,7 +57,6 @@ export default class DashboardComponent extends HTMLElement {
       console.error("User data is not available.");
       return;
     }
-    this.style.visibility = "hidden";
     this.clearShadowDOM();
     this.attachTemplate();
     this.shadowRoot.querySelector("#profile-img").addEventListener("click", () => {
@@ -63,7 +64,6 @@ export default class DashboardComponent extends HTMLElement {
       profileImg.image = this.getProfileImage(this.user.profile_image);
       document.body.appendChild(profileImg);
     })
-    this.style.visibility = "visible";
     this.transitionIn();
   }
 

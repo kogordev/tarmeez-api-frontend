@@ -5,6 +5,7 @@ export default class PostsWrapper extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
+    this.style.display = "none";
     this.controller = new Controller();
     this.pathname = "";
     this.isLoading = false;
@@ -18,6 +19,7 @@ export default class PostsWrapper extends HTMLElement {
       return;
     }
     this.initializeComponent();
+    this.style.display = "block";
   }
 
   disconnectedCallback() {

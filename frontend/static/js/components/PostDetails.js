@@ -36,10 +36,12 @@ class PostDetails extends HTMLElement {
   }
 
   async connectedCallback() {
+    this.style.display = "none";
     this.initializePostId();
     await this.initializeState();
     if (!(this.postId && this.state)) return;
     await this.render();
+    this.style.display = "block";
   }
 
   disconnectedCallback() {

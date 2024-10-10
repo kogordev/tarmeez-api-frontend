@@ -14,10 +14,16 @@ export default class AuthComponent extends HTMLElement {
 
     async connectedCallback() {
         document.body.style.overflowY = "hidden";
+        this.style.visibility = "hidden";
+        
         this.addStyle();
         this.render();
         this.setupEventListeners();
         this.setActiveForm(this.formId.signup); // Set default active form
+        
+        setTimeout(() => {
+            this.style.visibility = "visible";
+        }, 0);
     }
 
     disconnectedCallback() {
@@ -163,7 +169,6 @@ export default class AuthComponent extends HTMLElement {
     }
 
     render() {
-        this.style.visibility = "hidden";
         const template = document.createElement("template");
         template.innerHTML =  /*html*/`
         <div class="wrapper">
@@ -171,7 +176,6 @@ export default class AuthComponent extends HTMLElement {
             ${this.renderLoginForm()}
         </div>`;
         this.shadowRoot.appendChild(template.content.cloneNode(true))
-        this.style.visibility = "visible";
     }
 
     renderSignupForm() {

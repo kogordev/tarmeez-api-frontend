@@ -28,6 +28,7 @@ class PostEdit extends HTMLElement {
     this.style.display = "none";
     try {
       this.currentUser = await state.getCurrentUser();
+      this.addStyle();
       this.render();
     } catch (error) {
       this.displayError("Failed to load user information. Please try again later.");
@@ -41,6 +42,223 @@ class PostEdit extends HTMLElement {
     document.body.style.overflowY = "auto";
   }
 
+  getCss(){
+    return /*css*/`
+    .shadow {
+      box-shadow: 0 0 .5rem rgba(0, 0, 0, 0.3);
+  }
+  
+  .p {
+      padding: 1rem;
+  }
+  
+  :host {
+      display: block;
+  }
+  
+  * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+  }
+  
+  .backdrop {
+      overflow: initial;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: fixed;
+      inset: 0 0 0 0;
+      height: 100vh;
+      width: 100vw;
+      background-color: rgba(var(--clr-secondary-background), .8);
+      z-index: 9999;
+  }
+  
+  .post-edit {
+      display: grid;
+      grid-template-rows:auto auto auto auto auto;
+      width: 50rem;
+      background-color: rgb(var(--clr-secondary-background));
+      box-shadow: 0 0 2rem rgb(0, 0, 0, 0.3);
+      border-radius: var(--br);
+      overflow: hidden;
+  }
+  
+  .header {
+      position: relative;
+  }
+  
+  .user-info {
+      padding-inline: 2rem;
+      margin-bottom: 1rem;
+  }
+  
+  .profile-img {
+      height: 3.5rem;
+      width: 3.5rem;
+      object-fit: contain;
+      border-radius: 50%;
+  }
+  
+  .img-wrapper {
+      padding: 1.5rem;
+      border: 1px solid rgb(var(--clr-secondary-foreground));
+      min-height: 50rem;
+      overflow: hidden;
+      width: 450px;
+      height: 517.38px;
+      border-radius: var(--br);
+      position: relative;
+  }
+  
+  .post-img {
+      object-fit: cover;
+      height: 100%;
+      width: 100%;
+  }
+  
+  .body {
+      padding-top: 1rem;
+      padding-inline: 2rem;
+      max-height: 60vh;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+  }
+  
+  .footer {
+      margin-bottom: 3.5rem;
+  }
+  
+  #submit-btn {
+      border: none;
+      background-color: rgb(var(--clr-tarmeez));
+      color: rgb(var(--clr-tarmeez-foreground));
+      padding: 1.5rem;
+      border-radius: var(--br);
+      cursor: pointer;
+  }
+  
+  #submit-btn:hover {
+      background-color: rgb(var(--clr-tarmeez-light));
+  }
+  
+  #submit-btn:disabled {
+      background-color: rgb(var(--clr-hover));
+      color: rgb(var(--clr-secondary-foreground));
+  }
+  
+  
+  #remove-btn {
+      border-radius: 50%;
+      height: 3.5rem;
+      width: 3.5rem;
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      mask-image: url("/static/assets/images/close-button.svg");
+      color: rgb(var(--clr-main-foreground));
+      z-index: 999;
+  }
+  
+  .btn {
+      border: none;
+      mask-position: center;
+      mask-repeat: no-repeat;
+      mask-size: cover;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  #upload-btn {
+      border: none;
+      padding: 1.5rem;
+      mask-image: url("/static/assets/images/img.svg");
+      background-color: rgb(var(--clr-tarmeez-light));
+  }
+  
+  span {
+      font-size: 1.6rem;
+  }
+  
+  .options {
+      padding: 2rem;
+  }
+  
+  input-c::part(input) {
+      background-color: rgb(var(--clr-secondary-background));
+      border: 1px solid rgb(var(--clr-secondary-foreground));
+  }
+  
+  input-c::part(input):focus {
+      border-color: rgb(var(--clr-tarmeez-light));
+  }
+  
+  .error-msg {
+      margin-bottom: 1rem;
+      color: red;
+      font-size: 1.4rem;
+  }
+  
+  #username {
+      display: inline-block;
+      font-size: 1.6rem;
+      font-weight: 600;
+      text-transform: capitalize;
+  }
+  
+  #created-at {
+      display: inline-block;
+      font-weight: 300;
+      font-size: 1.3rem;
+  }
+  .circle-btn {
+    border: none;
+    border-radius: 50%;
+    height: 2.5rem;
+    width: 2.5rem;
+    background-color: rgb(var(--clr-main-foreground));
+    cursor: pointer;
+}
+
+.close-btn {
+    mask-image: url("/static/assets/images/close-button.svg");
+    mask-position: center;
+    mask-repeat: no-repeat;
+    position: absolute;
+    top: 1.25rem;
+    right: 1.5rem;
+}
+
+.flex {
+  display: flex;
+}
+.flex-center {
+  justify-content: center;
+  align-items: center;
+}
+.gap {
+  gap: 1rem;
+}
+.align-items-center {
+  align-items: center;
+}
+.btn{
+  border: none;
+  height: 2.5rem;
+  width: 2.5rem;
+  cursor: pointer;
+}
+    `
+  }
+
+  addStyle(){
+    const style = document.createElement("style");
+    style.textContent = this.getCss().trim();
+    this.shadow.appendChild(style);
+  }
+
   render() {
     document.body.style.overflowY = "hidden";
     this.style.visibility = "hidden";
@@ -48,7 +266,10 @@ class PostEdit extends HTMLElement {
     const profileImg = this.getProfileImage(author);
     const username = author.username || "Unknown";
 
-    this.shadow.innerHTML = this.getHTMLTemplate(profileImg, username, body, image, created_at);
+    const template = document.createElement("template");
+
+    template.innerHTML = this.getHTMLTemplate(profileImg, username, body, image, created_at);
+    this.shadow.appendChild(template.content.cloneNode(true));
     this.toggleImageDisplay(typeof image !== "object");
     this.attachEvents();
     this.shadow.querySelector("input-c").focusInput();

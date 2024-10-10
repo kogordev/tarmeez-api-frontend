@@ -17,9 +17,9 @@ class InputComponent extends HTMLElement {
 
   connectedCallback() {
     this.initiallizeInputValue();
+    this.addStyle();
     this.render();
     this.setupInput();
-    this.addStyle();
     this.attachEvents();
   }
 
@@ -31,7 +31,9 @@ class InputComponent extends HTMLElement {
   }
 
   render() {
-    this.shadowRoot.innerHTML = this.getHTMLTemplate();
+    const template = document.createElement("template")
+    template.innerHTML = this.getHTMLTemplate().trim();
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
     this.shadowRoot.querySelector("textarea").addEventListener("input", e =>{
       this.inputValue = e.target.value;
     })
@@ -48,7 +50,7 @@ class InputComponent extends HTMLElement {
 
   addStyle() {
     const style = document.createElement("style");
-    style.textContent = this.getCSS();
+    style.textContent = this.getCSS().trim();
     this.shadowRoot.appendChild(style);
   }
 
@@ -63,7 +65,7 @@ class InputComponent extends HTMLElement {
             display: flex;
             justify-content: center; /* Center horizontally (if needed) */
             align-items: center;     /* Center vertically */
-            height: 5rem;           /* Set a height to the container */
+            min-height: 5rem;           /* Set a height to the container */
             width:100%;           /* Set a height to the container */
         }
 

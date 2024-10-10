@@ -51,8 +51,85 @@ class PostDetails extends HTMLElement {
     );
   }
 
+  getCss(){
+    return /*css*/`
+    :host {
+      display: block;
+      transition: visibility .3s;
+  }  
+  .backdrop {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: fixed;
+      inset: 0 0 0 0;
+      height: 100vh;
+      width: 100vw;
+      background-color: rgba(var(--clr-secondary-background), .8);
+      z-index: 9999;
+  }  
+  .post-details {
+      display: grid;
+      grid-template-rows: 5rem auto auto;
+      width: 720px;
+      background-color: rgb(var(--clr-secondary-background));
+      box-shadow: 0 0 2rem  rgb(0, 0, 0, 0.3);
+      border-radius: var(--br);
+      position: relative;
+  }  
+  .body{
+      padding: 2rem 1rem;
+      max-height: 75vh;
+      width: auto;
+      overflow: hidden auto;
+      scroll-behavior: smooth;
+  } 
+  .shadow{
+      box-shadow: 0 0 .5rem rgba(0 ,0, 0, 0.3);
+  }
+  
+  .p{
+      padding: 1rem;
+  }
+  .circle-btn {
+    border: none;
+    border-radius: 50%;
+    height: 2.5rem;
+    width: 2.5rem;
+    background-color: rgb(var(--clr-main-foreground));
+    cursor: pointer;
+}
+
+.close-btn {
+    mask-image: url("/static/assets/images/close-button.svg");
+    mask-position: center;
+    mask-repeat: no-repeat;
+    position: absolute;
+    top: 1.25rem;
+    right: 1.5rem;
+}
+.padding {
+  padding: 2rem;
+}
+.flex {
+  display: flex;
+}
+.flex-center {
+  justify-content: center;
+  align-items: center;
+} 
+    `
+  }
+
+  addStyle(){
+    const style = document.createElement("style");
+    style.textContent = this.getCss().trim();
+    this.shadowRoot.appendChild(style);
+  }
+
   async render() {
     document.body.style.overflowY = "hidden";
+    this.addStyle();
     this.renderHTMLTemplate();
     await this.addPostComp();
     await this.addCommentsWrapper();
@@ -61,8 +138,11 @@ class PostDetails extends HTMLElement {
   }
 
   renderHTMLTemplate() {
-    this.shadowRoot.innerHTML = this.getHTMLTemplate();
+    const template = document.createElement("template");
+    template.innerHTML = this.getHTMLTemplate().trim();
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
+  
 
   getHTMLTemplate() {
     const username = this.state.author.username;

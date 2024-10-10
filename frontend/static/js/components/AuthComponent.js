@@ -13,30 +13,158 @@ export default class AuthComponent extends HTMLElement {
     }
 
     async connectedCallback() {
-        this.style.visibility = "hidden"; 
-        this.style.opacity = 0; 
+        this.style.visibility = "hidden";
+        this.style.opacity = 0;
         document.body.style.overflowY = "hidden";
+        this.addStyle();
         this.render();
         setTimeout(() => {
-            this.style.visibility = "visible";     
-            this.style.opacity = 1;     
-        },100);
+            this.style.visibility = "visible";
+            this.style.opacity = 1;
+        }, 100);
         this.setupEventListeners();
         this.setActiveForm(this.formId.signup); // Set default active form
     }
 
-    disconnectedCallback(){
+    disconnectedCallback() {
         document.body.style.overflowY = "auto";
     }
 
+    addStyle() {
+        const style = document.createElement("style");
+        style.textContent = this.getCSS().trim();
+        this.shadowRoot.appendChild(style);
+    }
+
+    getCSS() {
+        return `
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :host{
+            height: 700px;
+            width: 600px;
+            background-color: rgb(var(--clr-secondary-background));
+            border-radius: var(--br);
+            transition: visibility .3s, opacity .3s;
+            
+            /* user-select: none; */
+        }
+        .container{
+            position: relative;
+        }
+        .flex{
+            display: flex;
+        }
+        .flex-col{
+            flex-direction: column ;
+        }
+        .flex-center{
+            align-items: center;
+            justify-content: center;
+        }
+        .form{
+            display: none;
+            padding: 4rem;
+            position: absolute;
+            inset: 0 0 0 0;
+        }
+        .header{
+            padding-block: 5rem;
+            font-size: 3rem;
+            color: rgb(var(--clr-main-foreground))
+        }
+        .header > h2 > span{
+            font-weight: 500;
+            letter-spacing: .5rem;
+        }
+        .body{
+            gap: 1rem;
+        }
+        .input,.button,.custom-file-upload{
+            height: 4rem;
+            width: 280px;
+            padding: 2rem 1rem;
+            border-radius: var(--br);
+            outline: none;
+            font-size: 1.4rem;
+        }
+        input[type="file"]{
+            color: rgb(var(--clr-main-foreground));
+            padding: 1rem;
+        }
+        input[type="file"]::-webkit-file-upload-button{
+            background-color: rgb(var(--clr-popup-background));
+            color: rgb(var(--clr-popup-foreground));
+            padding: .5rem;
+            height: auto;
+            text-align: center;
+            border-radius: var(--br);
+            cursor: pointer;
+        }
+        .button{
+            width: 30%;
+            background-color: rgb(var(--clr-accent));
+            text-align: center;
+            cursor: pointer;
+            margin-top: .5rem;
+            font-size: 1.6rem;
+            font-weight: 600;
+            transition: var(--tr-hover);
+        }
+        .button:hover{
+            background-color: rgba(var(--clr-accent), .9);
+            transform: scale(1.01);
+        }
+        .custom-file-upload{
+            display: inline-block;
+            padding-block: 12px;
+            height: 6rem;
+            background-color: rgb(var(--clr-hover));
+        }
+        .footer{
+            font-size: 1.6rem;
+            padding-block: 3rem;
+            color: rgb(var(--clr-main-foreground));
+        }
+        .hidden{
+            display: none;
+        }
+        .active{
+            display: block;
+        }
+        .login{
+            padding-inline: 10rem;
+        }
+        .login .body{
+            background-color: rgb(var(--clr-hover));
+            padding-block: 7rem 5rem;
+        }
+        .login input{
+            width: 280px;
+        }
+        a{
+            color: var(--clr-main-foreground);
+        }
+        .display-info{
+            display: none;
+            padding-block: 1rem;
+            font-size: 1.6rem;
+            color: red;
+        }
+        `
+    }
+
     render() {
-        this.shadowRoot.innerHTML = /*html*/`
-            <link rel="stylesheet" href="/static/css/auth.css"/>
-            <div class="wrapper">
-                ${this.renderSignupForm()}
-                ${this.renderLoginForm()}
-            </div>
-        `;
+        const template = document.createElement("template");
+        template.innerHTML =  /*html*/`
+        <div class="wrapper">
+            ${this.renderSignupForm()}
+            ${this.renderLoginForm()}
+        </div>`;
+        this.shadowRoot.appendChild(template.content.cloneNode(true))
     }
 
     renderSignupForm() {
@@ -130,7 +258,7 @@ export default class AuthComponent extends HTMLElement {
                 this.showErrorMessage(activeForm, error.msg);
                 loader.remove()
             }, 500);
-        } 
+        }
     }
 
     getActiveForm() {
@@ -169,7 +297,7 @@ export default class AuthComponent extends HTMLElement {
 
         if (show) {
             form.appendChild(loader)
-         //   form.appendChild(this.screenLoader);
+            //   form.appendChild(this.screenLoader);
             this.screenLoader.show();
         } else {
             this.screenLoader.hide();

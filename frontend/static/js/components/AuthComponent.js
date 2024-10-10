@@ -13,10 +13,14 @@ export default class AuthComponent extends HTMLElement {
     }
 
     async connectedCallback() {
-        this.style.display = "none"; 
+        this.style.visibility = "hidden"; 
+        this.style.opacity = 0; 
         document.body.style.overflowY = "hidden";
         this.render();
-        this.style.display = "block"; 
+        setTimeout(() => {
+            this.style.visibility = "visible";     
+            this.style.opacity = 1;     
+        },100);
         this.setupEventListeners();
         this.setActiveForm(this.formId.signup); // Set default active form
     }

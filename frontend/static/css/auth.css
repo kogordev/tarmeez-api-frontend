@@ -9,6 +9,7 @@
     width: 600px;
     background-color: rgb(var(--clr-secondary-background));
     border-radius: var(--br);
+    transition: visibility .3s, opacity .3s;
     
     /* user-select: none; */
 }

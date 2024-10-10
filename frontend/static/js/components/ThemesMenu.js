@@ -86,6 +86,10 @@ class ThemesMenu extends HTMLElement {
                 <li data-theme="dracula">Dracula</li>
                 <li data-theme="purple">Purple</li>
                 <li data-theme="accent">Accent</li>
+                <li data-theme="saturated">Saturated</li>
+                <li data-theme="boldModern">BoldModern</li>
+                <li data-theme="sunset">Sunset</li>
+                <li data-theme="tokyoNights">TokyoNights</li>
                 <!-- Add more themes as needed -->
             </ul>
         </div>
@@ -116,7 +120,7 @@ class ThemesMenu extends HTMLElement {
         const selectedTheme = selectedItem.getAttribute('data-theme');
 
         // Remove previously selected theme classes
-        document.body.classList.remove('light', 'dark', 'dracula', 'purple', 'accent');
+        document.body.classList.remove('light', 'dark', 'dracula', 'purple', 'accent', 'saturated', 'boldModern', 'sunset', 'tokyoNights');
 
         // Add the selected theme class
         document.body.classList.add(selectedTheme);

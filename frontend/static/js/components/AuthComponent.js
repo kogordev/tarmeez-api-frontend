@@ -163,6 +163,7 @@ export default class AuthComponent extends HTMLElement {
     }
 
     render() {
+        this.style.visibility = "hidden";
         const template = document.createElement("template");
         template.innerHTML =  /*html*/`
         <div class="wrapper">
@@ -170,6 +171,7 @@ export default class AuthComponent extends HTMLElement {
             ${this.renderLoginForm()}
         </div>`;
         this.shadowRoot.appendChild(template.content.cloneNode(true))
+        this.style.visibility = "visible";
     }
 
     renderSignupForm() {

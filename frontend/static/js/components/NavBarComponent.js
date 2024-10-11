@@ -173,10 +173,15 @@ export default class NavBarComponent extends HTMLElement {
             </div>`
     }
 
+    getProfileImg(img){
+        if (typeof img === "object") return "/static/assets/images/default-user1.png";
+        return img;
+    }
+
     UserSection(currentUser) {
         const user = currentUser.user;
         const id = user.id || "#";
-        const img = user.profile_image || "/static/assets/images/default-user1.png";
+        const img = this.getProfileImg(user.profile_image);
         const url = `/users/${id}`;
 
         return /*html*/`
@@ -196,21 +201,30 @@ export default class NavBarComponent extends HTMLElement {
     }
 
     showAuthModal(e) {
-        const modal = document.createElement("modal-c");
-        const auth = document.createElement("auth-c");
-
-        modal.appendChild(auth);
-        this.shadowRoot.appendChild(modal);
-
-        const target = e.target;
-        if (target.id === "login-btn") {
-            auth.setActiveForm(auth.formId.login); // Activate login form
-        } else if (target.id === "signup-btn") {
-            auth.setActiveForm(auth.formId.signup); // Activate signup form
+        const auth = document.createElement("auth-form");
+        document.body.appendChild(auth);
+        if (e.target?.id === "login-btn"){
+            auth.showLoginForm();
+        } else if (e.target?.id === "signup-btn") {
+            auth.showSignupForm();
         }
-
-        modal.show();
     }
+    // showAuthModal(e) {
+    //     const modal = document.createElement("modal-c");
+    //     const auth = document.createElement("auth-c");
+
+    //     modal.appendChild(auth);
+    //     this.shadowRoot.appendChild(modal);
+
+    //     const target = e.target;
+    //     if (target.id === "login-btn") {
+    //         auth.setActiveForm(auth.formId.login); // Activate login form
+    //     } else if (target.id === "signup-btn") {
+    //         auth.setActiveForm(auth.formId.signup); // Activate signup form
+    //     }
+
+    //     modal.show();
+    // }
 
 
     handleLogout() {

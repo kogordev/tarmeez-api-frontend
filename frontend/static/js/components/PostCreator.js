@@ -155,7 +155,7 @@ export default class PostCreator extends HTMLElement {
     this.shadow.appendChild(style);
   }
 
-  getHTMLTemplate(userId, profileImg){
+  getHTMLTemplate(userId, profileImg) {
     return /*html*/`    
     <link rel="stylesheet" href="/static/css/common.css"/>
     <link rel="stylesheet" href="/static/css/postcreator.css"/>
@@ -180,9 +180,15 @@ export default class PostCreator extends HTMLElement {
     `
   }
 
+  getProfileImg(img) {
+    if (typeof img === "object") return "/static/assets/images/default-user1.png";
+    return img;
+  }
+
   render() {
+    const {user}= this.currentUser;
     const userId = this.currentUser.user.id;
-    const profileImg = this.currentUser?.user?.profile_image || "";
+    const profileImg = this.getProfileImg(user.profile_image);
     const template = document.createElement("template");
     template.innerHTML = this.getHTMLTemplate(userId, profileImg).trim();
     this.shadow.appendChild(template.content.cloneNode(true));

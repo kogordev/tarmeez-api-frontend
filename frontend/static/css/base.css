@@ -81,6 +81,8 @@
     --clr-active-hover-background: 38, 128, 124;  /* Same as --clr-tarmeez */
     --clr-active-hover-foreground: 255, 255, 255;  /* White foreground for hover state */
 
+    --clr-accent-foreground: 96, 176, 172;
+
     --clr-main-disabled-background: 240, 240, 245;  /* Soft Gray for a subtle disabled state */
     --clr-main-disabled-foreground: 150, 150, 155;  /* Medium Gray for readability on disabled background */
 
@@ -89,6 +91,7 @@
 
     --clr-danger-background: 224, 36, 0;  /* Rich Red for danger elements */
     --clr-danger-foreground: 255, 255, 255;  /* White for clarity on red */
+    --clr-danger: 255, 85, 85;  /* Bold Red for danger alerts */
 
     --clr-submit-background: 44, 181, 172;  /* Same submit background for consistency */
     --clr-submit-foreground: 255, 255, 255;  /* White text */
@@ -102,6 +105,7 @@
     --clr-dark-background: 240, 242, 245;  /* Soft Background for Dark Mode */
 
     --clr-clickable-link: 38, 147, 140;  /* Darker Teal for clickable links */
+    --clr-border: 120 120 120;
 }
 
 .dark{
@@ -127,8 +131,11 @@
     --clr-active-background: 30, 144, 255;  /* Cobalt Blue for active buttons */
     --clr-active-foreground: 240, 248, 255;  /* Bright Ice Blue for readability */
 
+    --clr-accent-foreground: 153, 204, 255; /* 102, 178, 255 other */
+   
     --clr-danger-background: 255, 50, 50;  /* Bold Red for danger alerts */
     --clr-danger-foreground: 240, 248, 255;  /* Bright Ice Blue for readability */
+    --clr-danger: 255, 85, 85;  /* Bold Red for danger alerts */
 
     --clr-submit-background: 0, 102, 204;  /* Strong Blue for a vibrant submit button */
     --clr-submit-foreground: 240, 248, 255;  /* Bright Ice Blue for contrast */
@@ -144,9 +151,8 @@
     --clr-icon: 240, 248, 255;  /* Bright Ice Blue for icons to stand out */
     --clr-options: 60, 66, 80;  /* Soft Cobalt for options and menu backgrounds */
 
-    --clr-edit-btn: 
-
     --clr-clickable-link: 30, 144, 255;  /* Bright Cobalt for clickable links */
+    --clr-border: 120 120 120;
 
 }
 
@@ -174,8 +180,11 @@
     --clr-active-background: 98, 114, 164;  /* Calm Blue for active buttons */
     --clr-active-foreground: 248, 248, 242;  /* Off-White for readability */
 
+    --clr-accent-foreground: 141, 155, 191; /* 179, 192, 217 other */
+   
     --clr-danger-background: 255, 85, 85;  /* Bold Red for danger alerts */
     --clr-danger-foreground: 248, 248, 242;  /* Off-White for readability */
+    --clr-danger: 255, 85, 85;  /* Bold Red for danger alerts */
 
     --clr-submit-background: 80, 250, 123;  /* Bright Green for a vibrant submit button */
     --clr-submit-foreground: 40, 42, 54;  /* Dark Slate for contrast */
@@ -187,7 +196,7 @@
     --clr-options: 68, 71, 90;  /* Dark Purple for options and menu backgrounds */
 
     --clr-clickable-link: 80, 250, 123;  /* Bright Green for clickable links */
-
+    --clr-border: 120 120 120;
 }
 
 

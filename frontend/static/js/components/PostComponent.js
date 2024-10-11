@@ -305,7 +305,7 @@ export default class PostComponent extends HTMLElement {
     }
 
     .post__body {
-        padding: 4px 16px 16px;
+        padding: 4px 20px 16px;
     }
 
     .post__img__wrapper {

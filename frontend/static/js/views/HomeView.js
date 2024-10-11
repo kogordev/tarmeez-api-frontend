@@ -10,9 +10,7 @@ export default class HomeView extends HTMLElement {
   }
 
   connectedCallback() {
-    this.style.display = "none";
     this.initializeComponent();
-    this.style.display = "block";
   }
 
   async initializeComponent() {

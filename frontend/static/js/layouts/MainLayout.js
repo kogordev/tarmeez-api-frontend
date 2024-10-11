@@ -10,9 +10,7 @@ export default class MainLayout extends HTMLElement {
     }
 
     connectedCallback() {
-        this.style.display = "none";
         this.initializeComponent();
-        this.style.display = "block";
     }
 
     initializeComponent() {

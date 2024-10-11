@@ -1,7 +1,6 @@
 import { navigateTo } from "/static/js/utils/router.js";
 import Controller from "/static/js/controllers/controller.js";
 import state from "/static/js/utils/state.js";
-import { loader } from "/static/js/utils/loader.js"
 
 export default class PostCreator extends HTMLElement {
   constructor() {
@@ -29,39 +28,53 @@ export default class PostCreator extends HTMLElement {
     return /*css*/`
     :host{
       display: block;
-    } 
-    .container{
-        height: auto;
-        padding: 1rem;
-        overflow: hidden;
-    }    
-    p{
-        width: 100%;
-        height: 5rem;
-    }    
-    textarea{
-        width: 100%;
-        /* height: 100%; */
-        height: 5rem;
-        font-size: 1.8rem;
-        padding: 1.25rem;
-        outline: none;
-        resize: none;
-        border-radius: var(--br);
-        border: 0;
-        background-color: rgb(var(--clr-tertiary-background)) !important;
-        color: rgb(var(--clr-tertiary-foreground)) !important;
-    }    
+  }
+  .post-creator{
+    position: relative;
+  }
+  
+  .container{
+      height: auto;
+      padding: 1rem;
+      overflow: hidden;
+      position: relative;
+  }
+  
+  p{
+      width: 100%;
+      height: 5rem;
+  }
+  
+  textarea{
+      width: 100%;
+      /* height: 100%; */
+      height: 5rem;
+      font-size: 1.8rem;
+      padding: 1.25rem;
+      outline: none;
+      resize: none;
+      border-radius: var(--br);
+      border: 0;
+      background-color: rgb(var(--clr-tertiary-background));
+      color: rgb(var(--clr-tertiary-foreground));
+      overflow: hidden;
+    }
+    textarea:focus{
+      border: .2rem solid rgb(var(--clr-active-background));
+    }
+    
     #profile-img{
         /* height: 45px;
         width: 45px; */
         border-radius: 50%;
         object-fit: cover;
         cursor: pointer;
-    }    
+    }
+    
     #file-input{
         display: none;
-    }    
+    }
+    
     #upload-btn{
         border: 0;
         height: 25px;
@@ -73,15 +86,19 @@ export default class PostCreator extends HTMLElement {
         mask-size: cover;
         background-color: rgb(var(--clr-main-foreground));
         cursor: pointer;
-    }    
+    }
+    
     .submit-wrapper{
         padding: 1rem;
         padding-right: 2rem;
-        border-top: .5px solid rgb(var(--clr-tertiary-background));
-    }    
+        border-top: 1px solid rgb(var(--clr-border));
+        position: relative;
+    }
+    
     .active{
         background-color: rgb(var(--clr-active-background)) !important;
-    }    
+    }
+    
     #submit-btn{
         padding: 1rem;
         font-size: 1.6rem;
@@ -92,23 +109,27 @@ export default class PostCreator extends HTMLElement {
         border-radius: var(--br);
         cursor: pointer;
         transition: background-color .3s;
-    }    
+    }
+    
     #submit-btn:hover{
-        background-color: rgb(var(--clr-active-hover-background));
-    }    
+      background-color: rgb(var(--clr-active-hover-background));
+    }
+    
     #submit-btn:disabled{
         background-color: rgb(var(--clr-main-disabled-background));
-        background-color: rgb(var(--clr-main-disabled-foreground));
-    }    
+        color: rgb(var(--clr-main-disabled-foreground));
+    }
+    
     #upload-section{
         position: relative;
-    }    
+    }
+    
     #delete-btn{
         position: absolute;
         display: none;
         height: 16px;
         width: 16px;
-        background-color: rgb(var(--clr-danger-background));
+        background-color: rgb(var(--clr-danger));
         mask-image: url("/static/assets/images/trash.svg");
         mask-position: center;
         mask-size: cover;
@@ -117,36 +138,197 @@ export default class PostCreator extends HTMLElement {
         right: 0;
         transition: background-color .3s, transform .3;
     }
+    
     #delete-btn:hover{
         background-color: rgb(255, 99, 99);
         transform: scale(1.15);
-    }    
-    .error{
-        background: red;
-        color: white;
-        font-size: 1.4rem;
-        border-radius: var(--br);
-        padding: 1rem;
+    }
+    
+      * {
+        margin: 0;
+        padding: 0;
         box-sizing: border-box;
-        height: auto;
-      }
-      .grid {
+    }
+    
+    .d-hidden{
+        display: none;
+    }
+    
+    .hidden{
+        visibility:hidden;
+    }
+    
+    .overflow-hidden{
+        overflow: hidden;
+    }
+    
+    .circle-btn {
+        border: none;
+        border-radius: 50%;
+        height: 2.5rem;
+        width: 2.5rem;
+        background-color: rgb(var(--clr-main-foreground));
+        cursor: pointer;
+    }
+    
+    .close-btn {
+        mask-image: url("/static/assets/images/close-button.svg");
+        mask-position: center;
+        mask-repeat: no-repeat;
+        position: absolute;
+        top: 1.25rem;
+        right: 1.5rem;
+    }
+    
+    .btn{
+        border: none;
+        height: 2.5rem;
+        width: 2.5rem;
+        cursor: pointer;
+    }
+    
+    .post-btn{
+        mask-image: url("/static/assets/images/send.svg");
+        mask-position: center;
+        mask-repeat: no-repeat;
+        position: absolute;
+        top: 1.25rem;
+        right: 1.5rem;
+        background-color: rgb(var(--clr-main-foreground));
+        transition: transform .5s, background-color .5s;
+    }
+    
+    .post-btn:hover{
+        transform: rotate(45deg);
+        background-color: rgb(var(--clr-tarmeez-light));
+    }
+    
+    .post-btn:disabled{
+        background-color: rgb(var(--clr-secondary-foreground));
+    }
+    
+    .main-color {
+        background-color: rgb(var(--clr-main-background));
+        color: rgb(var(--clr-main-foreground));
+    }
+    
+    .padding {
+        padding: 2rem;
+    }
+    
+    .padding-view {
+        padding-top: calc(var(--nav-h) + 4rem);
+    }
+    
+    .margin-view {
+        margin-top: var(--nav-h);
+        /* margin-top: calc(var(--nav-h) + 2rem); */
+    }
+    
+    .wrapper {
+        height: 100%;
+        width: 100%;
+    }
+    
+    .card {
+        width: 680px;
+        background-color: rgb(var(--clr-secondary-background));
+        color: rgb(var(--clr-main-foreground));
+        border-radius: var(--br);
+    }
+    
+    .ml-1{
+        margin-left: 1rem;
+    }
+    
+    .mb-1 {
+        margin-bottom: 1rem;
+    }
+    
+    .flex {
+        display: flex;
+    }
+    
+    .flex-col {
+        flex-direction: column;
+    }
+    
+    .flex-center {
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .justify-content-center {
+        justify-content: center;
+    }
+    
+    .justify-content-between {
+        justify-content: space-between;
+    }
+    
+    .justify-content-start {
+        justify-content: start;
+    }
+    
+    .justify-content-end {
+        justify-content: end;
+    }
+    
+    .gap {
+        gap: 1rem;
+    }
+    
+    .align-items-center {
+        align-items: center;
+    }
+    
+    .align-items-top {
+        align-items: start;
+    }
+    
+    .grid {
         display: grid;
         gap: 1rem;
-      }
+    }
+    
+    .col-2 {
+        grid-template-columns: 45px 1fr;
+    }
+    
+    .col-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
     .col-3-custom {
-      grid-template-columns: 45px 1fr 45px;
-      }
-      .flex {
-         display: flex;
-      }
-      .justify-content-center {
+        grid-template-columns: 45px 1fr 45px;
+    }
+    
+    .bg-transparent {
+        background-color: transparent;
+    }
+    
+    .backdrop {
+        overflow: initial;
+        display: flex;
         justify-content: center;
-      }
-      .justify-content-end {
-        justify-content: end;
-      }
-      `
+        align-items: center;
+        position: fixed;
+        inset: 0 0 0 0;
+        height: 100vh;
+        width: 100vw;
+        background-color: rgba(var(--clr-secondary-background), .8);
+        z-index: 9999;
+    }
+    .error{
+      height: 100%;
+      position: absolute;
+      top: 5px;
+      left: 0;
+      color: rgb(var(--clr-danger));
+      padding: 1rem;
+      font-size: 1.4rem;
+    }
+    `
   }
 
   addStyle() {
@@ -157,9 +339,8 @@ export default class PostCreator extends HTMLElement {
 
   getHTMLTemplate(userId, profileImg) {
     return /*html*/`    
-    <link rel="stylesheet" href="/static/css/common.css"/>
-    <link rel="stylesheet" href="/static/css/postcreator.css"/>
-    <div class="card">
+
+    <div class="card post-creator">
       <div class="input-wrapper grid col-3-custom container">
         <div class="col flex justify-content-center align-items-start">
           <img id="profile-img" height="45" width="45" data-user-id="${userId}" src="${profileImg}" alt="User profile image"/>
@@ -180,15 +361,9 @@ export default class PostCreator extends HTMLElement {
     `
   }
 
-  getProfileImg(img) {
-    if (typeof img === "object") return "/static/assets/images/default-user1.png";
-    return img;
-  }
-
   render() {
-    const {user}= this.currentUser;
     const userId = this.currentUser.user.id;
-    const profileImg = this.getProfileImg(user.profile_image);
+    const profileImg = this.currentUser?.user?.profile_image || "";
     const template = document.createElement("template");
     template.innerHTML = this.getHTMLTemplate(userId, profileImg).trim();
     this.shadow.appendChild(template.content.cloneNode(true));
@@ -257,13 +432,17 @@ export default class PostCreator extends HTMLElement {
   }
 
   async handlePostSubmit() {
-    loader(async () => {
+    //
+    const loader = document.createElement("processing-c");
+    this.shadow.querySelector(".post-creator").appendChild(loader);
+
+    new Promise(async (resolve, reject) => {
+      //
       const { textarea, fileInput } = this.getElements();
       const content = textarea.value.trim();
 
       if (!content) {
-        console.log("Post content is empty!");
-        this.renderError("Post content is empty!");
+        reject("Post content is empty!");
         return;
       }
 
@@ -276,25 +455,38 @@ export default class PostCreator extends HTMLElement {
       try {
         const response = await this.controller.request("/posts", "POST", formData, headers);
         if (response.status >= 200 && response.status < 300) {
+          resolve(true)
           this.dispatchEvent(new CustomEvent("post-created", { detail: response.data }));
           this.clearPost(); // Clear the form on success
+        } else {
+          reject("Post has not been created!");
         }
       } catch (error) {
-        console.error("Error while submitting post:", error);
-        this.renderError("Failed to submit post. Please try again.");
+        reject(error.msg || "Failed to submit post. Please try again.");
       }
-    })
+      //
+    }).
+      then(() => this.smoothLoaderRemove(loader))
+      .catch(error => {        
+        this.smoothLoaderRemove(loader);
+        this.renderError(error);
+      });
+    //
   }
+
+  smoothLoaderRemove(loader){
+    loader.style.visibility = "hidden";
+    setTimeout(() => {
+        loader.remove();
+    }, 300);
+  }
+
 
   renderError(message) {
     const errorDiv = document.createElement("div");
     errorDiv.className = "error-message";
-    errorDiv.innerHTML = /*html*/`
-    <div class="error">     
-      <h2>Error</h2><p>${this.escapeHTML(message)}</p>
-    </div>
-    `;
-    this.shadow.appendChild(errorDiv);
+    errorDiv.innerHTML = /*html*/`<p class="error">${this.escapeHTML(message)}</p>`;
+    this.shadow.querySelector(".submit-wrapper").appendChild(errorDiv);
     setTimeout(() => {
       errorDiv.remove();
     }, 5000);

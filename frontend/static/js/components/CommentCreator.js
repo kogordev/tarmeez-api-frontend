@@ -39,7 +39,7 @@ class CommentCreator extends HTMLElement {
             grid-template-columns: 5rem 1fr;
             width: 100%;
             height: auto;
-        }       
+        } 
         .img {
             /* height: 4rem;
             width: 4rem; */
@@ -69,9 +69,12 @@ class CommentCreator extends HTMLElement {
         button:disabled{
             background-color: rgb(var(--clr-secondary-disabled-background));
             transform: rotate(0deg);
-        }        
+        }  
+        button:hover{
+            background-color: rgb(var(--clr-active-hover-background));
+        }      
         .active{
-            background-color: rgb(var(--clr-tarmeez-light));
+            background-color: rgb(var(--clr-active-background));
             transform: rotate(45deg);
         }       
         .main{

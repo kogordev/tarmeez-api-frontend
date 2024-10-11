@@ -1,4 +1,3 @@
-import { loader } from "/static/js/utils/loader.js";
 import Controller from "/static/js/controllers/controller.js";
 import { navigateTo } from "/static/js/utils/router.js";
 
@@ -60,14 +59,14 @@ class CommentsWrapper extends HTMLElement {
       justify-content: start;
     }
     .comments-wrapper{
-      border-top: 1px solid rgba(var(--clr-secondary-foreground),.5);
+      border-top: 1px solid rgb(var(--clr-border));
       margin-top: 1.5rem;
       padding-top: 1.5rem;
       gap: 1.5rem;
-      /*background: yellow*/
     }   
     ul{
         list-style: none;
+        padding-left: 1rem;
     }    
     .comment{
         font-size: 1.6rem;
@@ -77,6 +76,7 @@ class CommentsWrapper extends HTMLElement {
     img{
         height: 3.5rem;
         width: 3.5rem;
+        margin-top: 1rem;
         border-radius: 50%;
         object-fit: cover;
         cursor: pointer;
@@ -104,29 +104,10 @@ class CommentsWrapper extends HTMLElement {
         display: block;
         font-size: 1.5rem;
         text-indent: .5rem;
-    }   
-    /*.delete-btn{
-        visibility: hidden;
-        height: 2.5rem;
-        width: 2.5rem;
-        border: none;
-        border-radius: 50%;
-        mask-image: url("/static/assets/images/trash.svg");
-        mask-position: center;
-        mask-repeat: no-repeat;
-        transition: visibility .3s, background-color .3s;
-        cursor: pointer;
-    }   
-    .comment:hover > .body-wrapper > .body-content > .delete-btn{
-        visibility: visible;
-        background-color: red;
-    }*/  
-    .profile-img{
-     /* background: red*/
     }
-    .body-wrapper{
-      /*background: blue*/
-    }
+    .clickable{
+      color: rgb(var(--clr-clickable-link));
+    }   
     `
   }
 
@@ -196,7 +177,7 @@ class CommentsWrapper extends HTMLElement {
  */
   formatLinks(text) {
     const urlPattern = /(https?:\/\/[^\s]+)/g; // Match HTTP or HTTPS URLs
-    return text.replace(urlPattern, (url) => `<a href="${url}" target="_blank">${url}</a>`);
+    return text.replace(urlPattern, (url) => `<a  href="${url}" class="clickable" target="_blank">${url}</a>`);
   }
 
 
@@ -218,7 +199,6 @@ class CommentsWrapper extends HTMLElement {
                         <span class="username">${comment.author.username}</span>
                         <span class="content">${formatedBody}</span>
                     </p>
-                    <button id="delete-btn" class="delete-btn"></button>
                 </div>
             </div>
         `;

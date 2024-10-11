@@ -74,9 +74,7 @@ export default class DashboardComponent extends HTMLElement {
   renderLoadingState() {
     this.clearShadowDOM();
     this.shadowRoot.innerHTML = `
-      <link rel="stylesheet" href="/static/css/common.css"/>
-      <link rel="stylesheet" href="/static/css/dashboard.css"/>
-      <div class="loading-state">Loading...</div>
+      <div class="loading-state card">Loading...</div>
     `;
   }
 

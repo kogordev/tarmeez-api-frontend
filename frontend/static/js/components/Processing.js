@@ -25,6 +25,8 @@ export default class Processing extends HTMLElement{
                 align-items: center;
                 background: rgb(var(--clr-secondary-background));
                 z-index: 99999;
+                border-radius: var(--br);
+                transition: all .3s;
             }
             img{
                 shadow-box: 0 0 10px rgba(0, 0, 0, .4);

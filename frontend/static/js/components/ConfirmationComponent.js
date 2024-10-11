@@ -81,8 +81,8 @@ export default class ConfirmationComponent extends HTMLElement {
             padding: 1rem;
         }
         #confirm-btn {
-            background-color: rgb(var(--clr-tarmeez));
-            color: rgb(var(--clr-tarmeez-foreground));
+            background-color: rgb(var(--clr-accent));
+            color: rgb(var(--clr-main-foreground));
         }
         `;
     }

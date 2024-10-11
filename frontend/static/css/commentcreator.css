@@ -15,8 +15,6 @@
 }
 
 .img {
-    /* height: 4rem;
-    width: 4rem; */
     margin-right: 1rem;
     border-radius: 50%;
     object-fit: cover;
@@ -25,7 +23,7 @@
 }
 
 .main{
-    background-color: rgb(var(--clr-hover));
+    background-color: rgb(var(--clr-tertiary-background));
     border-radius: var(--br);
 }
 

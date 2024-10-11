@@ -32,6 +32,12 @@ export default class PostComponent extends HTMLElement {
 
   getCss() {
     return /*css*/`
+    *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-size: 1.6rem;
+    }
     a {
     color: rgb(var(--clr-main-foreground));
     text-decoration: none;
@@ -74,7 +80,6 @@ export default class PostComponent extends HTMLElement {
         background-color: rgb(var(--clr-secondary-background));
         color: rgb(var(--clr-main-foreground));
         border-radius: 10px;
-        font-size: 1.6rem;
         position: relative;
     }
 
@@ -115,42 +120,7 @@ export default class PostComponent extends HTMLElement {
         border-radius: 10px;
         z-index: 5;
     }
-
-    .post__popup__img {
-        border-radius: 50%;
-    }
-
-    .post__popup__link {
-        font-size: 1.5rem;
-        font-weight: 700;
-    }
-
-    .post__popup__wrapper {
-        margin-top: 15px;
-    }
-
-    .post__popup__info {
-        margin-top: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: start;
-    }
-
-    .post__popup__svg {
-        fill: var(--clr-icon);
-        margin-right: 10px;
-    }
-
-    .post__popup__number {
-        font-size: large;
-        font-weight: 700;
-        margin-right: 2px;
-    }
-
-    .post__popup__label {
-        font-weight: 300;
-    }
-
+    
     .post__info {
         width: 562px;
         height: 46.23;
@@ -167,12 +137,6 @@ export default class PostComponent extends HTMLElement {
         position: relative;
     }
 
-    /*.post__username:hover>.post__popup{
-      *  visibility: visible;
-      *  top: 100%;
-      * left: -200%;
-    *}*/
-
     .post__info__username {
         margin: 8px 0 0;
     }
@@ -182,6 +146,7 @@ export default class PostComponent extends HTMLElement {
         text-decoration: none;
         color: inherit;
         cursor: pointer;
+        text-transform: capitalize;
     }
 
     .post__info__time {
@@ -192,40 +157,20 @@ export default class PostComponent extends HTMLElement {
     .post__info__time__link {
         text-decoration: none;
         color: rgb(var(--clr-secondary-foreground));
-        font-size: 1rem;
+        font-size: 1.2rem;
     }
-
-    /* .post__info__time__link::before {
-        content: "3 september at 7:12 PM";
-        visibility: hidden;
-        position: absolute;
-        white-space: nowrap;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-        padding: 20px;
-        border-radius: 10px;
-        /*z-index: 6;*/
-    /* color: rgb(var(--clr-popup-time-foreground));
-        top: 116%;
-        left: -15%;
-        transition: background-color .2s 
-    }    */
-    /* .post__info__time__link:hover::before {
-        background-color: rgba(var(--clr-popup-time-background), 0.9);
-        visibility: visible;
-    }  */
 
     .post__menu {
         visibility: hidden;
         position: absolute;
         top: 70%;
         right: 4.7%;
+        font-size: 1rem;
     }
 
     .post__menu__caret {
         fill: rgb(var(--clr-secondary-background));
         background-color: transparent;
-        -webkit-filter: drop-shadow(0px 15px 10px rgba(0, 0, 0, .4));
-        filter: drop-shadow(0px 15px -6px rgba(0, 0, 0, .4));
         position: relative;
         right: -12.9rem;
         z-index: 2;
@@ -234,7 +179,6 @@ export default class PostComponent extends HTMLElement {
 
     .post__menu__body {
         width: 150px;
-        font-size: 12px;
         font-weight: 600;
         padding: 5px 7px;
         display: flex;
@@ -249,7 +193,7 @@ export default class PostComponent extends HTMLElement {
     }
 
     .post__menu__svg {
-        fill: rgb(var(--clr-options));
+        fill: rgb(var(--clr-secondary-foreground));
     }
 
     .post__menu__body hr {
@@ -315,6 +259,7 @@ export default class PostComponent extends HTMLElement {
         align-items: center;
         overflow: hidden;
         cursor: pointer;
+        background-color: rgb(var(--clr-tertiary-background))
     }
 
     .post__img {
@@ -482,18 +427,6 @@ export default class PostComponent extends HTMLElement {
         `;
   }
 
-  // Returns the popup info template
-  getPopupInfo() {
-    return /*html*/ `
-            <div class="post__popup__info">
-                <svg class="post__popup__svg" height="20" width="20" viewBox="0 0 512 512">
-                    <path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zM291.7 90.3L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"></path>
-                </svg>
-                <span class="post__popup__number">625</span>
-                <span class="post__popup__label">post</span>
-            </div>
-        `;
-  }
 
   // Returns the username template
   getUsernameTemplate() {

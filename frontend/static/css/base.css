@@ -58,7 +58,7 @@
     --svg-dark-button: url("data:image/svg+xml,<svg class=" dark-mode" width=" 20" height=" 20" fill=" currentColor" xmlns=" http: //www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M223.5 32C100 32 0 132.3 0 256S100 480 223.5 480c60.6 0 115.5-24.2 155.8-63.4c5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6c-96.9 0-175.5-78.8-175.5-176c0-65.8 36-123.1 89.3-153.3c6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z"/></svg>");
 
     --svg-light-button: url("data:image/svg+xml,<svg class=" light-mode" width=" 20" height=" 20" fill=" currentColor" xmlns=" http: //www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M361.5 1.2c5 2.1 8.6 6.6 9.6 11.9L391 121l107.9 19.8c5.3 1 9.8 4.6 11.9 9.6s1.5 10.7-1.6 15.2L446.9 256l62.3 90.3c3.1 4.5 3.7 10.2 1.6 15.2s-6.6 8.6-11.9 9.6L391 391 371.1 498.9c-1 5.3-4.6 9.8-9.6 11.9s-10.7 1.5-15.2-1.6L256 446.9l-90.3 62.3c-4.5 3.1-10.2 3.7-15.2 1.6s-8.6-6.6-9.6-11.9L121 391 13.1 371.1c-5.3-1-9.8-4.6-11.9-9.6s-1.5-10.7 1.6-15.2L65.1 256 2.8 165.7c-3.1-4.5-3.7-10.2-1.6-15.2s6.6-8.6 11.9-9.6L121 121 140.9 13.1c1-5.3 4.6-9.8 9.6-11.9s10.7-1.5 15.2 1.6L256 65.1 346.3 2.8c4.5-3.1 10.2-3.7 15.2-1.6zM160 256a96 96 0 1 1 192 0 96 96 0 1 1 -192 0zm224 0a128 128 0 1 0 -256 0 128 128 0 1 0 256 0z"/></svg>");
-
+    
     }
 
 /* light */
@@ -108,7 +108,513 @@
     --clr-border: 120 120 120;
 }
 
-.dark{
+.dark-github {
+    --clr-main-background: 20, 20, 20;  /* Dark gray for a deep background */
+    --clr-secondary-background: 30, 30, 30;  /* Slightly lighter gray for secondary areas */
+    --clr-main-foreground: 240, 240, 240;  /* Light gray for primary text */
+    --clr-secondary-foreground: 187, 134, 253;  /* Lavender for secondary text to add vibrancy */
+
+    --clr-tertiary-background: 40, 40, 40;  /* Muted gray for tertiary elements */
+    --clr-tertiary-foreground: 255, 255, 255;  /* Bright white for tertiary text contrast */
+
+    --clr-accent: 0, 155, 200;  /* Bright cyan for accent elements */
+    --clr-accent-foreground: 20, 20, 20;  /* Dark background for accent text clarity */
+
+    --clr-active-background: 22, 114, 179;  /* Vibrant blue for active elements */
+    --clr-active-foreground: 255, 255, 255;  /* White for clear text on active elements */
+
+    --clr-active-hover-background: 0, 121, 191;  /* Darker blue for hover state */
+    --clr-active-hover-foreground: 255, 255, 255;  /* White foreground for hover contrast */
+
+    --clr-danger-background: 233, 30, 99;  /* Bold pink for danger elements */
+    --clr-danger-foreground: 255, 255, 255;  /* White for clarity against danger */
+
+    --clr-submit-background: 56, 142, 60;  /* Green for submit buttons */
+    --clr-submit-foreground: 255, 255, 255;  /* White for text readability */
+
+    --clr-hover: 50, 50, 50;  /* Very dark gray for gentle hover effect */
+    --clr-icon: 200, 200, 200;  /* Soft gray for icons */
+    --clr-options: 170, 170, 170;  /* Medium gray for menus and options */
+
+    --clr-clickable-link: 0, 162, 232;  /* Bright blue for clickable links */
+    --clr-border: 50, 50, 50;  /* Subtle border color */
+}
+
+
+.dark-solarized {
+    --clr-main-background: 0, 43, 54;  /* Solarized dark base - deep cyan-blue */
+    --clr-secondary-background: 7, 54, 66;  /* Slightly lighter deep cyan */
+    --clr-main-foreground: 238, 232, 213;  /* Soft light yellow for contrast */
+    --clr-secondary-foreground: 133, 153, 0;  /* Earthy green for secondary text */
+
+    --clr-tertiary-background: 88, 110, 117;  /* Muted blue-gray for tertiary elements */
+    --clr-tertiary-foreground: 147, 161, 161;  /* Soft gray for tertiary text */
+
+    --clr-accent: 220, 50, 47;  /* Bright red for accent elements */
+    --clr-accent-foreground: 255, 255, 255;  /* White text on accent color for contrast */
+    
+    --clr-active-background: 42, 161, 152;  /* Muted teal for active elements */
+    --clr-active-foreground: 238, 232, 213;  /* Soft light yellow for active text */
+    
+    --clr-active-hover-background: 101, 123, 131;  /* Lighter teal-gray for hover state */
+    --clr-active-hover-foreground: 238, 232, 213;  /* Light yellow for hover text */
+    
+    --clr-danger-background: 203, 75, 22;  /* Burnt orange-red for danger */
+    --clr-danger-foreground: 255, 255, 255;  /* White for clarity */
+    
+    --clr-submit-background: 181, 137, 0;  /* Golden amber for submit buttons */
+    --clr-submit-foreground: 0, 43, 54;  /* Deep cyan-blue for text clarity */
+}
+
+/* dark-material-ocean */
+.dark {
+    --clr-main-background: 28, 30, 34;  /* Deep ocean blue-black for the main background */
+    --clr-secondary-background: 39, 42, 48;  /* Lighter gray-blue for secondary background */
+    --clr-main-foreground: 224, 228, 233;  /* Very light gray for text contrast */
+    --clr-secondary-foreground: 147, 161, 178;  /* Muted blue-gray for secondary text */
+    
+    --clr-tertiary-background: 44, 62, 80;  /* Navy blue for tertiary elements */
+    --clr-tertiary-foreground: 197, 203, 213;  /* Soft light gray for readability */
+
+    --clr-accent: 38, 166, 154;  /* Teal for accent elements */
+    --clr-accent-foreground: 255, 255, 255;  /* White for high contrast on teal accents */
+    
+    --clr-active-background: 53, 126, 178;  /* Deep sky blue for active elements */
+    --clr-active-foreground: 255, 255, 255;  /* White for text readability on active state */
+    
+    --clr-active-hover-background: 88, 174, 193;  /* Brighter blue for hover state */
+    --clr-active-hover-foreground: 28, 30, 34;  /* Deep blue-black for hover contrast */
+    
+    --clr-danger-background: 219, 87, 96;  /* Warm pink-red for danger elements */
+    --clr-danger-foreground: 255, 255, 255;  /* White for clarity */
+    
+    --clr-submit-background: 255, 202, 58;  /* Bright amber-yellow for submit buttons */
+    --clr-submit-foreground: 28, 30, 34;  /* Deep blue-black for text clarity */
+}
+
+
+.dark-horizon {
+    --clr-main-background: 40, 44, 52;  /* Dark muted blue-gray */
+    --clr-secondary-background: 55, 60, 68;  /* Slightly lighter gray-blue for contrast */
+    --clr-main-foreground: 208, 208, 208;  /* Soft light gray for primary text */
+    --clr-secondary-foreground: 189, 147, 249;  /* Warm lavender for secondary text elements */
+
+    --clr-tertiary-background: 72, 80, 95;  /* Mid-dark blue for tertiary elements */
+    --clr-tertiary-foreground: 255, 200, 124;  /* Warm orange for tertiary text */
+    
+    --clr-accent: 255, 184, 108;  /* Bright orange for accent elements */
+    --clr-accent-foreground: 32, 34, 40;  /* Dark gray for contrast on accents */
+    
+    --clr-active-background: 142, 68, 173;  /* Purple for active elements */
+    --clr-active-foreground: 255, 255, 255;  /* White for clarity on active elements */
+    
+    --clr-active-hover-background: 217, 87, 99;  /* Muted red for hover effect */
+    --clr-active-hover-foreground: 255, 255, 255;  /* Bright white for hover state text */
+    
+    --clr-danger-background: 232, 74, 95;  /* Warm red for danger elements */
+    --clr-danger-foreground: 255, 255, 255;  /* White for clarity against danger background */
+    
+    --clr-submit-background: 85, 239, 196;  /* Soft green for submit buttons */
+    --clr-submit-foreground: 40, 44, 52;  /* Dark background text for contrast */
+}
+
+
+/* .dark-nord */
+.dark-nord {
+    --clr-main-background: 46, 52, 64;  /* Nord Polar Night - Dark Blue Gray */
+    --clr-secondary-background: 59, 66, 82;  /* Nord Polar Night - Slightly lighter Gray Blue */
+    --clr-main-foreground: 236, 239, 244;  /* Snow Storm - Light Gray */
+    --clr-secondary-foreground: 129, 161, 193;  /* Frost - Pale Blue Gray for secondary text */
+    
+    --clr-tertiary-background: 67, 76, 94;  /* Mid Gray-Blue for tertiary elements */
+    --clr-tertiary-foreground: 216, 222, 233;  /* Snow Storm - Softer White for tertiary foreground */
+    
+    --clr-accent: 94, 129, 172;  /* Frost - Cold Blue accent */
+    --clr-accent-foreground: 255, 255, 255;  /* White for contrast on accent */
+
+    --clr-active-background: 136, 192, 208;  /* Frost - Muted cyan for active elements */
+    --clr-active-foreground: 46, 52, 64;  /* Dark blue-gray for contrast on active elements */
+
+    --clr-active-hover-background: 94, 129, 172;  /* Frost - Cold Blue for hover */
+    --clr-active-hover-foreground: 236, 239, 244;  /* Light Gray for text on hover */
+
+    --clr-danger-background: 191, 97, 106;  /* Nord Aurora Red for danger elements */
+    --clr-danger-foreground: 255, 255, 255;  /* White for clarity */
+    
+    --clr-submit-background: 94, 129, 172;  /* Blue Gray for submit */
+    --clr-submit-foreground: 236, 239, 244;  /* Light Gray for readability */
+}
+
+
+.dark-dracula {
+    --clr-main-background: 40, 42, 54;  /* Dark Purple/Blue */
+    --clr-secondary-background: 68, 71, 90;  /* Slightly lighter dark blue-gray */
+    --clr-main-foreground: 248, 248, 242;  /* Light Gray for text */
+    --clr-secondary-foreground: 189, 147, 249;  /* Bright Lavender for secondary text */
+    
+    --clr-tertiary-background: 52, 54, 64;  /* Near-black for tertiary elements */
+    --clr-tertiary-foreground: 80, 250, 123;  /* Neon Green for tertiary foreground */
+    
+    --clr-accent: 255, 85, 85;  /* Bright Red for high-impact accents */
+    --clr-accent-foreground: 248, 248, 242;  /* Light gray for readability on accent colors */
+
+    --clr-active-background: 98, 114, 164;  /* Brightened Blue for active elements */
+    --clr-active-foreground: 248, 248, 242;  /* Light Gray on active */
+
+    --clr-active-hover-background: 139, 233, 253;  /* Neon Cyan for hover */
+    --clr-active-hover-foreground: 40, 42, 54;  /* Dark background to create contrast with cyan */
+
+    --clr-danger-background: 255, 85, 85;  /* Bright Red for danger */
+    --clr-danger-foreground: 248, 248, 242;  /* Light Gray for legibility */
+    
+    --clr-submit-background: 189, 147, 249;  /* Neon Lavender for submit */
+    --clr-submit-foreground: 40, 42, 54;  /* Dark background to contrast neon buttons */
+}
+
+
+.dark-gruvbox {
+    --clr-main-background: 29, 32, 33;  /* Very dark gray-brown for background */
+    --clr-secondary-background: 50, 48, 47;  /* Dark brown for secondary elements */
+    --clr-main-foreground: 235, 219, 178;  /* Light Beige for main text */
+    --clr-secondary-foreground: 214, 93, 14;  /* Warm orange for secondary text */
+    
+    --clr-tertiary-background: 102, 92, 84;  /* Warm, muted brown for tertiary elements */
+    --clr-tertiary-foreground: 213, 196, 161;  /* Light tan for tertiary text */
+    
+    --clr-accent: 250, 189, 47;  /* Golden Yellow for accent */
+    --clr-accent-foreground: 29, 32, 33;  /* Dark brown to contrast against accent */
+
+    --clr-active-background: 152, 151, 26;  /* Muted Yellow for active elements */
+    --clr-active-foreground: 29, 32, 33;  /* Dark brown for readability on active */
+    
+    --clr-active-hover-background: 229, 192, 35;  /* Bright Yellow for hover */
+    --clr-active-hover-foreground: 29, 32, 33;  /* Dark brown for text on hover */
+    
+    --clr-danger-background: 251, 73, 52;  /* Warm Red for danger */
+    --clr-danger-foreground: 29, 32, 33;  /* Dark brown for contrast */
+    
+    --clr-submit-background: 214, 93, 14;  /* Warm Orange for submit */
+    --clr-submit-foreground: 29, 32, 33;  /* Dark brown for text */
+}
+
+
+.bluePurple {
+    --clr-main-background: 34, 30, 184;  /* Deep Zaffre Blue for a futuristic dark base */
+    --clr-secondary-background: 134, 28, 255;  /* Electric Violet for a vibrant contrast */
+    --clr-main-foreground: 255, 255, 255;  /* White for sharp contrast on dark backgrounds */
+    --clr-secondary-foreground: 196, 196, 255;  /* Light Lavender for subtle secondary text */
+
+    --clr-tertiary-background: 38, 38, 38;  /* Near Black for tertiary elements */
+    --clr-tertiary-foreground: 255, 255, 255;  /* Bright White for text clarity */
+
+    --clr-accent: 120, 254, 139;  /* Screamin' Green for neon accents */
+    --clr-accent-foreground: 0, 0, 0;  /* Black for readability on bright accents */
+
+    --clr-tarmeez: 240, 16, 216;  /* Hot Magenta for neon vibrancy */
+    --clr-tarmeez-light: 251, 116, 67;  /* Neon Orange for additional bright elements */
+    --clr-tarmeez-foreground: 255, 255, 255;  /* White for clarity on neon colors */
+
+    --clr-active-background: 16, 254, 226;  /* Fluorescent Cyan for active elements */
+    --clr-active-foreground: 0, 0, 0;  /* Black text on active elements for contrast */
+
+    --clr-active-hover-background: 30, 205, 230;  /* Vivid Sky Blue for hover states */
+    --clr-active-hover-foreground: 255, 255, 255;  /* White for legibility */
+
+    --clr-main-disabled-background: 48, 48, 48;  /* Dark Gray for disabled states */
+    --clr-main-disabled-foreground: 150, 150, 150;  /* Soft Gray for disabled text */
+
+    --clr-danger-background: 224, 53, 60;  /* Neon Red for danger elements */
+    --clr-danger-foreground: 255, 255, 255;  /* White for contrast on danger elements */
+
+    --clr-submit-background: 78, 255, 165;  /* Bright Green for submit buttons */
+    --clr-submit-foreground: 0, 0, 0;  /* Black text on submit buttons */
+    --clr-submit-hover-background: 67, 216, 155;  /* Darker Green for hover state */
+    --clr-submit-hover-foreground: 0, 0, 0;  /* Black for contrast */
+
+    --clr-hover: 16, 206, 241;  /* Neon Sky Blue for subtle hover effect */
+    --clr-icon: 255, 255, 255;  /* White for icons to contrast against dark backgrounds */
+    --clr-options: 255, 45, 255;  /* Fuchsia for option menus */
+
+    --clr-dark-background: 30, 30, 30;  /* Near Black for a consistent dark theme */
+
+    --clr-clickable-link: 250, 76, 243;  /* Neon Pink for clickable links */
+    --clr-border: 144, 144, 255;  /* Soft Neon Border for separation */
+}
+
+/* dark-neon */
+.darka {
+    --clr-main-background: 10, 10, 15;  /* Pure Black with a hint of blue for deep contrast */
+    --clr-secondary-background: 20, 20, 30;  /* Darker Charcoal-Blue for layered depth */
+    --clr-main-foreground: 240, 240, 240;  /* Light Gray-White for clear, readable text */
+    --clr-secondary-foreground: 180, 180, 180;  /* Softer Gray for less prominent text */
+    --clr-tertiary-background: 30, 30, 40;  /* Darker Slate Gray for containers and cards */
+    --clr-tertiary-foreground: 240, 240, 240;  /* Consistent light gray for tertiary text */
+
+    --clr-accent: 0, 255, 140;  /* Neon Green for vibrant accents */
+    --clr-accent-foreground: 0, 0, 0;  /* Black text for contrast against bright accents */
+    
+    --clr-accent-secondary: 255, 51, 153;  /* Hot Pink for strong visual highlights */
+    --clr-accent-secondary-foreground: 255, 255, 255;  /* White text for clarity on neon pink */
+    
+    --clr-accent-tertiary: 51, 153, 255;  /* Electric Blue for additional accenting */
+    --clr-accent-tertiary-foreground: 255, 255, 255;  /* White text on blue backgrounds for strong contrast */
+    
+    --clr-tarmeez: 204, 51, 255;  /* Bright Neon Purple for interactive elements like buttons */
+    --clr-tarmeez-light: 230, 115, 255;  /* Lighter Neon Purple for hover states */
+    --clr-tarmeez-foreground: 255, 255, 255;  /* White text for clarity against purple backgrounds */
+    
+    --clr-active-background: 0, 255, 140;  /* Neon Green for active elements */
+    --clr-active-foreground: 0, 0, 0;  /* Black text for strong readability on neon green */
+    
+    --clr-active-hover-background: 0, 204, 128;  /* Slightly darker neon green for hover */
+    --clr-active-hover-foreground: 0, 0, 0;  /* Consistent black text on hover */
+    
+    --clr-main-disabled-background: 45, 45, 60;  /* Dark muted gray for disabled state */
+    --clr-main-disabled-foreground: 120, 120, 130;  /* Softer muted gray for readability */
+    
+    --clr-danger-background: 255, 64, 64;  /* Bold Neon Red for danger alerts */
+    --clr-danger-foreground: 255, 255, 255;  /* White text for clear contrast on red */
+    
+    --clr-submit-background: 51, 153, 255;  /* Neon Blue for submit buttons */
+    --clr-submit-foreground: 255, 255, 255;  /* White text for clarity on blue */
+    --clr-submit-hover-background: 0, 128, 255;  /* Darker Neon Blue for hover state */
+    --clr-submit-hover-foreground: 255, 255, 255;  /* White text for hover state */
+    
+    --clr-hover: 35, 35, 45;  /* Dark Blue-Gray for subtle hover effect */
+    --clr-icon: 255, 255, 0;  /* Neon Yellow for icons, ensuring they stand out */
+    
+    --clr-options: 0, 255, 255;  /* Neon Cyan for dropdowns and menus */
+    
+    --clr-dark-background: 5, 5, 10;  /* Deep Black with slight blue tint for dark mode */
+    
+    --clr-clickable-link: 255, 51, 153;  /* Neon Pink for clickable links */
+    --clr-border: 80, 80, 100;  /* Subtle light gray-blue border for contrast */
+}
+
+
+.darka {
+    --clr-accent: 220, 220, 220;  /* Light Gray */
+    --clr-accent-secondary: 170, 170, 170;  /* Medium Gray */
+    --clr-info-background: 60, 60, 63;  /* Dark Gray */
+    --clr-success-background: 70, 70, 70;  /* Dark Gray */
+    --clr-warning-background: 80, 80, 80;  /* Dark Gray */
+}
+
+
+.balanced {
+    /* Background Colors */
+    --clr-main-background: 30, 30, 30;  /* Near-black Charcoal for primary background */
+    --clr-secondary-background: 45, 45, 48;  /* Dark Slate for secondary sections */
+    --clr-tertiary-background: 60, 63, 65;  /* Slightly lighter dark for tertiary elements */
+
+    /* Text Colors */
+    --clr-main-foreground: 220, 220, 220;  /* Light Gray for primary text */
+    --clr-secondary-foreground: 170, 170, 170;  /* Medium Gray for secondary text */
+    --clr-tertiary-foreground: 200, 200, 200;  /* Lighter Gray for tertiary text */
+
+    /* Accent Colors */
+    --clr-accent: 255, 121, 198;  /* Vivid Pink for highlights and accents */
+    --clr-accent-secondary: 98, 208, 245;  /* Aqua Blue for secondary accents */
+    --clr-accent-tertiary: 245, 121, 66;  /* Warm Orange for additional accents */
+
+    /* Primary UI Colors */
+    --clr-tarmeez: 94, 129, 172;  /* Frosty Blue as a base UI color */
+    --clr-tarmeez-light: 139, 233, 253;  /* Bright Cyan for UI accents */
+    --clr-tarmeez-foreground: 255, 255, 255;  /* White for text on dark UI elements */
+
+    /* Interactive Elements */
+    --clr-active-background: 255, 121, 198;  /* Vivid Pink for active states */
+    --clr-active-foreground: 255, 255, 255;  /* White text for active states */
+    --clr-active-hover-background: 189, 73, 155;  /* Darker Pink for hover on active states */
+    --clr-active-hover-foreground: 255, 255, 255;  /* White text for hover on active states */
+
+    /* Submit Buttons */
+    --clr-submit-background: 98, 208, 245;  /* Cool Aqua for submit buttons */
+    --clr-submit-foreground: 255, 255, 255;  /* White text */
+    --clr-submit-hover-background: 88, 188, 225;  /* Darker Aqua for hover */
+    --clr-submit-hover-foreground: 255, 255, 255;  /* White text */
+
+    /* Disabled States */
+    --clr-main-disabled-background: 60, 60, 63;  /* Darker Gray for disabled elements */
+    --clr-main-disabled-foreground: 130, 135, 140;  /* Light Gray for disabled text */
+    --clr-secondary-disabled-background: 50, 50, 52;  /* Even darker for secondary disabled */
+    --clr-secondary-disabled-foreground: 160, 165, 170;  /* Softer Gray for disabled text */
+
+    /* Danger States */
+    --clr-danger-background: 255, 85, 85;  /* Bright Red for danger elements */
+    --clr-danger-foreground: 255, 255, 255;  /* White text on danger */
+    --clr-danger: 240, 113, 120;  /* Muted Red for alerts */
+
+    /* Hover Effects */
+    --clr-hover: 70, 73, 75;  /* Muted Gray-Blue for general hover effects */
+
+    /* Icons and Borders */
+    --clr-icon: 189, 193, 198;  /* Light Gray for icons */
+    --clr-options: 245, 121, 66;  /* Warm Orange for menus and options */
+    --clr-border: 100, 100, 110;  /* Medium Gray for borders */
+
+    /* Clickable Links */
+    --clr-clickable-link: 139, 233, 253;  /* Bright Cyan for links */
+
+    /* Additional Enhancements Inspired by Solarized and Material Dark */
+    --clr-info-background: 75, 139, 190;  /* Soft Blue for informational messages */
+    --clr-info-foreground: 255, 255, 255;  /* White text for info */
+    --clr-success-background: 76, 175, 80;  /* Green for success messages */
+    --clr-success-foreground: 255, 255, 255;  /* White text for success */
+    --clr-warning-background: 255, 152, 0;  /* Orange for warnings */
+    --clr-warning-foreground: 255, 255, 255;  /* White text for warnings */
+
+    /* Enhanced Borders and Shadows */
+    --clr-shadow: rgba(0, 0, 0, 0.5);  /* Subtle shadow for depth */
+    --clr-border-highlight: 255, 255, 255;  /* White highlight for borders in focus states */
+}
+
+
+.darkSimple {
+    --clr-main-background: 20, 24, 33;  /* Deep Navy-Black for a futuristic, immersive background */
+    --clr-secondary-background: 28, 32, 43;  /* Soft Dark Gray-Blue for secondary content sections */
+    --clr-main-foreground: 232, 236, 242;  /* Very Light Gray-Blue for clear and soft text contrast */
+    --clr-secondary-foreground: 162, 168, 180;  /* Muted Gray for less prominent text elements */
+    --clr-tertiary-background: 35, 38, 47;  /* Medium Dark Slate for elements like cards and containers */
+    --clr-tertiary-foreground: 232, 236, 242;  /* Consistent Light Gray for tertiary elements */
+
+    --clr-accent: 255, 83, 112;  /* Vibrant Neon Pink for strong accents inspired by Cyberpunk */
+    --clr-accent-secondary: 49, 196, 246;  /* Electric Cyan for sharp contrasts with pinks */
+    --clr-accent-tertiary: 255, 205, 78;  /* Bright Gold for occasional pops of warmth and energy */
+    
+    --clr-tarmeez: 68, 138, 255;  /* Soft Vibrant Blue for buttons and interactive elements, inspired by Material Design */
+    --clr-tarmeez-light: 107, 178, 255;  /* Lighter Blue for hover and focus states */
+    --clr-tarmeez-foreground: 255, 255, 255;  /* White for clear text against bright accent backgrounds */
+
+    --clr-active-background: 68, 138, 255;  /* Main Blue for active buttons */
+    --clr-active-foreground: 255, 255, 255;  /* White for readability on active buttons */
+    --clr-active-hover-background: 49, 196, 246;  /* Electric Cyan for hover effects on active elements */
+    --clr-active-hover-foreground: 255, 255, 255;  /* Consistent white text for hover state */
+
+    --clr-accent-foreground: 255, 205, 78;  /* Golden accents to provide a bright, energetic highlight on dark backgrounds */
+
+    --clr-main-disabled-background: 45, 49, 55;  /* Muted Dark Gray for disabled state elements */
+    --clr-main-disabled-foreground: 115, 120, 128;  /* Softer Gray for readability on disabled backgrounds */
+
+    --clr-secondary-disabled-background: 40, 45, 50;  /* Darker, desaturated gray for disabled states */
+    --clr-secondary-disabled-foreground: 140, 145, 150;  /* Light Gray for contrast in disabled elements */
+    
+    --clr-danger-background: 255, 66, 66;  /* Bold Red for danger or warning elements */
+    --clr-danger-foreground: 255, 255, 255;  /* White text for readability on red */
+    --clr-danger: 235, 92, 92;  /* Slightly muted Red for less urgent alerts */
+
+    --clr-submit-background: 107, 178, 255;  /* Bright Blue for submit buttons */
+    --clr-submit-foreground: 255, 255, 255;  /* White text for contrast */
+    --clr-submit-hover-background: 68, 138, 255;  /* Darker Blue for hover state */
+    --clr-submit-hover-foreground: 255, 255, 255;  /* Consistent white text for hover */
+
+    --clr-hover: 40, 45, 50;  /* Muted Gray-Blue for hover effects on interactive elements */
+    --clr-icon: 190, 195, 202;  /* Light Gray for icons to maintain consistency */
+    --clr-options: 120, 220, 230;  /* Bright Cyan for option menus and dropdowns for a futuristic touch */
+    
+    --clr-dark-background: 10, 12, 15;  /* Deep Black-Navy for dark mode */
+    
+    --clr-clickable-link: 255, 83, 112;  /* Neon Pink to emphasize clickable elements, ensuring visibility */
+    --clr-border: 85, 90, 100;  /* Medium Gray for subtle, non-intrusive borders */
+}
+
+
+/* good one */
+.greatPink {
+    --clr-main-background: 28, 30, 32;  /* Near-black Charcoal for a clean, professional look */
+    --clr-secondary-background: 38, 41, 46;  /* Dark Slate Gray for secondary sections */
+    --clr-main-foreground: 235, 238, 240;  /* Soft, bright light gray for high text contrast */
+    --clr-secondary-foreground: 180, 185, 190;  /* Muted Gray for secondary text */
+    --clr-tertiary-background: 50, 54, 58;  /* Neutral Dark Slate for subtle elements */
+    --clr-tertiary-foreground: 235, 238, 240;  /* Same as main foreground for consistency */
+    
+    --clr-accent: 255, 121, 198;  /* Vivid Pink inspired by Dracula for vibrant UI accents */
+    --clr-accent-secondary: 98, 208, 245;  /* Cool Aqua Blue to contrast with the pink */
+    --clr-tarmeez: 94, 129, 172;  /* Nord-inspired Frosty Blue for a calm base */
+    --clr-tarmeez-light: 139, 233, 253;  /* Bright Cyan for softer accents */
+    --clr-tarmeez-foreground: 255, 255, 255;  /* Pure White for clear contrast against dark UI elements */
+    
+    --clr-active-background: 255, 121, 198;  /* Same Vivid Pink for active elements to stand out */
+    --clr-active-foreground: 255, 255, 255;  /* White for legibility */
+    --clr-active-hover-background: 189, 73, 155;  /* Darker Pink for hover effect */
+    --clr-active-hover-foreground: 255, 255, 255;  /* White foreground for hover state */
+    
+    --clr-accent-foreground: 98, 208, 245;  /* Aqua Blue to accentuate text and icons */
+    
+    --clr-main-disabled-background: 60, 62, 65;  /* Darker Gray for a soft disabled state */
+    --clr-main-disabled-foreground: 130, 135, 140;  /* Light Gray for readability on disabled elements */
+    
+    --clr-secondary-disabled-background: 50, 50, 52;  /* Even darker gray for disabled secondary elements */
+    --clr-secondary-disabled-foreground: 160, 165, 170;  /* Softer light gray for subtle contrasts */
+    
+    --clr-danger-background: 255, 85, 85;  /* Bright, eye-catching Red for danger elements */
+    --clr-danger-foreground: 255, 255, 255;  /* White for contrast against red */
+    --clr-danger: 240, 113, 120;  /* A bit muted Red for alerts */
+    
+    --clr-submit-background: 98, 208, 245;  /* Cool Aqua for submit buttons */
+    --clr-submit-foreground: 255, 255, 255;  /* White text for clarity */
+    --clr-submit-hover-background: 88, 188, 225;  /* Slightly darker blue for hover state */
+    --clr-submit-hover-foreground: 255, 255, 255;  /* Consistent white text */
+    
+    --clr-hover: 58, 60, 67;  /* Subtle muted gray-blue for hover effect */
+    --clr-icon: 189, 193, 198;  /* Light gray for icon consistency */
+    --clr-options: 245, 121, 58;  /* Warm Orange inspired by Monokai for menus and options */
+    
+    --clr-dark-background: 25, 25, 30;  /* Near Black with a hint of blue for a soft, immersive dark mode */
+    
+    --clr-clickable-link: 139, 233, 253;  /* Bright Cyan to signify clickable elements */
+    --clr-border: 120, 120, 130;  /* Medium Gray for subtle borders */
+}
+
+/*good one */
+.modernDark{
+    --clr-main-background: 18, 18, 18;  /* Deep Charcoal for a modern, sleek background */
+    --clr-secondary-background: 30, 30, 30;  /* Slightly lighter background for secondary sections */
+    --clr-main-foreground: 235, 235, 235;  /* Light Gray for strong contrast text */
+    --clr-secondary-foreground: 160, 160, 160;  /* Softer Gray for less prominent text */
+    --clr-tertiary-background: 45, 45, 45;  /* Neutral Dark Gray for tertiary elements */
+    --clr-tertiary-foreground: 235, 235, 235;  /* Consistent light gray for readability */
+
+    --clr-accent: 255, 159, 10;  /* Vibrant Orange for highlighting and dynamic contrast */
+    --clr-tarmeez: 38, 128, 124;  /* Muted Teal for a rich base */
+    --clr-tarmeez-light: 56, 176, 172;  /* Brighter Teal for UI accents */
+    --clr-tarmeez-foreground: 255, 255, 255;  /* Pure White for clarity against dark backgrounds */
+
+    --clr-active-background: 56, 176, 172;  /* Lighter Teal for active elements */
+    --clr-active-foreground: 255, 255, 255;  /* White for text contrast */
+
+    --clr-active-hover-background: 38, 147, 140;  /* Darker Teal for hover states */
+    --clr-active-hover-foreground: 255, 255, 255;  /* White for clarity */
+
+    --clr-accent-foreground: 56, 176, 172;  /* Teal accent for foreground text or highlights */
+
+    --clr-main-disabled-background: 55, 55, 55;  /* Darker Gray for disabled elements */
+    --clr-main-disabled-foreground: 120, 120, 125;  /* Lighter Gray for readability on disabled background */
+
+    --clr-secondary-disabled-background: 40, 40, 40;  /* Subtle Dark Gray for disabled elements in dark mode */
+    --clr-secondary-disabled-foreground: 160, 160, 160;  /* Lighter Gray for contrast in disabled dark mode */
+
+    --clr-danger-background: 204, 36, 41;  /* Deep Red for danger elements */
+    --clr-danger-foreground: 255, 255, 255;  /* White for contrast on red */
+    --clr-danger: 255, 69, 69;  /* Bright Red for danger alerts */
+
+    --clr-submit-background: 48, 176, 169;  /* Bright Teal for submit buttons */
+    --clr-submit-foreground: 255, 255, 255;  /* White for text contrast */
+    --clr-submit-hover-background: 38, 160, 153;  /* Darker Teal for hover effect */
+    --clr-submit-hover-foreground: 255, 255, 255;  /* Consistent white text */
+
+    --clr-hover: 65, 70, 75;  /* Muted Gray-Blue for hover effects */
+    --clr-icon: 150, 150, 160;  /* Softer Light Gray for icons */
+    --clr-options: 200, 200, 210;  /* Light Gray for menus and options for better readability */
+
+    --clr-dark-background: 25, 25, 25;  /* Deep Black for solid dark mode */
+    
+    --clr-clickable-link: 72, 192, 184;  /* Bright Teal for clickable links */
+    --clr-border: 100, 100, 105;  /* Medium Gray for borders */
+}
+
+
+.dark1{
     --clr-main-background: 30, 34, 43;  /* Deep Charcoal Blue for a solid base */
     --clr-secondary-background: 60, 66, 80;  /* Soft Cobalt for secondary elements */
     --clr-main-foreground: 240, 248, 255;  /* Bright Ice Blue for high contrast text */
@@ -117,6 +623,8 @@
     --clr-tertiary-foreground: 240, 248, 255;  /* Consistent Ice Blue for clarity */
 
     --clr-accent: 30, 144, 255;  /* Bright Cobalt for accent highlights */
+    --clr-accent-foreground: 183, 234, 285; /* 102, 178, 255 other */
+   
     --clr-hover: 50, 55, 65;  /* Slightly lighter Gray-Blue for hover effects */
 
     --clr-main-disabled-background: 42, 46, 56;  /* Darker Gray-Blue for disabled elements */
@@ -130,8 +638,6 @@
 
     --clr-active-background: 30, 144, 255;  /* Cobalt Blue for active buttons */
     --clr-active-foreground: 240, 248, 255;  /* Bright Ice Blue for readability */
-
-    --clr-accent-foreground: 153, 204, 255; /* 102, 178, 255 other */
    
     --clr-danger-background: 255, 50, 50;  /* Bold Red for danger alerts */
     --clr-danger-foreground: 240, 248, 255;  /* Bright Ice Blue for readability */
@@ -157,6 +663,74 @@
 }
 
 
+.darkNew {
+    /* Background Colors */
+    --clr-main-background: 30, 30, 30;  /* Near-black Charcoal for primary background */
+    --clr-secondary-background: 45, 45, 48;  /* Dark Slate for secondary sections */
+    --clr-tertiary-background: 60, 63, 65;  /* Slightly lighter dark for tertiary elements */
+
+    /* Text Colors */
+    --clr-main-foreground: 220, 220, 220;  /* Light Gray for primary text */
+    --clr-secondary-foreground: 170, 170, 170;  /* Medium Gray for secondary text */
+    --clr-tertiary-foreground: 200, 200, 200;  /* Lighter Gray for tertiary text */
+
+    /* Accent Colors */
+    --clr-accent: 255, 121, 198;  /* Vivid Pink for highlights and accents */
+    --clr-accent-secondary: 98, 208, 245;  /* Aqua Blue for secondary accents */
+    --clr-accent-tertiary: 245, 121, 66;  /* Warm Orange for additional accents */
+
+    /* Primary UI Colors */
+    --clr-tarmeez: 94, 129, 172;  /* Frosty Blue as a base UI color */
+    --clr-tarmeez-light: 139, 233, 253;  /* Bright Cyan for UI accents */
+    --clr-tarmeez-foreground: 255, 255, 255;  /* White for text on dark UI elements */
+
+    /* Interactive Elements */
+    --clr-active-background: 255, 121, 198;  /* Vivid Pink for active states */
+    --clr-active-foreground: 255, 255, 255;  /* White text for active states */
+    --clr-active-hover-background: 189, 73, 155;  /* Darker Pink for hover on active states */
+    --clr-active-hover-foreground: 255, 255, 255;  /* White text for hover on active states */
+
+    /* Submit Buttons */
+    --clr-submit-background: 98, 208, 245;  /* Cool Aqua for submit buttons */
+    --clr-submit-foreground: 255, 255, 255;  /* White text */
+    --clr-submit-hover-background: 88, 188, 225;  /* Darker Aqua for hover */
+    --clr-submit-hover-foreground: 255, 255, 255;  /* White text */
+
+    /* Disabled States */
+    --clr-main-disabled-background: 60, 60, 63;  /* Darker Gray for disabled elements */
+    --clr-main-disabled-foreground: 130, 135, 140;  /* Light Gray for disabled text */
+    --clr-secondary-disabled-background: 50, 50, 52;  /* Even darker for secondary disabled */
+    --clr-secondary-disabled-foreground: 160, 165, 170;  /* Softer Gray for disabled text */
+
+    /* Danger States */
+    --clr-danger-background: 255, 85, 85;  /* Bright Red for danger elements */
+    --clr-danger-foreground: 255, 255, 255;  /* White text on danger */
+    --clr-danger: 240, 113, 120;  /* Muted Red for alerts */
+
+    /* Hover Effects */
+    --clr-hover: 70, 73, 75;  /* Muted Gray-Blue for general hover effects */
+
+    /* Icons and Borders */
+    --clr-icon: 189, 193, 198;  /* Light Gray for icons */
+    --clr-options: 245, 121, 66;  /* Warm Orange for menus and options */
+    --clr-border: 100, 100, 110;  /* Medium Gray for borders */
+
+    /* Clickable Links */
+    --clr-clickable-link: 139, 233, 253;  /* Bright Cyan for links */
+
+    /* Additional Enhancements Inspired by Solarized and Material Dark */
+    --clr-info-background: 75, 139, 190;  /* Soft Blue for informational messages */
+    --clr-info-foreground: 255, 255, 255;  /* White text for info */
+    --clr-success-background: 76, 175, 80;  /* Green for success messages */
+    --clr-success-foreground: 255, 255, 255;  /* White text for success */
+    --clr-warning-background: 255, 152, 0;  /* Orange for warnings */
+    --clr-warning-foreground: 255, 255, 255;  /* White text for warnings */
+
+    /* Enhanced Borders and Shadows */
+    --clr-shadow: rgba(0, 0, 0, 0.5);  /* Subtle shadow for depth */
+    --clr-border-highlight: 255, 255, 255;  /* White highlight for borders in focus states */
+}
+
 .dracula{
     --clr-main-background: 40, 42, 54;  /* Dark Slate for a rich, eerie backdrop */
     --clr-secondary-background: 68, 71, 90;  /* Subtle Dark Purple for secondary elements */
@@ -166,6 +740,8 @@
     --clr-tertiary-foreground: 248, 248, 242;  /* Consistent Off-White for clarity */
 
     --clr-accent: 255, 121, 198;  /* Vibrant Pink for accent highlights */
+    --clr-accent-foreground: 255, 255, 255; /* 179, 192, 217 other */
+    
     --clr-hover: 68, 71, 90;  /* Same as secondary background for subtle emphasis */
 
     --clr-main-disabled-background: 49, 51, 63;  /* Darker Slate Gray for disabled elements */
@@ -179,8 +755,6 @@
 
     --clr-active-background: 98, 114, 164;  /* Calm Blue for active buttons */
     --clr-active-foreground: 248, 248, 242;  /* Off-White for readability */
-
-    --clr-accent-foreground: 141, 155, 191; /* 179, 192, 217 other */
    
     --clr-danger-background: 255, 85, 85;  /* Bold Red for danger alerts */
     --clr-danger-foreground: 248, 248, 242;  /* Off-White for readability */
@@ -200,6 +774,9 @@
 }
 
 
+
+
+/* settings */
 html {
     scroll-behavior: smooth;
 }
@@ -220,3 +797,60 @@ body {
     font-family: var(--ff-main);
     position: relative;
 }
+/* Example Usage
+body {
+    background-color: rgb(var(--clr-main-background));
+    color: rgb(var(--clr-main-foreground));
+}
+
+.button {
+    background-color: rgb(var(--clr-submit-background));
+    color: rgb(var(--clr-submit-foreground));
+    border: 1px solid rgb(var(--clr-border));
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: rgb(var(--clr-submit-hover-background));
+    color: rgb(var(--clr-submit-hover-foreground));
+}
+
+/* Additional Components */
+/* .alert-danger {
+    background-color: rgb(var(--clr-danger-background));
+    color: rgb(var(--clr-danger-foreground));
+} */
+
+/* .alert-success {
+    background-color: rgb(var(--clr-success-background));
+    color: rgb(var(--clr-success-foreground));
+}
+
+.alert-info {
+    background-color: rgb(var(--clr-info-background));
+    color: rgb(var(--clr-info-foreground));
+}
+
+.alert-warning {
+    background-color: rgb(var(--clr-warning-background));
+    color: rgb(var(--clr-warning-foreground));
+} */
+
+/* Links */
+/* a {
+    color: rgb(var(--clr-clickable-link));
+}
+
+a:hover {
+    color: rgb(var(--clr-accent-secondary));
+} */
+
+/* Borders */
+/* .border {
+    border-color: rgb(var(--clr-border));
+} */
+
+/* .focused {
+    border-color: rgb(var(--clr-border-highlight));
+    box-shadow: 0 0 5px rgb(var(--clr-shadow));
+} */ 

@@ -1,6 +1,41 @@
 import PostComponent from "/static/js/components/PostComponent.js";
 import Controller from "/static/js/controllers/controller.js";
 
+function getCss(){
+  return /*css*/`
+  .card {
+    width: 680px;
+    background-color: rgb(var(--clr-secondary-background));
+    color: rgb(var(--clr-main-foreground));
+    border-radius: var(--br);
+  }
+  .flex {
+    display: flex;
+  } 
+  .flex-center{
+    justify-content: center;
+    align-items: center;
+  }
+  .flex-col {
+    flex-direction: column;
+  }
+  .justify-content-center {
+    justify-content: center;
+  }
+  .gap {
+      gap: 1rem;
+  }
+  .bg-transparent {
+    background-color: transparent;
+  }
+  .no-posts{
+    font-size: 5rem;
+    font-weight: 700;
+    color: rgb(var(--clr-main-disabled-background));
+  }
+  `
+}
+
 export default class PostsWrapper extends HTMLElement {
   constructor() {
     super();
@@ -37,42 +72,20 @@ export default class PostsWrapper extends HTMLElement {
     await this.renderPosts(); // Initial posts load
   }
 
-  getCss(){
-    return /*css*/`
-    .card {
-      width: 680px;
-      background-color: rgb(var(--clr-secondary-background));
-      color: rgb(var(--clr-main-foreground));
-      border-radius: var(--br);
-    }
-    .flex {
-      display: flex;
-    }  
-    .flex-col {
-      flex-direction: column;
-    }
-    .justify-content-center {
-      justify-content: center;
-    }
-    .gap {
-        gap: 1rem;
-    }
-    .bg-transparent {
-      background-color: transparent;
-    }
-    `
-  }
-
   addStyle() {
     const style = document.createElement("style");
-    style.textContent = this.getCss().trim();
+    style.textContent = getCss().trim();
     this.shadowRoot.appendChild(style);
   }
 
   getHTMLTemplate() {
     return /*html*/ `
     <div id="posts-wrapper" class="card flex flex-col justify-content-center gap bg-transparent"></div>
-    <div id="loading-spinner" style="display:none;" class="spinner">Loading...</div>
+    <div id="loading-spinner" style="display:none;" class="spinner card">
+
+        <img height="120" width="120" src="/static/assets/images/loader1.gif" alt="spinner"/>
+
+    </div>
     <div id="load-more-trigger" class="load-more-trigger"></div>`
   }
 
@@ -196,7 +209,7 @@ export default class PostsWrapper extends HTMLElement {
 
   displayNoPostsMessage() {
     const postsWrapper = this.shadowRoot.querySelector("#posts-wrapper");
-    postsWrapper.innerHTML = "<p>No posts available.</p>";
+    postsWrapper.innerHTML = "<p class='card no-posts'>No posts available.</p>";
   }
 
   displayError(message) {

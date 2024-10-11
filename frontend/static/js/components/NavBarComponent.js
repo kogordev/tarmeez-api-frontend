@@ -56,29 +56,19 @@ export default class NavBarComponent extends HTMLElement {
             border: 0;
             padding: .6rem;
             margin-inline: 1rem;
-            color: rgb(var(--clr-tarmeez));
             border-radius: 2rem;
             cursor: pointer;
             font-weight: 600;
             transition: box-shadow .3s, scale .3s;
-        }
-        
-        .button:hover{
-            box-shadow: 0 0 15px -5px rgb(var(--clr-main-foreground));
-            transform: scale(1.02);
-        }
+        }   
         
         .accent-button{
             background-color: rgb(var(--clr-accent));
+            color: rgb(var(--clr-accent-foreground))
         }
-        
-        .tarmeez-button{
-            background-color: rgb(var(--clr-tarmeez));
-            color: rgb(var(--clr-tarmeez-foreground));
-        }
-        
+              
         .logout-button{
-            background-color: rgb(var(--clr-danger-background));
+            background-color: rgb(var(--clr-danger));
             color: rgb(var(--clr-danger-foreground));
             padding-inline: .5rem;
         }

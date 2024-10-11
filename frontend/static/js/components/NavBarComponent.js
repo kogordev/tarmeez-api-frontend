@@ -63,8 +63,8 @@ export default class NavBarComponent extends HTMLElement {
         }   
         
         .accent-button{
-            background-color: rgb(var(--clr-accent));
-            color: rgb(var(--clr-accent-foreground))
+            background-color: rgb(var(--clr-active-background));
+            color: rgb(var(--clr-active-foreground))
         }
               
         .logout-button{

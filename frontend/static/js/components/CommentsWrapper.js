@@ -99,6 +99,8 @@ class CommentsWrapper extends HTMLElement {
         font-weight: 700;
         margin-bottom: 1rem;
         letter-spacing: .1rem;
+        text-transform: capitalize;
+        color: rgb(var(--clr-main-foreground))
     }   
     .content{
         display: block;

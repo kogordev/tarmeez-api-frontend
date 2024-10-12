@@ -1,4 +1,122 @@
 import Controller from "/static/js/controllers/controller.js";
+import state from "/static/js/utils/state.js";
+
+
+function getCss() {
+  return /*css*/`
+  :host {
+    display: block;
+    transition: visibility .3s;
+}
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-size: 1.6rem;
+}
+
+.backdrop {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    inset: 0 0 0 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(var(--clr-bg-secondary), .8);
+    z-index: 9999;
+}
+
+.post-details {
+    display: grid;
+    grid-template-rows: 5rem auto auto;
+    width: 680px;
+    background-color: rgb(var(--clr-bg-secondary));
+    box-shadow: 0 0 2rem  rgb(0, 0, 0, 0.3);
+    border-radius: var(--br);
+    position: relative;
+    max-height: 90vh;
+}
+  
+.body{
+    max-height: 70vh;
+    width: auto;
+    overflow: hidden;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--clr-text-secondary)) rgb(var(--clr-bg-secondary));
+    margin-bottom: 1.5rem;
+}
+/* WebKit scrollbar styles (for Chrome, Safari, Edge) */
+.body::-webkit-scrollbar {
+width: 8px; /* Customize scrollbar width */
+}
+
+.body::-webkit-scrollbar-thumb {
+background-color: rgb(var(--clr-text-secondary)); /* Scrollbar thumb color */
+}
+
+.body::-webkit-scrollbar-track {
+background-color: rgb(var(--clr-bg-secondary)); /* Scrollbar track color */
+}
+
+/* Hide scrollbar arrows in WebKit browsers */
+.body::-webkit-scrollbar-button {
+display: none;
+}
+
+.body:hover{
+  overflow: hidden auto;
+}
+
+.shadow{
+    box-shadow: 0 0 .5rem rgba(0 ,0, 0, 0.3);
+}
+
+.p{
+    padding: 1rem;
+}
+.footer{
+  height: 10rem;
+  padding: 1rem;
+  position: relative;
+}
+.flex{
+  display: flex;
+}
+.flex-col{
+  flex-direction: column;
+}
+.flex-center{
+  justify-content: center;
+  align-items: center;
+}
+.circle-btn {
+  border: none;
+  border-radius: 50%;
+  height: 2.5rem;
+  width: 2.5rem;
+  background-color: rgb(var(--clr-text-primary));
+  cursor: pointer;
+}
+
+.close-btn {
+  mask-image: url("/static/assets/images/close-button.svg");
+  mask-position: center;
+  mask-repeat: no-repeat;
+  position: absolute;
+  top: 1.25rem;
+  right: 1.5rem;
+}
+
+.btn{
+  border: none;
+  height: 2.5rem;
+  width: 2.5rem;
+  cursor: pointer;
+}
+  `
+}
 
 class PostDetails extends HTMLElement {
   constructor() {
@@ -6,6 +124,7 @@ class PostDetails extends HTMLElement {
     this.attachShadow({ mode: "open" });
     this.controller = new Controller();
     this.postId = null;
+    this.currentUser = state.getCurrentUser();
     this.state = null;
     this.isChanged = false;
   }
@@ -42,6 +161,14 @@ class PostDetails extends HTMLElement {
     if (!(this.postId && this.state)) return;
     await this.render();
     this.style.display = "block";
+    this.setCommentCreatorSectionHeight();
+  }
+
+  setCommentCreatorSectionHeight() {
+    const commentCreator = this.shadowRoot.querySelector("comment-creator");
+    if (commentCreator) {
+      this.shadowRoot.querySelector("#comment-creator-section").classList.add("footer")
+    }
   }
 
   disconnectedCallback() {
@@ -51,127 +178,9 @@ class PostDetails extends HTMLElement {
     );
   }
 
-  getCss(){
-    return /*css*/`
-    :host {
-      display: block;
-      transition: visibility .3s;
-  }
-  *{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    font-size: 1.6rem;
-  }
-  
-  .backdrop {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: fixed;
-      inset: 0 0 0 0;
-      height: 100vh;
-      width: 100vw;
-      background-color: rgba(var(--clr-bg-secondary), .8);
-      z-index: 9999;
-  }
-  
-  .post-details {
-      display: grid;
-      grid-template-rows: 5rem auto auto;
-      width: 680px;
-      background-color: rgb(var(--clr-bg-secondary));
-      box-shadow: 0 0 2rem  rgb(0, 0, 0, 0.3);
-      border-radius: var(--br);
-      position: relative;
-      max-height: 90vh;
-  }
-    
-  .body{
-      max-height: 70vh;
-      width: auto;
-      overflow: hidden;
-      scroll-behavior: smooth;
-      scrollbar-width: thin;
-      scrollbar-color: rgb(var(--clr-text-secondary)) rgb(var(--clr-bg-secondary));
-      margin-bottom: 1.5rem;
-  }
-/* WebKit scrollbar styles (for Chrome, Safari, Edge) */
-.body::-webkit-scrollbar {
-  width: 8px; /* Customize scrollbar width */
-}
-
-.body::-webkit-scrollbar-thumb {
-  background-color: rgb(var(--clr-text-secondary)); /* Scrollbar thumb color */
-}
-
-.body::-webkit-scrollbar-track {
-  background-color: rgb(var(--clr-bg-secondary)); /* Scrollbar track color */
-}
-
-/* Hide scrollbar arrows in WebKit browsers */
-.body::-webkit-scrollbar-button {
-  display: none;
-}
-
-  .body:hover{
-    overflow: hidden auto;
-  }
-
-  .shadow{
-      box-shadow: 0 0 .5rem rgba(0 ,0, 0, 0.3);
-  }
-  
-  .p{
-      padding: 1rem;
-  }
-  .footer{
-    padding: 1rem;
-  }
-  .flex{
-    display: flex;
-  }
-  .flex-col{
-    flex-direction: column;
-  }
-  .flex-center{
-    justify-content: center;
-    align-items: center;
-  }
-  .circle-btn {
-    border: none;
-    border-radius: 50%;
-    height: 2.5rem;
-    width: 2.5rem;
-    background-color: rgb(var(--clr-text-primary));
-    cursor: pointer;
-}
-
-.close-btn {
-    mask-image: url("/static/assets/images/close-button.svg");
-    mask-position: center;
-    mask-repeat: no-repeat;
-    position: absolute;
-    top: 1.25rem;
-    right: 1.5rem;
-}
-
-.btn{
-    border: none;
-    height: 2.5rem;
-    width: 2.5rem;
-    cursor: pointer;
-}
-.footer{
-  min-height: 10rem;
-  position: relative;
-}
-    `
-  }
-
-  addStyle(){
+  addStyle() {
     const style = document.createElement("style");
-    style.textContent = this.getCss().trim();
+    style.textContent = getCss().trim();
     this.shadowRoot.appendChild(style);
   }
 
@@ -181,7 +190,6 @@ class PostDetails extends HTMLElement {
     this.renderHTMLTemplate();
     await this.addPostComp();
     await this.addCommentsWrapper();
-    await this.addCommentCreator();
     this.attachEventListeners();
   }
 
@@ -190,7 +198,7 @@ class PostDetails extends HTMLElement {
     template.innerHTML = this.getHTMLTemplate().trim();
     this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
-  
+
 
   getHTMLTemplate() {
     const username = this.state.author.username;
@@ -206,7 +214,9 @@ class PostDetails extends HTMLElement {
                     <div id="post-section"></div>
                     <div id="comments-wrapper-section"></div>
                 </div>
-                <div id="comment-creator-section" class="col footer shadow"></div>
+                <div id="comment-creator-section" class="col shadow">
+                  <comment-creator data-post-id="${this.postId}"></comment-creator>
+                </div>  
             </div>
         </div>
         `;
@@ -250,19 +260,10 @@ class PostDetails extends HTMLElement {
     commentsWrapperSection.appendChild(commentsWrapper);
   }
 
-  async addCommentCreator() {
-    const commentsCreatorSection = this.shadowRoot.querySelector(
-      "#comment-creator-section"
-    );
-    const commentCreator = await document.createElement("comment-creator");
-    commentCreator.dataset.postId = this.postId;
-    commentsCreatorSection.appendChild(commentCreator);
-  }
-
   attachEventListeners() {
     this.shadowRoot
       .querySelector("comment-creator")
-      .addEventListener("comment-added", (e) => {
+      ?.addEventListener("comment-added", (e) => {
         this.handleCommentAdded(e);
       });
 
@@ -299,14 +300,14 @@ class PostDetails extends HTMLElement {
     this.scrollToComments();
   }
 
-    scrollToComments() {
+  scrollToComments() {
     const postBody = this.shadowRoot.querySelector(".body");
     const scrHeight = postBody.scrollHeight;
     setTimeout(() => {
       postBody.scroll({ behavior: "smooth", top: scrHeight });
     }, 200);
   }
-  
+
 }
 
 export default PostDetails;

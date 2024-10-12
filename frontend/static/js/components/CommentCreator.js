@@ -15,7 +15,10 @@ class CommentCreator extends HTMLElement {
         this.style.display = "none";
         this.currentUser = state.getCurrentUser();
         this.postId = this.dataset.postId;
-        if (!(this.currentUser && this.postId)) return;
+        if (!(this.currentUser && this.postId)) {
+            this.remove();    
+            return
+        };
 
         this.addStyle();
         this.render();

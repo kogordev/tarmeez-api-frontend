@@ -39,8 +39,8 @@ export default class NavBarComponent extends HTMLElement {
             position: fixed;
             inset: 0 0 0 0;
             height: var(--nav-h);
-            background-color: rgb(var(--clr-secondary-background));
-            color: rgb(var(--clr-main-foreground));
+            background-color: rgb(var(--clr-bg-secondary)); /* Use primary background color */
+            color: rgb(var(--clr-text-primary)); /* Use primary text color */
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             z-index: 100;
@@ -63,13 +63,13 @@ export default class NavBarComponent extends HTMLElement {
         }   
         
         .accent-button{
-            background-color: rgb(var(--clr-active-background));
-            color: rgb(var(--clr-active-foreground))
+            background-color: rgb(var(--clr-accent-primary)); /* Primary accent color for the button */
+            color: rgb(var(--clr-accent-text)); /* White text on accent background */
         }
               
         .logout-button{
-            background-color: rgb(var(--clr-danger));
-            color: rgb(var(--clr-danger-foreground));
+            background-color: rgb(var(--clr-danger-bg)); /* Danger background */
+            color: rgb(var(--clr-danger-text)); /* White text on danger background */
             padding-inline: .5rem;
         }
         

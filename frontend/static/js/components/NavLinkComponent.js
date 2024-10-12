@@ -45,7 +45,7 @@ export default class NavLinkComponent extends HTMLElement {
             overflow: hidden;
         }
         div:hover{
-            background-color: rgb(var(--clr-hover));
+            background-color: rgb(var(--clr-hover-bg));
         }
         /* div img{
             height: 54px;

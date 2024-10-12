@@ -45,8 +45,8 @@ function getCss() {
         width: 50rem;
         height: 70rem;
         padding: 2rem;
-        background-color: rgb(var(--clr-secondary-background));
-        color: rgb(var(--clr-main-foreground));
+        background-color: rgb(var(--clr-bg-secondary));
+        color: rgb(var(--clr-text-primary));
         position: relative;
         overflow: hidden;
     }
@@ -67,7 +67,7 @@ function getCss() {
     .slider{
         width: 20rem;
         height: 6rem;
-        background-color: rgb(var(--clr-active-background));
+        background-color: rgb(var(--clr-action-bg));
         position: absolute;
         top: 0;
         right: 0;
@@ -85,7 +85,7 @@ function getCss() {
         padding-inline: 5rem;
         font-size: 1.6rem;
         font-weight: 700;
-        color: rgb(var(--clr-main-foreground));
+        color: rgb(var(--clr-text-primary));
         z-index: 10;
         cursor: pointer;
     }
@@ -98,10 +98,10 @@ function getCss() {
         padding: 1rem;
         outline: none;
         background-color: inherit;
-        color: rgb(var(--clr-main-foreground));
+        color: rgb(var(--clr-text-primary));
     }
     input:focus{
-        border: 2px solid rgb(var(--clr-active-background));
+        border: 2px solid rgb(var(--clr-action-bg));
     }
     form{
         height: 100%;
@@ -114,8 +114,8 @@ function getCss() {
     }
     .btn{
         border: none;
-        background-color: rgb(var(--clr-active-background));
-        color: rgb(var(--clr-active-foreground));
+        background-color: rgb(var(--clr-action-bg));
+        color: rgb(var(--clr-action-text));
         font-weight: 600;
         padding: 2rem;
         cursor: pointer
@@ -148,7 +148,7 @@ function getCss() {
         position: relative
     }
     .active{
-        color: rgb(var(--clr-active-foreground))
+        color: rgb(var(--clr-action-text))
     }
     .footer p{
         font-size: 1.8rem;
@@ -156,7 +156,7 @@ function getCss() {
     }
     #signupLink{
         font-size: 1.8rem;
-        color: rgb(var(--clr-accent-foreground));
+        color: rgb(var(--clr-link));
         text-decoration: none;
     }
     #fileInput{
@@ -169,7 +169,7 @@ function getCss() {
         justify-content: center;
         align-items: center;
         display: none;
-        color: rgb(var(--clr-danger));
+        color: rgb(var(--clr-danger-bg));
         position: absolute;
         bottom: -3.5rem;
     }
@@ -181,7 +181,7 @@ function getCss() {
         border-radius: 50%;
         height: 2.5rem;
         width: 2.5rem;
-        background-color: rgb(var(--clr-main-foreground));
+        background-color: rgb(var(--clr-accent-primary));
         cursor: pointer;
     }
     

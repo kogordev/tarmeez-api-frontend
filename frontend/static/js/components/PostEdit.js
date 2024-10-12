@@ -71,7 +71,7 @@ class PostEdit extends HTMLElement {
       inset: 0 0 0 0;
       height: 100vh;
       width: 100vw;
-      background-color: rgba(var(--clr-secondary-background), .8);
+      background-color: rgba(var(--clr-bg-secondary), .8) !important;
       z-index: 9999;
   }
   
@@ -79,7 +79,7 @@ class PostEdit extends HTMLElement {
       display: grid;
       grid-template-rows:auto auto auto auto auto;
       width: 50rem;
-      background-color: rgb(var(--clr-secondary-background));
+      background-color: rgb(var(--clr-bg-secondary)) !important;
       box-shadow: 0 0 2rem rgb(0, 0, 0, 0.3);
       border-radius: var(--br);
       overflow: hidden;
@@ -87,6 +87,7 @@ class PostEdit extends HTMLElement {
   
   .header {
       position: relative;
+      padding: 1rem;
   }
   
   .user-info {
@@ -103,7 +104,7 @@ class PostEdit extends HTMLElement {
   
   .img-wrapper {
       padding: 1.5rem;
-      border: 1px solid rgb(var(--clr-secondary-foreground));
+      border: 1px solid rgb(var(--clr-text-secondary)) !important;
       min-height: 50rem;
       overflow: hidden;
       width: 450px;
@@ -133,8 +134,8 @@ class PostEdit extends HTMLElement {
   
   #submit-btn {
       border: none;
-      background-color: rgb(var(--clr-active-background));
-      color: rgb(var(--clr-active-foreground));
+      background-color: rgb(var(--clr-action-bg)) !important;
+      color: rgb(var(--clr-action-text)) !important;
       padding: 1.5rem;
       border-radius: var(--br);
       cursor: pointer;
@@ -142,12 +143,13 @@ class PostEdit extends HTMLElement {
   }
   
   #submit-btn:hover {
-      background-color: rgb(var(--clr-active-hover-background));
+      background-color: rgb(var(--clr-action-hover-bg)) !important; /* Hover background (darker teal) */
+      color: rgb(var(--clr-action-hover-text)) !important; /* White text for hover state */
   }
   
   #submit-btn:disabled {
-      background-color: rgb(var(--clr-main-disabled-background));
-      color: rgb(var(--clr-main-disabled-foreground));
+      background-color: rgb(var(--clr-disabled-bg)) !important;
+      color: rgb(var(--clr-disabled-text)) !important;
   }
   
   
@@ -159,7 +161,7 @@ class PostEdit extends HTMLElement {
       top: 1rem;
       right: 1rem;
       mask-image: url("/static/assets/images/close-button.svg");
-      color: rgb(var(--clr-main-foreground));
+      color: rgb(var(--clr-text-primary)) !important;
       z-index: 999;
   }
   
@@ -176,7 +178,7 @@ class PostEdit extends HTMLElement {
       border: none;
       padding: 1.5rem;
       mask-image: url("/static/assets/images/img.svg");
-      background-color: rgb(var(--clr-active-background));
+      background-color: rgb(var(--clr-accent-primary)) !important;
   }
   
   span {
@@ -188,13 +190,13 @@ class PostEdit extends HTMLElement {
   }
   
   input-c::part(input) {
-      background-color: rgb(var(--clr-tertiary-background)) !important;
+      background-color: rgb(var(--clr-bg-tertiary)) !important;
       padding-top: 1.5rem;
-      border: 1px solid rgb(var(--clr-secondary-foreground));
+      border: 1px solid rgb(var(--clr-secondary-foreground)) !important;
   }
   
   input-c::part(input):focus {
-      border:.2rem solid rgb(var(--clr-active-background));
+      border:.2rem solid rgb(var(--clr-action-bg)) !important;
   }
   
   .error-msg {
@@ -220,7 +222,7 @@ class PostEdit extends HTMLElement {
     border-radius: 50%;
     height: 2.5rem;
     width: 2.5rem;
-    background-color: rgb(var(--clr-main-foreground));
+    background-color: rgb(var(--clr-text-primary)) !important;
     cursor: pointer;
 }
 
@@ -257,7 +259,7 @@ class PostEdit extends HTMLElement {
   border-radius: 50%;
   height: 2.5rem;
   width: 2.5rem;
-  background-color: rgb(var(--clr-main-foreground));
+  background-color: rgb(var(--clr-accent-primary)) !important;
   cursor: pointer;
 }
 

@@ -79,8 +79,8 @@ class InputComponent extends HTMLElement {
         border: none;
         border-radius: var(--br);
         outline: 0;
-        background-color: rgb(var(--clr-tertiary-background));
-        color: rgb(var(--clr-tertiary-foreground));
+        background-color: rgb(var(--clr-bg-tertiary));
+        color: rgb(var(--clr-text-primary));
       }
     `;
   }

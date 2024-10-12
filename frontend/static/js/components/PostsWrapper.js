@@ -5,8 +5,8 @@ function getCss(){
   return /*css*/`
   .card {
     width: 680px;
-    background-color: rgb(var(--clr-secondary-background));
-    color: rgb(var(--clr-main-foreground));
+    background-color: rgb(var(--clr-text-secondary));
+    color: rgb(var(--clr-text-primary));
     border-radius: var(--br);
   }
   .flex {
@@ -31,7 +31,8 @@ function getCss(){
   .no-posts{
     font-size: 5rem;
     font-weight: 700;
-    color: rgb(var(--clr-main-disabled-background));
+    background-color: rgb(var(--clr-disabled-bg));
+    color: rgb(var(--clr-disabled-text));
   }
   `
 }

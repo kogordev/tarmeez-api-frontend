@@ -33,6 +33,7 @@ class CommentCreator extends HTMLElement {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-size: 1.6rem;
         }       
         .comment-creator{
             display: grid;
@@ -41,8 +42,6 @@ class CommentCreator extends HTMLElement {
             height: auto;
         } 
         .img {
-            /* height: 4rem;
-            width: 4rem; */
             margin-right: 1rem;
             border-radius: 50%;
             object-fit: cover;
@@ -50,8 +49,8 @@ class CommentCreator extends HTMLElement {
             transition: .2s;
         }       
         .main{
-            background-color: rgb(var(--clr-tertiary-background));
-            color: rgb(var(--clr-tertiary-foreground));
+            background-color: rgb(var(--clr-bg-tertiary));
+            color: rgb(var(--clr-text-secondary));
             border-radius: var(--br);
         }       
         button{
@@ -67,14 +66,16 @@ class CommentCreator extends HTMLElement {
             transform: rotate( 0deg);
         }       
         button:disabled{
-            background-color: rgb(var(--clr-secondary-disabled-background));
+            background-color: rgb(var(--clr-disabled-bg));
+            color: rgb(var(--clr-disabled-text));
             transform: rotate(0deg);
         }  
         button:hover{
-            background-color: rgb(var(--clr-active-hover-background));
+            background-color: rgb(var(--clr-submit-hover-bg));
+            background-color: rgb(var(--clr-submit-hover-light-bg-text));
         }      
         .active{
-            background-color: rgb(var(--clr-active-background));
+            background-color: rgb(var(--clr-action-bg));
             transform: rotate(45deg);
         }       
         .main{

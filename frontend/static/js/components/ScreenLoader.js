@@ -36,7 +36,7 @@ class ScreenLoader extends HTMLElement {
                 width: 100%;
                 z-index: 99999999; /* High z-index to appear above other elements */
                 pointer-events: none; /* Prevent interaction when visible */
-                background: rgb(var(--clr-secondary-background));
+                background: rgb(var(--clr-bg-secondary));
             }
             .loader-wrapper {
                 height: 100%;

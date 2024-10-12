@@ -1,7 +1,12 @@
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 class ThemesMenu extends HTMLElement {
     constructor() {
         super();
         this.shadow = this.attachShadow({ mode: "open" });
+        this.themes = ["light", "dark", "dark-orange", "material-design", "pastel-aesthetic", "oceanic-vibes", "neon-glow"]
     }
 
     connectedCallback() {
@@ -24,7 +29,7 @@ class ThemesMenu extends HTMLElement {
         }
         .themes-menu {
             position: relative;
-            background-color: rgb(var(--clr-secondary-background));
+            background-color: rgb(var(--clr-bg-secondary));
             border-radius: var(--br);
             transform:translateY(5px)
         }
@@ -37,16 +42,18 @@ class ThemesMenu extends HTMLElement {
         }
 
         .themes-menu h2:hover{
-            background-color: rgb(var(--clr-hover));
+            background-color: rgb(var(--clr-hover-bg));
         }
 
         .themes-menu ul {
             position: absolute;
-            background-color: rgb(var(--clr-secondary-background));
+            background-color: rgb(var(--clr-bg-secondary));
             font-size: 1.2rem;
             width: 100%;
             list-style-type: none;
             box-shadow: 0 0 10px rgba(0,0,0, .5);
+            border-radius: var(--br);
+            padding : .5rem;
         }
 
         .themes-menu li {
@@ -81,16 +88,18 @@ class ThemesMenu extends HTMLElement {
         <div class="themes-menu">
             <h2 id="menu-toggler">Select a Theme</h2>
             <ul class="hidden">
-                <li data-theme="light">Light</li>
-                <li data-theme="dark">Dark</li>
-                <li data-theme="dracula">Dracula</li>
-                <li data-theme="dark-gruvbox">Dark gruvbox</li>
-                <li data-theme="darka">Darka</li>
-                <li data-theme="dark-nord">Dark Nord</li>
-                <!-- Add more themes as needed -->
+                ${this.renderThemesList()}
             </ul>
         </div>
         `;
+    }
+
+    renderThemesList(){
+        let themesList = "";
+        this.themes.forEach(theme => 
+            themesList+= `<li data-theme="${theme}">${capitalizeFirstLetter(theme)}</li>`            
+        )
+        return themesList;
     }
 
     render() {
@@ -117,7 +126,8 @@ class ThemesMenu extends HTMLElement {
         const selectedTheme = selectedItem.getAttribute('data-theme');
 
         // Remove previously selected theme classes
-        document.body.classList.remove('light', 'dark', 'dracula', 'dark-gruvbox', 'darka', 'dark-nord');
+        this.themes.forEach((theme) => document.body.classList.remove(theme) )
+        // document.body.classList.remove('light', 'dark', 'dracula', 'dark-gruvbox', 'darka', 'dark-nord');
 
         // Add the selected theme class
         document.body.classList.add(selectedTheme);

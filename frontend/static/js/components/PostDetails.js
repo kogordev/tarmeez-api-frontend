@@ -72,7 +72,7 @@ class PostDetails extends HTMLElement {
       inset: 0 0 0 0;
       height: 100vh;
       width: 100vw;
-      background-color: rgba(var(--clr-secondary-background), .8);
+      background-color: rgba(var(--clr-bg-secondary), .8);
       z-index: 9999;
   }
   
@@ -80,7 +80,7 @@ class PostDetails extends HTMLElement {
       display: grid;
       grid-template-rows: 5rem auto auto;
       width: 680px;
-      background-color: rgb(var(--clr-secondary-background));
+      background-color: rgb(var(--clr-bg-secondary));
       box-shadow: 0 0 2rem  rgb(0, 0, 0, 0.3);
       border-radius: var(--br);
       position: relative;
@@ -89,9 +89,15 @@ class PostDetails extends HTMLElement {
   .body{
       max-height: 75vh;
       width: auto;
-      overflow: hidden auto;
+      overflow: hidden;
       scroll-behavior: smooth;
+      scrollbar-width: thin;
+      scrollbar-color: rgb(var(--clr-bg-secondary)) rgb(var(--clr-text-secondary));
       margin-bottom: 1.5rem;
+  }
+
+  .body:hover{
+    overflow: hidden auto;
   }
 
   .shadow{
@@ -119,7 +125,7 @@ class PostDetails extends HTMLElement {
     border-radius: 50%;
     height: 2.5rem;
     width: 2.5rem;
-    background-color: rgb(var(--clr-main-foreground));
+    background-color: rgb(var(--clr-text-primary));
     cursor: pointer;
 }
 

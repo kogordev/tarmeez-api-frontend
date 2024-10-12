@@ -2,6 +2,31 @@ import { loader } from "/static/js/utils/loader.js";
 import { navigateTo } from "/static/js/utils/router.js";
 import state from '/static/js/utils/state.js'; // Import your state manager
 
+function getCss(){
+    return /*css*/`
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    :host{
+        display: block;
+        height: 100%;
+        position: relative;
+    }        
+    .wrapper {
+        height: 100%;
+        width: 100%;
+        opacity: 1;
+        transition: opacity 0.3s ease-in-out;
+    }
+    .padding-view {
+        padding-top: calc(var(--nav-h) + 4rem);
+    }
+    
+    `
+}
+
 export default class MainLayout extends HTMLElement {
     constructor() {
         super();
@@ -29,35 +54,9 @@ export default class MainLayout extends HTMLElement {
         });
     }
 
-    getCss(){
-        return /*css*/`
-        *{
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        :host{
-            display: block;
-            height: 100%;
-            background-color:rgb(var(--clr-main-background));
-            position: relative;
-        }        
-        .wrapper {
-            height: 100%;
-            width: 100%;
-            opacity: 1;
-            transition: opacity 0.3s ease-in-out;
-        }
-        .padding-view {
-            padding-top: calc(var(--nav-h) + 4rem);
-        }
-        
-        `
-    }
-
     addStyle(){
         const style = document.createElement("style");
-        style.textContent = this.getCss().trim();
+        style.textContent = getCss().trim();
         this.shadowRoot.appendChild(style);
     }
 

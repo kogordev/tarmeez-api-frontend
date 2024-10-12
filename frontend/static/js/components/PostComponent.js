@@ -39,8 +39,8 @@ export default class PostComponent extends HTMLElement {
       font-size: 1.6rem;
     }
     a {
-    color: rgb(var(--clr-main-foreground));
-    text-decoration: none;
+      color: rgb(var(--clr-text-primary)); /* Use primary text color for links */
+      text-decoration: none;
     }
 
     a:hover {
@@ -76,9 +76,8 @@ export default class PostComponent extends HTMLElement {
 
     .post {
         width: 680px;
-        /*margin: 20px;*/
-        background-color: rgb(var(--clr-secondary-background));
-        color: rgb(var(--clr-main-foreground));
+        background-color: rgb(var(--clr-bg-secondary)); /* Use secondary background for post */
+        color: rgb(var(--clr-text-primary)); /* Use primary text color */
         border-radius: 10px;
         position: relative;
     }
@@ -86,7 +85,6 @@ export default class PostComponent extends HTMLElement {
     .post__header {
         height: 48.23;
         margin: 0 0 12px;
-        /* top | left-right | bottom  */
         padding: 12px 16px 0;
         display: flex;
         position: relative;
@@ -98,27 +96,10 @@ export default class PostComponent extends HTMLElement {
         position: relative;
     }
 
-    /*.post__profile__img:hover>.post__popup{
-      *  visibility: visible;
-      * top: 92%;
-        *left: -252%;
-        *}*/
-
     .post__link__img {
         margin-right: 10px;
         object-fit: cover;
         border-radius: 50%;
-    }
-
-    .post__popup {
-        visibility: hidden;
-        position: absolute;
-        background-color: rgb(var(--clr-secondary-background));
-        display: flex;
-        gap: 20px;
-        padding: 20px;
-        border-radius: 10px;
-        z-index: 5;
     }
     
     .post__info {
@@ -135,6 +116,8 @@ export default class PostComponent extends HTMLElement {
 
     .post__username {
         position: relative;
+        font-weight: 600; /* Bold for username */
+        color: rgb(var(--clr-text-primary)); /* Primary text color */
     }
 
     .post__info__username {
@@ -152,11 +135,12 @@ export default class PostComponent extends HTMLElement {
     .post__info__time {
         height: 18.25px;
         position: relative;
+        color: rgb(var(--clr-text-secondary)); /* Secondary text color for time */
     }
 
     .post__info__time__link {
         text-decoration: none;
-        color: rgb(var(--clr-secondary-foreground));
+        color: rgb(var(--clr-text-secondary));
         font-size: 1.2rem;
     }
 
@@ -169,7 +153,7 @@ export default class PostComponent extends HTMLElement {
     }
 
     .post__menu__caret {
-        fill: rgb(var(--clr-secondary-background));
+        fill: rgb(var(--clr-bg-secondary));
         background-color: transparent;
         position: relative;
         right: -12.9rem;
@@ -187,19 +171,18 @@ export default class PostComponent extends HTMLElement {
         position: relative;
         right: 0%;
         margin-top: -4%;
-        background-color: rgb(var(--clr-secondary-background));
+        background-color: rgb(var(--clr-bg-secondary));
         border-radius: 10px 0 10px 10px;
-        /* box-shadow: 0 0 10px  rgba(0,0,0,0.4); */
     }
 
     .post__menu__svg {
-        fill: rgb(var(--clr-secondary-foreground));
+        fill: rgb(var(--clr-text-secondary));
     }
 
     .post__menu__body hr {
         border: none;
         height: .5px;
-        background-color: rgba(var(--clr-secondary-foreground), .3);
+        background-color: rgba(var(--clr-text-secondary), .3);
         width: 90%;
         margin: 0 auto;
     }
@@ -216,7 +199,7 @@ export default class PostComponent extends HTMLElement {
     }
 
     .post__menu__item:hover {
-        background-color: rgb(var(--clr-hover));
+        background-color: rgb(var(--clr-hover-bg));
     }
 
     .post__button {
@@ -233,11 +216,11 @@ export default class PostComponent extends HTMLElement {
     }
 
     .post__button__svg {
-        fill: rgb(var(--clr-main-foreground));
+        fill: rgb(var(--clr-text-primary));
     }
 
     .post__button:hover {
-        background-color: rgb(var(--clr-hover));
+        background-color: rgb(var(--clr-hover-bg));
     }
 
     #chbx {
@@ -259,7 +242,7 @@ export default class PostComponent extends HTMLElement {
         align-items: center;
         overflow: hidden;
         cursor: pointer;
-        background-color: rgb(var(--clr-tertiary-background))
+        background-color: rgb(var(--clr-bg-tertiary))
     }
 
     .post__img {
@@ -278,7 +261,7 @@ export default class PostComponent extends HTMLElement {
         justify-content: end;
     }
     .clickable{
-      color: rgb(var(--clr-clickable-link));
+      color: rgb(var(--clr-link));
     }
 
     /* Add other styles here */

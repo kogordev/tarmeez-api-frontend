@@ -61,8 +61,8 @@ export default class ConfirmationComponent extends HTMLElement {
         }
         .wrapper {
             padding: 2rem;
-            background-color: rgb(var(--clr-secondary-background));
-            color: rgb(var(--clr-main-foreground));
+            background-color: rgb(var(--clr-bg-secondary));
+            color: rgb(var(--clr-text-primary));
             border-radius: var(--br);
             font-size: 2rem;
             font-weight: 600;
@@ -81,8 +81,8 @@ export default class ConfirmationComponent extends HTMLElement {
             padding: 1rem;
         }
         #confirm-btn {
-            background-color: rgb(var(--clr-accent));
-            color: rgb(var(--clr-main-foreground));
+            background-color: rgb(var(--clr-action-bg));
+            color: rgb(var(--clr-action-text));
         }
         `;
     }

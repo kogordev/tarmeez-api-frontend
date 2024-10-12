@@ -59,7 +59,7 @@ class CommentsWrapper extends HTMLElement {
       justify-content: start;
     }
     .comments-wrapper{
-      border-top: 1px solid rgb(var(--clr-border));
+      border-top: 1px solid rgb(var(--clr-border)) !important;
       margin-top: 1.5rem;
       padding-top: 1.5rem;
       gap: 1.5rem;
@@ -83,12 +83,11 @@ class CommentsWrapper extends HTMLElement {
     }   
     span{
         font-size: 1rem;
-        color: rgb(var(--clr-secondary-foreground))
+        color: rgb(var(--clr-bg-secondary)) !important;
     }   
     .body{
         display: inline-block;
-        background-color: rgb(var(--clr-tertiary-background));
-        color: rgb(var(--clr-tertiary-foreground));
+        background-color: rgb(var(--clr-bg-tertiary)) !important;
         border-radius: 1.2rem;
         padding: 1rem;
         width: auto;
@@ -100,15 +99,16 @@ class CommentsWrapper extends HTMLElement {
         margin-bottom: 1rem;
         letter-spacing: .1rem;
         text-transform: capitalize;
-        color: rgb(var(--clr-main-foreground))
+        color: rgb(var(--clr-text-primary)) !important;
     }   
     .content{
         display: block;
         font-size: 1.5rem;
         text-indent: .5rem;
+        color: rgb(var(--clr-text-secondary)) !important;
     }
     .clickable{
-      color: rgb(var(--clr-clickable-link));
+      color: rgb(var(--clr-link));
     }   
     `
   }

@@ -38,11 +38,14 @@ export default class PostCreator extends HTMLElement {
       padding: 1rem;
       overflow: hidden;
       position: relative;
+      background-color: rgb(var(--clr-bg-secondary)); /* Secondary background */
+      color: rgb(var(--clr-text-primary)); /* Primary text color */
   }
   
   p{
       width: 100%;
       height: 5rem;
+      color: rgb(var(--clr-text-secondary)); /* Secondary text color */
   }
   
   textarea{
@@ -55,12 +58,12 @@ export default class PostCreator extends HTMLElement {
       resize: none;
       border-radius: var(--br);
       border: 0;
-      background-color: rgb(var(--clr-tertiary-background));
-      color: rgb(var(--clr-tertiary-foreground));
+      background-color: rgb(var(--clr-bg-tertiary)); /* Tertiary background */
+      color: rgb(var(--clr-text-primary)); /* Primary text color */
       overflow: hidden;
     }
     textarea:focus{
-      border: .2rem solid rgb(var(--clr-active-background));
+      border: .2rem solid rgb(var(--clr-action-bg)); /* Focus state */
     }
     
     #profile-img{
@@ -84,7 +87,7 @@ export default class PostCreator extends HTMLElement {
         -webkit-mask-image: url("/static/assets/images/img.svg");
         mask-position: center;
         mask-size: cover;
-        background-color: rgb(var(--clr-main-foreground));
+        background-color: rgb(var(--clr-accent-secondary)); /* Accent color for upload button */
         cursor: pointer;
     }
     
@@ -96,7 +99,7 @@ export default class PostCreator extends HTMLElement {
     }
     
     .active{
-        background-color: rgb(var(--clr-active-background)) !important;
+        background-color: rgb(var(--clr-accent-primary)) !important;
     }
     
     #submit-btn{
@@ -104,20 +107,21 @@ export default class PostCreator extends HTMLElement {
         font-size: 1.6rem;
         font-weight: 600;  
         border: 0;
-        background-color: rgb(var(--clr-active-background)); 
-        color: rgb(var(--clr-active-foreground));
+        background-color: rgb(var(--clr-submit-bg)); /* Submit button background */
+        color: rgb(var(--clr-submit-text)); /* Submit button text */
         border-radius: var(--br);
         cursor: pointer;
         transition: background-color .3s;
     }
     
     #submit-btn:hover{
-      background-color: rgb(var(--clr-active-hover-background));
+      background-color: rgb(var(--clr-submit-hover-bg)); /* Hover state */
+      color: rgb(var(--clr-submit-hover-text)); /* Hover text color */
     }
     
     #submit-btn:disabled{
-        background-color: rgb(var(--clr-main-disabled-background));
-        color: rgb(var(--clr-main-disabled-foreground));
+      background-color: rgb(var(--clr-disabled-bg)); /* Disabled button */
+      color: rgb(var(--clr-disabled-text));
     }
     
     #upload-section{
@@ -129,7 +133,7 @@ export default class PostCreator extends HTMLElement {
         display: none;
         height: 16px;
         width: 16px;
-        background-color: rgb(var(--clr-danger));
+        background-color: rgb(var(--clr-danger-bg)); /* Danger background */
         mask-image: url("/static/assets/images/trash.svg");
         mask-position: center;
         mask-size: cover;
@@ -140,7 +144,7 @@ export default class PostCreator extends HTMLElement {
     }
     
     #delete-btn:hover{
-        background-color: rgb(255, 99, 99);
+      background-color: rgb(var(--clr-danger-alert)); /* Hover state for delete */
         transform: scale(1.15);
     }
     
@@ -167,7 +171,7 @@ export default class PostCreator extends HTMLElement {
         border-radius: 50%;
         height: 2.5rem;
         width: 2.5rem;
-        background-color: rgb(var(--clr-main-foreground));
+        background-color: rgb(var(--clr-accent-secondary)); /* Circle button background */
         cursor: pointer;
     }
     
@@ -194,22 +198,24 @@ export default class PostCreator extends HTMLElement {
         position: absolute;
         top: 1.25rem;
         right: 1.5rem;
-        background-color: rgb(var(--clr-main-foreground));
+        background-color: rgb(var(--clr-action-bg)); /* Post button background */
         transition: transform .5s, background-color .5s;
     }
     
     .post-btn:hover{
         transform: rotate(45deg);
-        background-color: rgb(var(--clr-tarmeez-light));
+        background-color: rgb(var(--clr-action-hover-bg)); /* Hover state for post button */
+        color: rgb(var(--clr-action-hover-text)); /* Hover text color */
     }
     
     .post-btn:disabled{
-        background-color: rgb(var(--clr-secondary-foreground));
+      background-color: rgb(var(--clr-disabled-bg)); /* Disabled state */
+      color: rgb(var(--clr-disabled-text));
     }
     
     .main-color {
-        background-color: rgb(var(--clr-main-background));
-        color: rgb(var(--clr-main-foreground));
+      background-color: rgb(var(--clr-bg-primary)); /* Main background */
+      color: rgb(var(--clr-text-primary)); /* Main foreground text */
     }
     
     .padding {
@@ -231,10 +237,10 @@ export default class PostCreator extends HTMLElement {
     }
     
     .card {
-        width: 680px;
-        background-color: rgb(var(--clr-secondary-background));
-        color: rgb(var(--clr-main-foreground));
-        border-radius: var(--br);
+      width: 680px;
+      background-color: rgb(var(--clr-bg-secondary)); /* Card background */
+      color: rgb(var(--clr-text-primary)); /* Card text color */
+      border-radius: var(--br);
     }
     
     .ml-1{
@@ -316,7 +322,7 @@ export default class PostCreator extends HTMLElement {
         inset: 0 0 0 0;
         height: 100vh;
         width: 100vw;
-        background-color: rgba(var(--clr-secondary-background), .8);
+        background-color: rgba(var(--clr-bg-secondary), .8); /* Semi-transparent backdrop */
         z-index: 9999;
     }
     .error{
@@ -324,7 +330,7 @@ export default class PostCreator extends HTMLElement {
       position: absolute;
       top: 5px;
       left: 0;
-      color: rgb(var(--clr-danger));
+      color: rgb(var(--clr-danger-bg)); /* Error text color */
       padding: 1rem;
       font-size: 1.4rem;
     }

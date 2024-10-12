@@ -103,15 +103,13 @@ export default class DashboardComponent extends HTMLElement {
       box-sizing: border-box;
     }
     .col{
-        /* border-radius: var(--br); */
-        background-color: rgb(var(--clr-tertiary-background));
-        box-shadow: var(--box-shadow-light);
-        overflow: hidden;
-        border-radius: var(--br);
+      background-color: rgb(var(--clr-bg-tertiary));
+      color: rgb(var(--clr-text-tertiary)); 
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      border-radius: var(--br);
     }  
     img{
-        /* height: 100px;
-        width: 100px; */
         object-fit: cover;
         border-radius: 50%;
         cursor: pointer;
@@ -119,16 +117,18 @@ export default class DashboardComponent extends HTMLElement {
     .number{
         font-size: 5rem;
         font-weight: 600;
+        color: rgb(var(--clr-text-primary)); /* Primary text color */
     }  
     .label{
         font-size: 1.2rem;
-        color: rgb(var(--clr-tertiary-foreground))
+        color: rgb(var(--clr-text-secondary)); /* Secondary text color */
     }  
     .username{
         font-weight: 600;
         letter-spacing: .2rem;
         text-transform: capitalize;
         margin-top: 1rem;
+        color: rgb(var(--clr-text-primary)); /* Primary text color */
     }
     .email{
         font-size: 1.4rem;
@@ -162,8 +162,7 @@ export default class DashboardComponent extends HTMLElement {
     }
     .card {
       width: 680px;
-      background-color: rgb(var(--clr-secondary-background));
-      color: rgb(var(--clr-main-foreground));
+      background-color: rgb(var(--clr-bg-secondary));
       border-radius: var(--br);
     }
     .img-col{

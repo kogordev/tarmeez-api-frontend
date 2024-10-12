@@ -48,14 +48,10 @@ export default class ProfileView extends HTMLElement {
     }
     .header {
         height: 200px;
-        background-color: rgba(var(--clr-secondary-background), .5);
+        background-color: rgba(var(--clr-bg-secondary), .5);
     }
     .section {
         width: 70%;
-    }
-    .main-color {
-      background-color: rgb(var(--clr-main-background));
-      color: rgb(var(--clr-main-foreground));
     }
     .flex {
       display: flex;

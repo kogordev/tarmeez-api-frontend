@@ -57,10 +57,6 @@ export default class HomeView extends HTMLElement {
     #posts-wrapper{
     margin-bottom: 1rem;
     }
-    .main-color {
-      background-color: rgb(var(--clr-main-background));
-      color: rgb(var(--clr-main-foreground));
-    }
     .gap {
       gap: 1rem;
     }
@@ -75,7 +71,7 @@ export default class HomeView extends HTMLElement {
 
   getHTMLTemplate() {
     return /*html*/ `
-     <div id="homeView" class="wrapper main-color flex flex-col align-items-center gap">
+     <div id="homeView" class="wrapper flex flex-col align-items-center gap">
          <post-creator></post-creator>
          <posts-wrapper pagination=true data-pathname="/posts"></posts-wrapper>
      </div>`;

@@ -124,9 +124,14 @@ class PostEdit extends HTMLElement {
       padding-top: 1rem;
       padding-inline: 2rem;
       max-height: 60vh;
-      overflow-x: hidden;
-      overflow-y: auto;
       scroll-behavior: smooth;
+      overflow: hidden;
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+      scrollbar-color: rgb(var(--clr-text-secondary)) rgb(var(--clr-bg-secondary));
+  }
+  .body:hover{
+    overflow-y: auto;
   }
   
   .footer {

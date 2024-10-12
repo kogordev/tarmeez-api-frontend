@@ -48,7 +48,7 @@ export default class PostComponent extends HTMLElement {
         text-decoration: underline;
     }
 
-    .navlink-img::part(wrapper):hover {
+    /*.navlink-img::part(wrapper):hover {
         background-color: inherit;
     }
 
@@ -57,7 +57,7 @@ export default class PostComponent extends HTMLElement {
         width: 40px;
         border-radius: 50%;
         object-fit: cover;
-    }
+    }*/
 
     .shadow {
         box-shadow: 0 0 5px -2px rgba(0, 0, 0, 0.3);
@@ -269,6 +269,9 @@ export default class PostComponent extends HTMLElement {
     .newPost{
       background-color: rgba(var(--clr-accent-primary), .6) !important;
     }
+    .circle{
+      border-radius: 50%;
+    }
 
     /* Add other styles here */
         `;
@@ -283,20 +286,59 @@ export default class PostComponent extends HTMLElement {
   initializeComponent() {
     this.currentUser = state.getCurrentUser();
     this.render();
-    const elements = this.elements();
-    this.attachEventListeneres(elements);
+    //const elements = this.elements();
+    //this.attachEventListeneres(elements);
   }
-
 
   // Renders the component's HTML structure
   render() {
     if (!this.state) return;
 
+    // Preload the profile image and post image before rendering
+    const profileImage = this.getProfileImage();
+    const profileImageElement = new Image();
+    profileImageElement.src = profileImage;
+
+    const postImage = this.getPostImage();
+    let postImageElement = null;
+
+    if (postImage) {
+      postImageElement = new Image();
+      postImageElement.src = postImage;
+
+      // Wait for both profile and post images to load
+      Promise.all([this.preloadImage(profileImageElement), this.preloadImage(postImageElement)]).then(() => {
+        this.renderComponent(profileImage, postImage);
+      }).catch(error => {
+        console.error('Image loading failed:', error);
+        // Render even if the image failed to load
+        this.renderComponent(profileImage, null);
+      });
+    } else {
+      // Only wait for profile image to load
+      this.preloadImage(profileImageElement).then(() => {
+        this.renderComponent(profileImage, null);
+      }).catch(error => {
+        console.error('Profile image loading failed:', error);
+        this.renderComponent(null, null);
+      });
+    }
+  }
+
+  // Preloads an image and returns a Promise that resolves when the image is loaded
+  preloadImage(image) {
+    return new Promise((resolve, reject) => {
+      image.onload = () => resolve(image);
+      image.onerror = reject;
+    });
+  }
+
+
+  renderComponent(profileImage, postImage) {
     this.addStyle();
     this.style.visibility = "hidden";
     this.id = this.state.id;
-    const profileImage = this.getProfileImage();
-    const postImage = this.getPostImage();
+
     const profileUrl = this.getProfileUrl();
     // Convert URLs in the post content to clickable links
     const formattedBody = this.formatLinks(this.state.body);
@@ -311,7 +353,34 @@ export default class PostComponent extends HTMLElement {
 
     this.shadowRoot.appendChild(template.content.cloneNode(true));
     this.style.visibility = "visible";
+    const elements = this.elements();
+    this.attachEventListeneres(elements);
   }
+
+  // // Renders the component's HTML structure
+  // render() {
+  //   if (!this.state) return;
+
+  //   this.addStyle();
+  //   this.style.visibility = "hidden";
+  //   this.id = this.state.id;
+  //   const profileImage = this.getProfileImage();
+  //   const postImage = this.getPostImage();
+  //   const profileUrl = this.getProfileUrl();
+  //   // Convert URLs in the post content to clickable links
+  //   const formattedBody = this.formatLinks(this.state.body);
+
+  //   const template = document.createElement("template");
+  //   template.innerHTML = this.getHTMLTemplate(
+  //     profileImage,
+  //     formattedBody,
+  //     postImage,
+  //     profileUrl
+  //   );
+
+  //   this.shadowRoot.appendChild(template.content.cloneNode(true));
+  //   this.style.visibility = "visible";
+  // }
 
   // Gets the author’s profile image or returns the default image
   getProfileImage() {
@@ -348,7 +417,7 @@ export default class PostComponent extends HTMLElement {
             <article class="post shadow">
                 <div class="post__header">
                     <div class="post__profile__img flex flex-center">
-                        <navlink-c id="profile-img" class="navlink-img" data-img="${profileImage}" data-to="${profileUrl}"></navlink-c>
+                        <img id="profile-img" class="circle" height="40" width="40" src="${profileImage}" alt="profile image"/>
                     </div>
                     <div class="post__info">
                         ${this.getUsernameTemplate()}
@@ -428,7 +497,7 @@ export default class PostComponent extends HTMLElement {
         `;
   }
 
-  renderBody(body){
+  renderBody(body) {
     const justify = isRTL(body) ? "end" : "start";
     return `<p id="body" class="post__body flex justify-content-${justify}">${body}</p>`
   }
@@ -467,7 +536,10 @@ export default class PostComponent extends HTMLElement {
     elements.usernameWrapper?.addEventListener("click", this.handleLinkClick.bind(this));
 
     // Handle username link 
-    elements.usernameLink.addEventListener("click", () => navigateTo(`/users/${this.state.author.id}`))
+    elements.usernameLink?.addEventListener("click", () => navigateTo(`/users/${this.state.author.id}`))
+
+    // Handle username link 
+    elements.profileImage?.addEventListener("click", () => navigateTo(`/users/${this.state.author.id}`))
   }
 
   // Prevent default event handling for anchor tags to ensure links open correctly
@@ -517,7 +589,7 @@ export default class PostComponent extends HTMLElement {
       this.updateState();
       postEdit.remove();
     });
-    postEdit.addEventListener("closed", ()=> document.body.style.overflowY = "auto")
+    postEdit.addEventListener("closed", () => document.body.style.overflowY = "auto")
     this.shadowRoot.appendChild(postEdit);
   }
 
@@ -621,10 +693,10 @@ export default class PostComponent extends HTMLElement {
     this.updateHTML();
   }
 
-  setAsNewAdded(){
+  setAsNewAdded() {
     this.shadowRoot.querySelector(".post").classList.add("newPost");
     setTimeout(() => {
-      this.shadowRoot.querySelector(".post").classList.remove("newPost");  
+      this.shadowRoot.querySelector(".post").classList.remove("newPost");
     }, 1000);
   }
 }

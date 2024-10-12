@@ -1,7 +1,6 @@
 import { navigateTo } from "/static/js/utils/router.js";
 import Controller from "/static/js/controllers/controller.js";
 import state from "/static/js/utils/state.js";
-import {loader} from "/static/js/utils/loader.js"
 
 function getCss() {
   return /*css*/`
@@ -358,7 +357,7 @@ export default class PostCreator extends HTMLElement {
           <img id="profile-img" height="45" width="45" data-user-id="${userId}" src="${profileImg}" alt="User profile image"/>
         </div>
         <div class="col">            
-            <textarea placeholder="What's on your mind?"></textarea>            
+            <textarea placeholder="What's on your mind?" dir="auto"></textarea>            
         </div>
         <div id="upload-section" class="col flex">
           <input id="file-input" type="file" accept="image/*" hidden/>
@@ -448,53 +447,15 @@ export default class PostCreator extends HTMLElement {
     }
   }
 
-  async handlePostSubmit() {
-
-    //
-    loader(async () => {
-      const { textarea, fileInput } = this.getElements();
-      const content = textarea.value.trim();
-
-      if (!content) {
-        this.renderError("Post content is empty!");
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append("body", content);
-      if (fileInput.files.length > 0) formData.append("image", fileInput.files[0]);
-
-      const headers = { Authorization: `Bearer ${this.currentUser.token}` };
-
-      try {
-        const response = await this.controller.request("/posts", "POST", formData, headers);
-        if (response.status >= 200 && response.status < 300) {
-          this.dispatchEvent(new CustomEvent("post-created", { detail: response.data }));
-          this.clearPost(); // Clear the form on success
-        } else {
-          this.renderError("Post has not been created!");
-        }
-      } catch (error) {
-        this.renderError(error.msg || "Failed to submit post. Please try again.");
-      }
-    })
-    //
-  }
-
   // async handlePostSubmit() {
+
   //   //
-  //   const loader = document.createElement("processing-c");
-  //   this.shadow.querySelector(".post-creator").appendChild(loader);
-
-
-
-  //   new Promise(async (resolve, reject) => {
-  //     //
+  //   loader(async () => {
   //     const { textarea, fileInput } = this.getElements();
   //     const content = textarea.value.trim();
 
   //     if (!content) {
-  //       reject("Post content is empty!");
+  //       this.renderError("Post content is empty!");
   //       return;
   //     }
 
@@ -507,24 +468,62 @@ export default class PostCreator extends HTMLElement {
   //     try {
   //       const response = await this.controller.request("/posts", "POST", formData, headers);
   //       if (response.status >= 200 && response.status < 300) {
-  //         resolve(true)
   //         this.dispatchEvent(new CustomEvent("post-created", { detail: response.data }));
   //         this.clearPost(); // Clear the form on success
   //       } else {
-  //         reject("Post has not been created!");
+  //         this.renderError("Post has not been created!");
   //       }
   //     } catch (error) {
-  //       reject(error.msg || "Failed to submit post. Please try again.");
+  //       this.renderError(error.msg || "Failed to submit post. Please try again.");
   //     }
-  //     //
-  //   }).
-  //     then(() => this.smoothLoaderRemove(loader))
-  //     .catch(error => {        
-  //       this.smoothLoaderRemove(loader);
-  //       this.renderError(error);
-  //     });
+  //   })
   //   //
   // }
+
+  async handlePostSubmit() {
+    //
+    const loader = document.createElement("processing-c");
+    this.shadow.querySelector(".post-creator").appendChild(loader);
+
+
+
+    new Promise(async (resolve, reject) => {
+      //
+      const { textarea, fileInput } = this.getElements();
+      const content = textarea.value.trim();
+
+      if (!content) {
+        reject("Post content is empty!");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("body", content);
+      if (fileInput.files.length > 0) formData.append("image", fileInput.files[0]);
+
+      const headers = { Authorization: `Bearer ${this.currentUser.token}` };
+
+      try {
+        const response = await this.controller.request("/posts", "POST", formData, headers);
+        if (response.status >= 200 && response.status < 300) {
+          resolve(true)
+          this.dispatchEvent(new CustomEvent("post-created", { detail: response.data }));
+          this.clearPost(); // Clear the form on success
+        } else {
+          reject("Post has not been created!");
+        }
+      } catch (error) {
+        reject(error.msg || "Failed to submit post. Please try again.");
+      }
+      //
+    }).
+      then(() => this.smoothLoaderRemove(loader))
+      .catch(error => {        
+        this.smoothLoaderRemove(loader);
+        this.renderError(error);
+      });
+    //
+  }
 
   smoothLoaderRemove(loader) {
     loader.style.visibility = "hidden";

@@ -1,6 +1,7 @@
 import Controller from "/static/js/controllers/controller.js";
 import state from "/static/js/utils/state.js";
 import { navigateTo } from "/static/js/utils/router.js";
+import { isRTL } from "/static/js/utils/utils.js";
 
 export default class PostComponent extends HTMLElement {
   constructor() {
@@ -36,7 +37,7 @@ export default class PostComponent extends HTMLElement {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-size: 1.6rem;
+      font-size: 1.5rem;
     }
     a {
       color: rgb(var(--clr-text-primary)); /* Use primary text color for links */
@@ -93,7 +94,6 @@ export default class PostComponent extends HTMLElement {
 
     .post__profile__img {
         width: 50px;
-        margin-right: .5rem;
         position: relative;
     }
 
@@ -142,7 +142,7 @@ export default class PostComponent extends HTMLElement {
     .post__info__time__link {
         text-decoration: none;
         color: rgb(var(--clr-text-secondary));
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
 
     .post__menu {
@@ -234,6 +234,7 @@ export default class PostComponent extends HTMLElement {
 
     .post__body {
         padding: 4px 20px 16px;
+
     }
 
     .post__img__wrapper {
@@ -357,7 +358,7 @@ export default class PostComponent extends HTMLElement {
                     </div>
                     ${this.getPostMenu()}
                 </div>
-                <p id="body" class="post__body">${formattedBody}</p>
+                ${this.renderBody(formattedBody)}
                 <div  class="post__img__wrapper">
                     <img id="post-img" src="${postImage}" height="auto" width="auto" alt="" class="post__img">
                 </div>
@@ -427,6 +428,10 @@ export default class PostComponent extends HTMLElement {
         `;
   }
 
+  renderBody(body){
+    const justify = isRTL(body) ? "end" : "start";
+    return `<p id="body" class="post__body flex justify-content-${justify}">${body}</p>`
+  }
 
   attachEventListeneres(elements) {
     if (!this.getAttribute("withCount")) {

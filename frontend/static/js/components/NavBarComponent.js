@@ -54,7 +54,7 @@ export default class NavBarComponent extends HTMLElement {
         
         .button{
             border: 0;
-            padding: .6rem;
+            padding: .8rem;
             margin-inline: 1rem;
             border-radius: 2rem;
             cursor: pointer;
@@ -158,7 +158,7 @@ export default class NavBarComponent extends HTMLElement {
     AuthSection() {
         return /*html*/`
             <div id="auth" class="col nav-section navbar-auth">
-                <button id="login-btn" class="auth-button button accent-button navbar-button">Sign in</button>
+                <button id="login-btn" class="auth-button button accent-button navbar-button">Login</button>
                 <button id="signup-btn" class="auth-button button tarmeez-button navbar-button">Signup</button>
             </div>`
     }

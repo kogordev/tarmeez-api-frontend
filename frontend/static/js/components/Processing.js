@@ -26,7 +26,7 @@ export default class Processing extends HTMLElement {
                 display: flex; 
                 justify-content:center;
                 align-items: center;
-                background: rgb(var(--clr-bg-secondary));
+                background: rgba(var(--clr-bg-secondary), .8);
                 z-index: 99999;
                 border-radius: var(--br);
                 transition: all .3s;

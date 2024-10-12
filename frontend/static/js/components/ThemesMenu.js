@@ -51,18 +51,20 @@ class ThemesMenu extends HTMLElement {
             margin-bottom: 1rem;
             padding: 1rem;
             cursor: pointer;
-            user-select: none
+            user-select: none;
+            text-transform: capitalize;
         }
 
         .themes-menu h2:hover{
             background-color: rgb(var(--clr-hover-bg));
+            border-radius: var(--br)
         }
 
         .themes-menu ul {
             position: absolute;
             background-color: rgb(var(--clr-bg-secondary));
             font-size: 1.2rem;
-            width: 100%;
+            width: auto;
             list-style-type: none;
             box-shadow: 0 0 10px rgba(0,0,0, .5);
             border-radius: var(--br);
@@ -72,6 +74,7 @@ class ThemesMenu extends HTMLElement {
         .themes-menu li {
             cursor: pointer;
             padding: 0.5rem;
+            min-width: 10rem;
             margin: 0.5rem 0;
             border-radius: var(--br);
             transition: background-color 0.3s;
@@ -152,6 +155,7 @@ class ThemesMenu extends HTMLElement {
         this.updateActiveItem(selectedItem);
 
         this.shadow.querySelector("ul").classList.add("hidden");
+        this.shadow.querySelector("h2").textContent = selectedItem.textContent;
     }
 
     updateActiveItem(selectedItem) {
@@ -163,12 +167,13 @@ class ThemesMenu extends HTMLElement {
     loadTheme() {
         // Load the selected theme from localStorage
         const selectedTheme = localStorage.getItem('selectedTheme');
-        console.log("selected theme", selectedTheme)
+       //  console.log("selected theme", selectedTheme)
         if (selectedTheme) {
 
 
             // Add the loaded theme class
             document.body.classList.add(selectedTheme);
+            this.shadow.querySelector("h2").textContent = selectedTheme;
 
             // Set the active item in the menu
             const activeItem = this.shadowRoot.querySelector(`li[data-theme="${selectedTheme}"]`);
@@ -177,7 +182,7 @@ class ThemesMenu extends HTMLElement {
             }
         } else {
             const systemTheme = this.getSystemTheme();
-            console.log(systemTheme)
+            this.shadow.querySelector("h2").textContent = systemTheme;
             document.body.classList.add(systemTheme);
         }
     }

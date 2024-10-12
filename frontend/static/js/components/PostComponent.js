@@ -48,7 +48,7 @@ export default class PostComponent extends HTMLElement {
         text-decoration: underline;
     }
 
-    /*.navlink-img::part(wrapper):hover {
+    .navlink-img::part(wrapper):hover {
         background-color: inherit;
     }
 
@@ -57,7 +57,7 @@ export default class PostComponent extends HTMLElement {
         width: 40px;
         border-radius: 50%;
         object-fit: cover;
-    }*/
+    }
 
     .shadow {
         box-shadow: 0 0 5px -2px rgba(0, 0, 0, 0.3);
@@ -87,7 +87,7 @@ export default class PostComponent extends HTMLElement {
     .post__header {
         height: 48.23;
         margin: 0 0 12px;
-        padding: 12px 16px 0;
+        padding: 12px 8px 0;
         display: flex;
         position: relative;
     }
@@ -269,8 +269,9 @@ export default class PostComponent extends HTMLElement {
     .newPost{
       background-color: rgba(var(--clr-accent-primary), .6) !important;
     }
-    .circle{
+    #profile-img{
       border-radius: 50%;
+      cursor: pointer;
     }
 
     /* Add other styles here */
@@ -283,16 +284,19 @@ export default class PostComponent extends HTMLElement {
     this.shadowRoot.appendChild(style);
   }
 
-  initializeComponent() {
+  async initializeComponent() {
     this.currentUser = state.getCurrentUser();
-    this.render();
+    await this.render();
     //const elements = this.elements();
     //this.attachEventListeneres(elements);
   }
 
   // Renders the component's HTML structure
   render() {
-    if (!this.state) return;
+    if (!this.state) {
+      this.remove();
+      return;
+    }
 
     // Preload the profile image and post image before rendering
     const profileImage = this.getProfileImage();
@@ -353,6 +357,7 @@ export default class PostComponent extends HTMLElement {
 
     this.shadowRoot.appendChild(template.content.cloneNode(true));
     this.style.visibility = "visible";
+    this.shadowRoot.querySelector("#profile-img").addEventListener("click",() => navigateTo(`/users/${this.state.author.id}`) );
     const elements = this.elements();
     this.attachEventListeneres(elements);
   }
@@ -417,7 +422,7 @@ export default class PostComponent extends HTMLElement {
             <article class="post shadow">
                 <div class="post__header">
                     <div class="post__profile__img flex flex-center">
-                        <img id="profile-img" class="circle" height="40" width="40" src="${profileImage}" alt="profile image"/>
+                        <img id="profile-img" class="navlink-img" height="40" width="40" src="${profileImage}" alt="profile image"/>
                     </div>
                     <div class="post__info">
                         ${this.getUsernameTemplate()}
@@ -537,9 +542,6 @@ export default class PostComponent extends HTMLElement {
 
     // Handle username link 
     elements.usernameLink?.addEventListener("click", () => navigateTo(`/users/${this.state.author.id}`))
-
-    // Handle username link 
-    elements.profileImage?.addEventListener("click", () => navigateTo(`/users/${this.state.author.id}`))
   }
 
   // Prevent default event handling for anchor tags to ensure links open correctly

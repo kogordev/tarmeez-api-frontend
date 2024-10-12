@@ -6,7 +6,19 @@ class ThemesMenu extends HTMLElement {
     constructor() {
         super();
         this.shadow = this.attachShadow({ mode: "open" });
-        this.themes = ["light", "dark", "dark-orange", "material-design", "pastel-aesthetic", "oceanic-vibes", "neon-glow"]
+        this.themes = [
+            "light",
+            "occean-breeze",
+            "sunset-glow",
+            "lavander-mist",
+            "forest-serenity",
+            "sunrise-bliss",
+            "midnight-blue",
+            "dark-forest",
+            "vampire-night",
+            "gothic-night",
+            "cosmic-purple"
+        ]
     }
 
     connectedCallback() {

@@ -3,9 +3,14 @@ import Controller from "/static/js/controllers/controller.js";
 
 function getCss(){
   return /*css*/`
+  *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
   .card {
     width: 680px;
-    background-color: rgb(var(--clr-text-secondary));
+    background-color: rgb(var(--clr-bg-secondary));
     color: rgb(var(--clr-text-primary));
     border-radius: var(--br);
   }
@@ -26,13 +31,29 @@ function getCss(){
       gap: 1rem;
   }
   .bg-transparent {
-    background-color: transparent;
+    background-color: transparent !important;
   }
   .no-posts{
     font-size: 5rem;
+    padding: 2rem;
     font-weight: 700;
     background-color: rgb(var(--clr-disabled-bg));
     color: rgb(var(--clr-disabled-text));
+  }
+  .error-message{
+    margin-top: 2rem;
+    color: rgb(var(--clr-danger-bg));
+    font-size: 2rem;
+  }
+  .card {
+    width: 680px;
+    background-color: rgb(var(--clr-bg-secondary));
+    color: rgb(var(--clr-text-primary));
+    border-radius: var(--br);
+  }
+  .spinner{
+    position: relative;
+    height: 10rem;
   }
   `
 }
@@ -81,11 +102,10 @@ export default class PostsWrapper extends HTMLElement {
 
   getHTMLTemplate() {
     return /*html*/ `
+
     <div id="posts-wrapper" class="card flex flex-col justify-content-center gap bg-transparent"></div>
     <div id="loading-spinner" style="display:none;" class="spinner card">
-
-        <img height="120" width="120" src="/static/assets/images/loader1.gif" alt="spinner"/>
-
+        <processing-c></processing-c>
     </div>
     <div id="load-more-trigger" class="load-more-trigger"></div>`
   }
@@ -137,7 +157,6 @@ export default class PostsWrapper extends HTMLElement {
       return [];
     } finally {
       this.isLoading = false;
-      this.toggleSpinner(false); // Hide loading spinner
     }
   }
 
@@ -148,13 +167,24 @@ export default class PostsWrapper extends HTMLElement {
   }
 
   async renderPosts() {
+    this.togglePostsWrapper(false);
     const posts = await this.loadPosts();
     if (!posts.length) {
       this.displayNoPostsMessage();
+      this.toggleSpinner(false); // Hide loading spinner
       return;
     }
 
     posts.forEach((post) => this.renderSinglePost(post));
+    this.toggleSpinner(false); // Hide loading spinner
+    this.togglePostsWrapper(true);
+  }
+
+  togglePostsWrapper(show){
+    const postsWrapper =  this.shadowRoot.querySelector("posts-wrapper") ; 
+    if(postsWrapper){
+      postsWrapper.style.visibility = show ? "visible" : "hidden";
+    }
   }
 
   renderSinglePost(post) {
@@ -210,14 +240,15 @@ export default class PostsWrapper extends HTMLElement {
 
   displayNoPostsMessage() {
     const postsWrapper = this.shadowRoot.querySelector("#posts-wrapper");
-    postsWrapper.innerHTML = "<p class='card no-posts'>No posts available.</p>";
+    postsWrapper.innerHTML = "<p class='card flex flex-center no-posts'>No posts available.</p>";
   }
 
   displayError(message) {
-    const errorDiv = document.createElement("div");
-    errorDiv.className = "error-message";
-    errorDiv.textContent = message;
-    this.shadowRoot.appendChild(errorDiv);
+    const template = document.createElement("template");
+    template.innerHTML = /*html*/`
+    <div class="error-message flex flex-center">${message}</div>
+    `
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
 
   toggleSpinner(isVisible) {

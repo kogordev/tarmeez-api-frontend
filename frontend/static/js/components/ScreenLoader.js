@@ -1,3 +1,5 @@
+import { loaderSvg } from "/static/js/utils/utils.js";
+
 class ScreenLoader extends HTMLElement {
     constructor() {
         super();
@@ -5,16 +7,15 @@ class ScreenLoader extends HTMLElement {
 
         // Create loader elements
         this.wrapper = document.createElement('div');
-        this.loaderImage = document.createElement('img');
+        this.svgWrapper = document.createElement("div");
+        this.svgWrapper.innerHTML = loaderSvg;
 
         // Set up initial class names and properties
         this.wrapper.className = 'loader-wrapper';
-        this.loaderImage.className = 'loader-image';
-        this.loaderImage.src = "/static/assets/images/loader1.gif";
-        this.loaderImage.alt = "Loading...";
+        this.svgWrapper.className = 'loader-image';
 
         // Append elements to shadow DOM
-        this.wrapper.appendChild(this.loaderImage);
+        this.wrapper.appendChild(this.svgWrapper);
         this.shadowRoot.append(this.createStyles(), this.wrapper);
 
         // Initialize internal state
@@ -23,6 +24,10 @@ class ScreenLoader extends HTMLElement {
 
     connectedCallback() {
         this.hide(true); // Hide immediately when the element is first attached
+    }
+
+    disconnectedCallback() {
+        document.body.style.overflow = "auto";
     }
 
     createStyles() {
@@ -60,6 +65,9 @@ class ScreenLoader extends HTMLElement {
                 width: 100px; /* Loader size */
                 height: 100px;
             }
+            svg{
+                color: rgb(var(--clr-processing-bg));
+            }
         `;
         return style;
     }
@@ -67,6 +75,7 @@ class ScreenLoader extends HTMLElement {
     // Method to show the loader with a smooth transition
     show() {
         if (!this._isVisible) {
+            document.body.style.overflow = "hidden";
             this._isVisible = true;
             this.wrapper.classList.add('visible'); // Apply CSS class to show
         }

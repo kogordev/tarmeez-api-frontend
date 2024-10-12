@@ -1,5 +1,85 @@
 import Controller from "/static/js/controllers/controller.js";
 
+function getCss() {
+  return /*css*/`
+  :host{
+    display: block;
+  }  
+  *{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  .col{
+    background-color: rgb(var(--clr-bg-tertiary));
+    color: rgb(var(--clr-text-tertiary)); 
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    border-radius: var(--br);
+  }  
+  img{
+      object-fit: cover;
+      border-radius: 50%;
+      cursor: pointer;
+  } 
+  .number{
+      font-size: 5rem;
+      font-weight: 600;
+      color: rgb(var(--clr-text-primary)); /* Primary text color */
+  }  
+  .label{
+      font-size: 1.2rem;
+      color: rgb(var(--clr-text-secondary)); /* Secondary text color */
+  }  
+  .username{
+      font-weight: 600;
+      letter-spacing: .2rem;
+      text-transform: capitalize;
+      margin-top: 1rem;
+      color: rgb(var(--clr-text-primary)); /* Primary text color */
+  }
+  .email{
+      font-size: 1.4rem;
+      font-weight: 500;
+  }
+  .padding {
+    padding: 2rem;
+  }
+  .grid {
+      display: grid;
+      gap: 1rem;
+  }
+  .col-3 {
+      grid-template-columns: repeat(3, 1fr);
+  }
+  .hidden{
+    visibility:hidden;
+  }
+  .flex {
+      display: flex;
+  }
+  .flex-col {
+      flex-direction: column;
+  }
+  .flex-center {
+    justify-content: center;
+    align-items: center;
+  }
+  .gap {
+      gap: 1rem;
+  }
+  .card {
+    width: 680px;
+    background-color: rgb(var(--clr-bg-secondary));
+    color: rgb(var(--clr-text-primary));
+    border-radius: var(--br);
+  }
+  .img-col{
+    position: relative;
+  }
+    `
+}
+
 export default class DashboardComponent extends HTMLElement {
   constructor() {
     super();
@@ -74,7 +154,7 @@ export default class DashboardComponent extends HTMLElement {
   renderLoadingState() {
     this.clearShadowDOM();
     this.shadowRoot.innerHTML = `
-      <div class="loading-state card">Loading...</div>
+      <div class="loading-state card">Loading Dashboard...</div>
     `;
   }
 
@@ -85,95 +165,35 @@ export default class DashboardComponent extends HTMLElement {
   handleError(message) {
     this.clearShadowDOM();
     this.shadowRoot.innerHTML = `
-      <div class="error-message">
-        <h2>Error</h2>
+      <style>
+          *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+          .card {
+              width: 680px;
+              background-color: rgb(var(--clr-bg-secondary));
+              color: rgb(var(--clr-danger-bg));
+              border-radius: var(--br);
+              font-size: 2rem;
+              font-weight: 700;
+              padding: 2rem;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+      </style>
+      <div class="error-message card">
         <p>${this.escapeHTML(message)}</p>
       </div>
     `;
   }
 
-  getCss(){
-    return /*css*/`
-    :host{
-      display: block;
-    }  
-    *{
-      padding: 0;
-      margin: 0;
-      box-sizing: border-box;
-    }
-    .col{
-      background-color: rgb(var(--clr-bg-tertiary));
-      color: rgb(var(--clr-text-tertiary)); 
-      box-shadow: var(--shadow-sm);
-      overflow: hidden;
-      border-radius: var(--br);
-    }  
-    img{
-        object-fit: cover;
-        border-radius: 50%;
-        cursor: pointer;
-    } 
-    .number{
-        font-size: 5rem;
-        font-weight: 600;
-        color: rgb(var(--clr-text-primary)); /* Primary text color */
-    }  
-    .label{
-        font-size: 1.2rem;
-        color: rgb(var(--clr-text-secondary)); /* Secondary text color */
-    }  
-    .username{
-        font-weight: 600;
-        letter-spacing: .2rem;
-        text-transform: capitalize;
-        margin-top: 1rem;
-        color: rgb(var(--clr-text-primary)); /* Primary text color */
-    }
-    .email{
-        font-size: 1.4rem;
-        font-weight: 500;
-    }
-    .padding {
-      padding: 2rem;
-    }
-    .grid {
-        display: grid;
-        gap: 1rem;
-    }
-    .col-3 {
-        grid-template-columns: repeat(3, 1fr);
-    }
-    .hidden{
-      visibility:hidden;
-    }
-    .flex {
-        display: flex;
-    }
-    .flex-col {
-        flex-direction: column;
-    }
-    .flex-center {
-      justify-content: center;
-      align-items: center;
-    }
-    .gap {
-        gap: 1rem;
-    }
-    .card {
-      width: 680px;
-      background-color: rgb(var(--clr-bg-secondary));
-      border-radius: var(--br);
-    }
-    .img-col{
-      position: relative;
-    }
-      `
-    }
 
-  addStyle(){
+  addStyle() {
     const style = document.createElement("style");
-    style.textContent = this.getCss().trim();
+    style.textContent = getCss().trim();
     this.shadowRoot.appendChild(style);
   }
 
@@ -184,7 +204,7 @@ export default class DashboardComponent extends HTMLElement {
     this.shadowRoot.innerHTML = "";
   }
 
-  getHTMLTemplate(profile_image, username, email, posts_count, comments_count){
+  getHTMLTemplate(profile_image, username, email, posts_count, comments_count) {
     return /*html*/`
     <div class="card padding grid col-3 transition-opacity hidden">
       <div class="col padding flex flex-col gap">
@@ -205,7 +225,7 @@ export default class DashboardComponent extends HTMLElement {
     </div>
   `;
   }
-  
+
   /**
    * Attaches the main component template.
    */

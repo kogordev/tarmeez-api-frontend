@@ -1,18 +1,21 @@
-export default class Processing extends HTMLElement{
-    constructor(){
+import { loaderSvg } from "/static/js/utils/utils.js";
+import { processingSvg } from "/static/js/utils/utils.js";
+
+export default class Processing extends HTMLElement {
+    constructor() {
         super();
-        this.shadow = this.attachShadow({mode: "open"});
+        this.shadow = this.attachShadow({ mode: "open" });
     }
 
-    connectedCallback(){
+    connectedCallback() {
         this.render();
     }
 
-    render(){
+    render() {
         this.shadow.innerHTML = this.getHTMLTemplate();
     }
 
-    getHTMLTemplate(){
+    getHTMLTemplate() {
         return `
         <style>
             .backdrop{
@@ -28,12 +31,12 @@ export default class Processing extends HTMLElement{
                 border-radius: var(--br);
                 transition: all .3s;
             }
-            img{
-                shadow-box: 0 0 10px rgba(0, 0, 0, .4);
+            svg{
+            color: rgb(var(--clr-processing-bg));
             }
         </style>
         <div class="backdrop">
-            <img height="100" width="100" src="/static/assets/images/loader1.gif" alt="loader"/>
+            ${processingSvg}
         </div>
         `
     }

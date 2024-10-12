@@ -1,7 +1,6 @@
 import Controller from "/static/js/controllers/controller.js";
 import state from "/static/js/utils/state.js";
 
-
 function getCss() {
     return /*css*/`
     *{

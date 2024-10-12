@@ -1,6 +1,320 @@
 import { navigateTo } from "/static/js/utils/router.js";
 import Controller from "/static/js/controllers/controller.js";
 import state from "/static/js/utils/state.js";
+import {loader} from "/static/js/utils/loader.js"
+
+function getCss() {
+  return /*css*/`
+  :host{
+    display: block;
+}
+.post-creator{
+  position: relative;
+}
+
+.container{
+    height: auto;
+    padding: 1rem;
+    overflow: hidden;
+    position: relative;
+    background-color: rgb(var(--clr-bg-secondary)); /* Secondary background */
+    color: rgb(var(--clr-text-primary)); /* Primary text color */
+}
+
+p{
+    width: 100%;
+    height: 5rem;
+    color: rgb(var(--clr-text-secondary)); /* Secondary text color */
+}
+
+textarea{
+    width: 100%;
+    /* height: 100%; */
+    height: 5rem;
+    font-size: 1.8rem;
+    padding: 1.25rem;
+    outline: none;
+    resize: none;
+    border-radius: var(--br);
+    border: 0;
+    background-color: rgb(var(--clr-bg-tertiary)); /* Tertiary background */
+    color: rgb(var(--clr-text-primary)); /* Primary text color */
+    overflow: hidden;
+  }
+  textarea:focus{
+    border: .2rem solid rgb(var(--clr-action-bg)); /* Focus state */
+  }
+  
+  #profile-img{
+      /* height: 45px;
+      width: 45px; */
+      border-radius: 50%;
+      object-fit: cover;
+      cursor: pointer;
+  }
+  
+  #file-input{
+      display: none;
+  }
+  
+  #upload-btn{
+      border: 0;
+      height: 25px;
+      width: 25px;
+      margin-top: 1.25rem;
+      mask-image: url("/static/assets/images/img.svg");
+      -webkit-mask-image: url("/static/assets/images/img.svg");
+      mask-position: center;
+      mask-size: cover;
+      background-color: rgb(var(--clr-accent-secondary)); /* Accent color for upload button */
+      cursor: pointer;
+  }
+  
+  .submit-wrapper{
+      padding: 1rem;
+      padding-right: 2rem;
+      border-top: 1px solid rgb(var(--clr-border));
+      position: relative;
+  }
+  
+  .active{
+      background-color: rgb(var(--clr-accent-primary)) !important;
+  }
+  
+  #submit-btn{
+      padding: 1rem;
+      font-size: 1.6rem;
+      font-weight: 600;  
+      border: 0;
+      background-color: rgb(var(--clr-submit-bg)); /* Submit button background */
+      color: rgb(var(--clr-submit-text)); /* Submit button text */
+      border-radius: var(--br);
+      cursor: pointer;
+      transition: background-color .3s;
+  }
+  
+  #submit-btn:hover{
+    background-color: rgb(var(--clr-submit-hover-bg)); /* Hover state */
+    color: rgb(var(--clr-submit-hover-text)); /* Hover text color */
+  }
+  
+  #submit-btn:disabled{
+    background-color: rgb(var(--clr-disabled-bg)); /* Disabled button */
+    color: rgb(var(--clr-disabled-text));
+  }
+  
+  #upload-section{
+      position: relative;
+  }
+  
+  #delete-btn{
+      position: absolute;
+      display: none;
+      height: 16px;
+      width: 16px;
+      background-color: rgb(var(--clr-danger-bg)); /* Danger background */
+      mask-image: url("/static/assets/images/trash.svg");
+      mask-position: center;
+      mask-size: cover;
+      cursor: pointer;
+      top: 0;
+      right: 0;
+      transition: background-color .3s, transform .3;
+  }
+  
+  #delete-btn:hover{
+    background-color: rgb(var(--clr-danger-alert)); /* Hover state for delete */
+      transform: scale(1.15);
+  }
+  
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+  }
+  
+  .d-hidden{
+      display: none;
+  }
+  
+  .hidden{
+      visibility:hidden;
+  }
+  
+  .overflow-hidden{
+      overflow: hidden;
+  }
+  
+  .circle-btn {
+      border: none;
+      border-radius: 50%;
+      height: 2.5rem;
+      width: 2.5rem;
+      background-color: rgb(var(--clr-accent-secondary)); /* Circle button background */
+      cursor: pointer;
+  }
+  
+  .close-btn {
+      mask-image: url("/static/assets/images/close-button.svg");
+      mask-position: center;
+      mask-repeat: no-repeat;
+      position: absolute;
+      top: 1.25rem;
+      right: 1.5rem;
+  }
+  
+  .btn{
+      border: none;
+      height: 2.5rem;
+      width: 2.5rem;
+      cursor: pointer;
+  }
+  
+  .post-btn{
+      mask-image: url("/static/assets/images/send.svg");
+      mask-position: center;
+      mask-repeat: no-repeat;
+      position: absolute;
+      top: 1.25rem;
+      right: 1.5rem;
+      background-color: rgb(var(--clr-action-bg)); /* Post button background */
+      transition: transform .5s, background-color .5s;
+  }
+  
+  .post-btn:hover{
+      transform: rotate(45deg);
+      background-color: rgb(var(--clr-action-hover-bg)); /* Hover state for post button */
+      color: rgb(var(--clr-action-hover-text)); /* Hover text color */
+  }
+  
+  .post-btn:disabled{
+    background-color: rgb(var(--clr-disabled-bg)); /* Disabled state */
+    color: rgb(var(--clr-disabled-text));
+  }
+  
+  .main-color {
+    background-color: rgb(var(--clr-bg-primary)); /* Main background */
+    color: rgb(var(--clr-text-primary)); /* Main foreground text */
+  }
+  
+  .padding {
+      padding: 2rem;
+  }
+  
+  .padding-view {
+      padding-top: calc(var(--nav-h) + 4rem);
+  }
+  
+  .margin-view {
+      margin-top: var(--nav-h);
+      /* margin-top: calc(var(--nav-h) + 2rem); */
+  }
+  
+  .wrapper {
+      height: 100%;
+      width: 100%;
+  }
+  
+  .card {
+    width: 680px;
+    background-color: rgb(var(--clr-bg-secondary)); /* Card background */
+    color: rgb(var(--clr-text-primary)); /* Card text color */
+    border-radius: var(--br);
+  }
+  
+  .ml-1{
+      margin-left: 1rem;
+  }
+  
+  .mb-1 {
+      margin-bottom: 1rem;
+  }
+  
+  .flex {
+      display: flex;
+  }
+  
+  .flex-col {
+      flex-direction: column;
+  }
+  
+  .flex-center {
+      justify-content: center;
+      align-items: center;
+  }
+  
+  .justify-content-center {
+      justify-content: center;
+  }
+  
+  .justify-content-between {
+      justify-content: space-between;
+  }
+  
+  .justify-content-start {
+      justify-content: start;
+  }
+  
+  .justify-content-end {
+      justify-content: end;
+  }
+  
+  .gap {
+      gap: 1rem;
+  }
+  
+  .align-items-center {
+      align-items: center;
+  }
+  
+  .align-items-top {
+      align-items: start;
+  }
+  
+  .grid {
+      display: grid;
+      gap: 1rem;
+  }
+  
+  .col-2 {
+      grid-template-columns: 45px 1fr;
+  }
+  
+  .col-3 {
+      grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .col-3-custom {
+      grid-template-columns: 45px 1fr 45px;
+  }
+  
+  .bg-transparent {
+      background-color: transparent;
+  }
+  
+  .backdrop {
+      overflow: initial;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: fixed;
+      inset: 0 0 0 0;
+      height: 100vh;
+      width: 100vw;
+      background-color: rgba(var(--clr-bg-secondary), .8); /* Semi-transparent backdrop */
+      z-index: 9999;
+  }
+  .error{
+    height: 100%;
+    position: absolute;
+    top: 5px;
+    left: 0;
+    color: rgb(var(--clr-danger-bg)); /* Error text color */
+    padding: 1rem;
+    font-size: 1.4rem;
+  }
+  `
+}
 
 export default class PostCreator extends HTMLElement {
   constructor() {
@@ -24,322 +338,10 @@ export default class PostCreator extends HTMLElement {
     this.registerEventListeners();
   }
 
-  getCss() {
-    return /*css*/`
-    :host{
-      display: block;
-  }
-  .post-creator{
-    position: relative;
-  }
-  
-  .container{
-      height: auto;
-      padding: 1rem;
-      overflow: hidden;
-      position: relative;
-      background-color: rgb(var(--clr-bg-secondary)); /* Secondary background */
-      color: rgb(var(--clr-text-primary)); /* Primary text color */
-  }
-  
-  p{
-      width: 100%;
-      height: 5rem;
-      color: rgb(var(--clr-text-secondary)); /* Secondary text color */
-  }
-  
-  textarea{
-      width: 100%;
-      /* height: 100%; */
-      height: 5rem;
-      font-size: 1.8rem;
-      padding: 1.25rem;
-      outline: none;
-      resize: none;
-      border-radius: var(--br);
-      border: 0;
-      background-color: rgb(var(--clr-bg-tertiary)); /* Tertiary background */
-      color: rgb(var(--clr-text-primary)); /* Primary text color */
-      overflow: hidden;
-    }
-    textarea:focus{
-      border: .2rem solid rgb(var(--clr-action-bg)); /* Focus state */
-    }
-    
-    #profile-img{
-        /* height: 45px;
-        width: 45px; */
-        border-radius: 50%;
-        object-fit: cover;
-        cursor: pointer;
-    }
-    
-    #file-input{
-        display: none;
-    }
-    
-    #upload-btn{
-        border: 0;
-        height: 25px;
-        width: 25px;
-        margin-top: 1.25rem;
-        mask-image: url("/static/assets/images/img.svg");
-        -webkit-mask-image: url("/static/assets/images/img.svg");
-        mask-position: center;
-        mask-size: cover;
-        background-color: rgb(var(--clr-accent-secondary)); /* Accent color for upload button */
-        cursor: pointer;
-    }
-    
-    .submit-wrapper{
-        padding: 1rem;
-        padding-right: 2rem;
-        border-top: 1px solid rgb(var(--clr-border));
-        position: relative;
-    }
-    
-    .active{
-        background-color: rgb(var(--clr-accent-primary)) !important;
-    }
-    
-    #submit-btn{
-        padding: 1rem;
-        font-size: 1.6rem;
-        font-weight: 600;  
-        border: 0;
-        background-color: rgb(var(--clr-submit-bg)); /* Submit button background */
-        color: rgb(var(--clr-submit-text)); /* Submit button text */
-        border-radius: var(--br);
-        cursor: pointer;
-        transition: background-color .3s;
-    }
-    
-    #submit-btn:hover{
-      background-color: rgb(var(--clr-submit-hover-bg)); /* Hover state */
-      color: rgb(var(--clr-submit-hover-text)); /* Hover text color */
-    }
-    
-    #submit-btn:disabled{
-      background-color: rgb(var(--clr-disabled-bg)); /* Disabled button */
-      color: rgb(var(--clr-disabled-text));
-    }
-    
-    #upload-section{
-        position: relative;
-    }
-    
-    #delete-btn{
-        position: absolute;
-        display: none;
-        height: 16px;
-        width: 16px;
-        background-color: rgb(var(--clr-danger-bg)); /* Danger background */
-        mask-image: url("/static/assets/images/trash.svg");
-        mask-position: center;
-        mask-size: cover;
-        cursor: pointer;
-        top: 0;
-        right: 0;
-        transition: background-color .3s, transform .3;
-    }
-    
-    #delete-btn:hover{
-      background-color: rgb(var(--clr-danger-alert)); /* Hover state for delete */
-        transform: scale(1.15);
-    }
-    
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-    
-    .d-hidden{
-        display: none;
-    }
-    
-    .hidden{
-        visibility:hidden;
-    }
-    
-    .overflow-hidden{
-        overflow: hidden;
-    }
-    
-    .circle-btn {
-        border: none;
-        border-radius: 50%;
-        height: 2.5rem;
-        width: 2.5rem;
-        background-color: rgb(var(--clr-accent-secondary)); /* Circle button background */
-        cursor: pointer;
-    }
-    
-    .close-btn {
-        mask-image: url("/static/assets/images/close-button.svg");
-        mask-position: center;
-        mask-repeat: no-repeat;
-        position: absolute;
-        top: 1.25rem;
-        right: 1.5rem;
-    }
-    
-    .btn{
-        border: none;
-        height: 2.5rem;
-        width: 2.5rem;
-        cursor: pointer;
-    }
-    
-    .post-btn{
-        mask-image: url("/static/assets/images/send.svg");
-        mask-position: center;
-        mask-repeat: no-repeat;
-        position: absolute;
-        top: 1.25rem;
-        right: 1.5rem;
-        background-color: rgb(var(--clr-action-bg)); /* Post button background */
-        transition: transform .5s, background-color .5s;
-    }
-    
-    .post-btn:hover{
-        transform: rotate(45deg);
-        background-color: rgb(var(--clr-action-hover-bg)); /* Hover state for post button */
-        color: rgb(var(--clr-action-hover-text)); /* Hover text color */
-    }
-    
-    .post-btn:disabled{
-      background-color: rgb(var(--clr-disabled-bg)); /* Disabled state */
-      color: rgb(var(--clr-disabled-text));
-    }
-    
-    .main-color {
-      background-color: rgb(var(--clr-bg-primary)); /* Main background */
-      color: rgb(var(--clr-text-primary)); /* Main foreground text */
-    }
-    
-    .padding {
-        padding: 2rem;
-    }
-    
-    .padding-view {
-        padding-top: calc(var(--nav-h) + 4rem);
-    }
-    
-    .margin-view {
-        margin-top: var(--nav-h);
-        /* margin-top: calc(var(--nav-h) + 2rem); */
-    }
-    
-    .wrapper {
-        height: 100%;
-        width: 100%;
-    }
-    
-    .card {
-      width: 680px;
-      background-color: rgb(var(--clr-bg-secondary)); /* Card background */
-      color: rgb(var(--clr-text-primary)); /* Card text color */
-      border-radius: var(--br);
-    }
-    
-    .ml-1{
-        margin-left: 1rem;
-    }
-    
-    .mb-1 {
-        margin-bottom: 1rem;
-    }
-    
-    .flex {
-        display: flex;
-    }
-    
-    .flex-col {
-        flex-direction: column;
-    }
-    
-    .flex-center {
-        justify-content: center;
-        align-items: center;
-    }
-    
-    .justify-content-center {
-        justify-content: center;
-    }
-    
-    .justify-content-between {
-        justify-content: space-between;
-    }
-    
-    .justify-content-start {
-        justify-content: start;
-    }
-    
-    .justify-content-end {
-        justify-content: end;
-    }
-    
-    .gap {
-        gap: 1rem;
-    }
-    
-    .align-items-center {
-        align-items: center;
-    }
-    
-    .align-items-top {
-        align-items: start;
-    }
-    
-    .grid {
-        display: grid;
-        gap: 1rem;
-    }
-    
-    .col-2 {
-        grid-template-columns: 45px 1fr;
-    }
-    
-    .col-3 {
-        grid-template-columns: repeat(3, 1fr);
-    }
-    
-    .col-3-custom {
-        grid-template-columns: 45px 1fr 45px;
-    }
-    
-    .bg-transparent {
-        background-color: transparent;
-    }
-    
-    .backdrop {
-        overflow: initial;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: fixed;
-        inset: 0 0 0 0;
-        height: 100vh;
-        width: 100vw;
-        background-color: rgba(var(--clr-bg-secondary), .8); /* Semi-transparent backdrop */
-        z-index: 9999;
-    }
-    .error{
-      height: 100%;
-      position: absolute;
-      top: 5px;
-      left: 0;
-      color: rgb(var(--clr-danger-bg)); /* Error text color */
-      padding: 1rem;
-      font-size: 1.4rem;
-    }
-    `
-  }
 
   addStyle() {
     const style = document.createElement("style");
-    style.textContent = this.getCss().trim();
+    style.textContent = getCss().trim();
     this.shadow.appendChild(style);
   }
 
@@ -438,17 +440,14 @@ export default class PostCreator extends HTMLElement {
   }
 
   async handlePostSubmit() {
-    //
-    const loader = document.createElement("processing-c");
-    this.shadow.querySelector(".post-creator").appendChild(loader);
 
-    new Promise(async (resolve, reject) => {
-      //
+    //
+    loader(async () => {
       const { textarea, fileInput } = this.getElements();
       const content = textarea.value.trim();
 
       if (!content) {
-        reject("Post content is empty!");
+        this.renderError("Post content is empty!");
         return;
       }
 
@@ -461,29 +460,67 @@ export default class PostCreator extends HTMLElement {
       try {
         const response = await this.controller.request("/posts", "POST", formData, headers);
         if (response.status >= 200 && response.status < 300) {
-          resolve(true)
           this.dispatchEvent(new CustomEvent("post-created", { detail: response.data }));
           this.clearPost(); // Clear the form on success
         } else {
-          reject("Post has not been created!");
+          this.renderError("Post has not been created!");
         }
       } catch (error) {
-        reject(error.msg || "Failed to submit post. Please try again.");
+        this.renderError(error.msg || "Failed to submit post. Please try again.");
       }
-      //
-    }).
-      then(() => this.smoothLoaderRemove(loader))
-      .catch(error => {        
-        this.smoothLoaderRemove(loader);
-        this.renderError(error);
-      });
+    })
     //
   }
 
-  smoothLoaderRemove(loader){
+  // async handlePostSubmit() {
+  //   //
+  //   const loader = document.createElement("processing-c");
+  //   this.shadow.querySelector(".post-creator").appendChild(loader);
+
+
+
+  //   new Promise(async (resolve, reject) => {
+  //     //
+  //     const { textarea, fileInput } = this.getElements();
+  //     const content = textarea.value.trim();
+
+  //     if (!content) {
+  //       reject("Post content is empty!");
+  //       return;
+  //     }
+
+  //     const formData = new FormData();
+  //     formData.append("body", content);
+  //     if (fileInput.files.length > 0) formData.append("image", fileInput.files[0]);
+
+  //     const headers = { Authorization: `Bearer ${this.currentUser.token}` };
+
+  //     try {
+  //       const response = await this.controller.request("/posts", "POST", formData, headers);
+  //       if (response.status >= 200 && response.status < 300) {
+  //         resolve(true)
+  //         this.dispatchEvent(new CustomEvent("post-created", { detail: response.data }));
+  //         this.clearPost(); // Clear the form on success
+  //       } else {
+  //         reject("Post has not been created!");
+  //       }
+  //     } catch (error) {
+  //       reject(error.msg || "Failed to submit post. Please try again.");
+  //     }
+  //     //
+  //   }).
+  //     then(() => this.smoothLoaderRemove(loader))
+  //     .catch(error => {        
+  //       this.smoothLoaderRemove(loader);
+  //       this.renderError(error);
+  //     });
+  //   //
+  // }
+
+  smoothLoaderRemove(loader) {
     loader.style.visibility = "hidden";
     setTimeout(() => {
-        loader.remove();
+      loader.remove();
     }, 300);
   }
 

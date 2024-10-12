@@ -185,7 +185,7 @@ export default class PostsWrapper extends HTMLElement {
     }
   }
 
-  renderSinglePost(post) {
+  renderSinglePost(post, fromView=false) {
     const postsWrapper = this.shadowRoot.querySelector("#posts-wrapper");
     if (!postsWrapper) return;
 
@@ -199,6 +199,7 @@ export default class PostsWrapper extends HTMLElement {
       : postsWrapper.append(postComp);
 
     this.setupPostEventListeners(postComp);
+    if(fromView) postComp.setAsNewAdded();
   }
 
   setupPostEventListeners(postComp) {
@@ -228,7 +229,7 @@ export default class PostsWrapper extends HTMLElement {
 
   addPost(post, sort = "desc") {
     this.setAttribute("sort", sort);
-    this.renderSinglePost(post);
+    this.renderSinglePost(post, true);
   }
 
   clearPosts() {

@@ -80,6 +80,7 @@ export default class PostComponent extends HTMLElement {
         color: rgb(var(--clr-text-primary)); /* Use primary text color */
         border-radius: 10px;
         position: relative;
+        transition: background-color .5s;
     }
 
     .post__header {
@@ -262,6 +263,10 @@ export default class PostComponent extends HTMLElement {
     }
     .clickable{
       color: rgb(var(--clr-link));
+    }
+
+    .newPost{
+      background-color: rgba(var(--clr-accent-primary), .6) !important;
     }
 
     /* Add other styles here */
@@ -610,6 +615,12 @@ export default class PostComponent extends HTMLElement {
     this.updateHTML();
   }
 
+  setAsNewAdded(){
+    this.shadowRoot.querySelector(".post").classList.add("newPost");
+    setTimeout(() => {
+      this.shadowRoot.querySelector(".post").classList.remove("newPost");  
+    }, 1000);
+  }
 }
 
 customElements.define("post-c", PostComponent);

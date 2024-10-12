@@ -34,9 +34,9 @@ function getCss() {
     background-color: transparent !important;
   }
   .no-posts{
-    font-size: 5rem;
+    font-size: 3rem;
     padding: 2rem;
-    font-weight: 700;
+    font-weight: 600;
     background-color: rgb(var(--clr-disabled-bg));
     color: rgb(var(--clr-disabled-text));
   }
@@ -218,6 +218,9 @@ export default class PostsWrapper extends HTMLElement {
     const { detail } = event;
     postComp.remove();
 
+    let postsCount = this.shadowRoot.querySelector("#posts-wrapper").children.length;
+    if( postsCount === 0) this.displayNoPostsMessage();
+    
     this.dispatchEvent(
       new CustomEvent("post-deleted", {
         detail: { postId: postComp.id },
@@ -230,6 +233,7 @@ export default class PostsWrapper extends HTMLElement {
   addPost(post, sort = "desc") {
     this.setAttribute("sort", sort);
     this.renderSinglePost(post, true);
+    this.shadowRoot.querySelector(".no-posts")?.remove();
   }
 
   clearPosts() {

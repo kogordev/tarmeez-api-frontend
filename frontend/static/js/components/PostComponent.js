@@ -511,7 +511,8 @@ export default class PostComponent extends HTMLElement {
     postEdit.addEventListener("post-edited", e => {
       this.updateState();
       postEdit.remove();
-    })
+    });
+    postEdit.addEventListener("closed", ()=> document.body.style.overflowY = "auto")
     this.shadowRoot.appendChild(postEdit);
   }
 

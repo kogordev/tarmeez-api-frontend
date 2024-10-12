@@ -39,7 +39,8 @@ class PostEdit extends HTMLElement {
 
   disconnectedCallback() {
     this.detachEvents();
-    document.body.style.overflowY = "auto";
+   // document.body.style.overflowY = "auto"; because 
+   this.dispatchEvent(new CustomEvent("closed"))
   }
 
   getCss(){

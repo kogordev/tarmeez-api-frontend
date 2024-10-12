@@ -163,6 +163,7 @@ class PostDetails extends HTMLElement {
     cursor: pointer;
 }
 .footer{
+  min-height: 10rem;
   position: relative;
 }
     `

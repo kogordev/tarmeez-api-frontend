@@ -115,9 +115,14 @@ class CommentCreator extends HTMLElement {
         this.shadowRoot.appendChild(style);
     }
 
+    getProfileImg(img){
+        if (typeof img === "object") return "/static/assets/images/default-user1.png";
+        return img;
+      }
+
     render() {
         const img = this.currentUser.user.profile_image;
-        const profileImg = typeof img === "object" ? "/static/assets/images/default-user1.png" : img;
+        const profileImg = this.getProfileImg(img);
         const template = document.createElement("template");
         template.innerHTML = this.getHTMLTemplate(profileImg, this.currentUser.user.id);
         this.shadowRoot.appendChild(template.content.cloneNode(true));

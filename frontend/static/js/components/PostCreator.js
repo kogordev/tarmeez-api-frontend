@@ -369,9 +369,14 @@ export default class PostCreator extends HTMLElement {
     `
   }
 
+  getProfileImg(img){
+    if (typeof img === "object") return "/static/assets/images/default-user1.png";
+    return img;
+  }
+
   render() {
     const userId = this.currentUser.user.id;
-    const profileImg = this.currentUser?.user?.profile_image || "";
+    const profileImg = this.getProfileImg(this.currentUser.user.profile_image);
     const template = document.createElement("template");
     template.innerHTML = this.getHTMLTemplate(userId, profileImg).trim();
     this.shadow.appendChild(template.content.cloneNode(true));

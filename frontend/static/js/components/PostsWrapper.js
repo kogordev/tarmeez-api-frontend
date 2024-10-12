@@ -1,7 +1,7 @@
 import PostComponent from "/static/js/components/PostComponent.js";
 import Controller from "/static/js/controllers/controller.js";
 
-function getCss(){
+function getCss() {
   return /*css*/`
   *{
     margin: 0;
@@ -104,9 +104,7 @@ export default class PostsWrapper extends HTMLElement {
     return /*html*/ `
 
     <div id="posts-wrapper" class="card flex flex-col justify-content-center gap bg-transparent"></div>
-    <div id="loading-spinner" style="display:none;" class="spinner card">
-        <processing-c></processing-c>
-    </div>
+    <div id="loading-spinner" style="display:none;" class="spinner card"></div>
     <div id="load-more-trigger" class="load-more-trigger"></div>`
   }
 
@@ -175,14 +173,14 @@ export default class PostsWrapper extends HTMLElement {
       return;
     }
 
-    posts.forEach((post) => this.renderSinglePost(post));
+    await posts.forEach((post) => this.renderSinglePost(post));
     this.toggleSpinner(false); // Hide loading spinner
     this.togglePostsWrapper(true);
   }
 
-  togglePostsWrapper(show){
-    const postsWrapper =  this.shadowRoot.querySelector("posts-wrapper") ; 
-    if(postsWrapper){
+  togglePostsWrapper(show) {
+    const postsWrapper = this.shadowRoot.querySelector("posts-wrapper");
+    if (postsWrapper) {
       postsWrapper.style.visibility = show ? "visible" : "hidden";
     }
   }

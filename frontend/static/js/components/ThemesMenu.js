@@ -8,6 +8,7 @@ class ThemesMenu extends HTMLElement {
         this.shadow = this.attachShadow({ mode: "open" });
         this.themes = [
             "light",
+            "dark",
             "occean-breeze",
             "sunset-glow",
             "lavander-mist",
@@ -162,7 +163,7 @@ class ThemesMenu extends HTMLElement {
     loadTheme() {
         // Load the selected theme from localStorage
         const selectedTheme = localStorage.getItem('selectedTheme');
-
+        console.log("selected theme", selectedTheme)
         if (selectedTheme) {
 
 
@@ -177,13 +178,12 @@ class ThemesMenu extends HTMLElement {
         } else {
             const systemTheme = this.getSystemTheme();
             console.log(systemTheme)
-            document.body.classList.add(this.getSystemTheme());
+            document.body.classList.add(systemTheme);
         }
     }
 
     getSystemTheme(){
         const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches ;
-        console.log("mode:", isDark) 
        return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
     }
 }

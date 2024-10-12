@@ -84,17 +84,35 @@ class PostDetails extends HTMLElement {
       box-shadow: 0 0 2rem  rgb(0, 0, 0, 0.3);
       border-radius: var(--br);
       position: relative;
+      max-height: 90vh;
   }
     
   .body{
-      max-height: 75vh;
+      max-height: 70vh;
       width: auto;
       overflow: hidden;
       scroll-behavior: smooth;
       scrollbar-width: thin;
-      scrollbar-color: rgb(var(--clr-bg-secondary)) rgb(var(--clr-text-secondary));
+      scrollbar-color: rgb(var(--clr-text-secondary)) rgb(var(--clr-bg-secondary));
       margin-bottom: 1.5rem;
   }
+/* WebKit scrollbar styles (for Chrome, Safari, Edge) */
+.body::-webkit-scrollbar {
+  width: 8px; /* Customize scrollbar width */
+}
+
+.body::-webkit-scrollbar-thumb {
+  background-color: rgb(var(--clr-text-secondary)); /* Scrollbar thumb color */
+}
+
+.body::-webkit-scrollbar-track {
+  background-color: rgb(var(--clr-bg-secondary)); /* Scrollbar track color */
+}
+
+/* Hide scrollbar arrows in WebKit browsers */
+.body::-webkit-scrollbar-button {
+  display: none;
+}
 
   .body:hover{
     overflow: hidden auto;
@@ -144,7 +162,9 @@ class PostDetails extends HTMLElement {
     width: 2.5rem;
     cursor: pointer;
 }
-
+.footer{
+  position: relative;
+}
     `
   }
 

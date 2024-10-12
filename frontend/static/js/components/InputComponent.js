@@ -42,7 +42,7 @@ class InputComponent extends HTMLElement {
   getHTMLTemplate(content) {
     const placeholder = this.dataset?.placeholder || "What's on your mind?";
     return /*html*/ `
-      <p>
+      <p part="text-container">
         <textarea part="input" placeholder="${placeholder}">${content}</textarea>
       </p>
     `;
@@ -67,20 +67,26 @@ class InputComponent extends HTMLElement {
         align-items: center;     /* Center vertically */
         min-height: 5rem;       /* Set a height to the container */
         width: 100%;            /* Set a height to the container */
+      
       }
       textarea {
         padding: 1rem;
-        padding-top: 1.25rem;
         font-size: 1.8rem;
         resize: none;
         height: 100%;           /* Height of the textarea */
         width: 100%;            /* Width of the textarea */
         overflow: hidden;
+        scroll-behavior: smooth;
+        scrollbar-width: thin;
+        scrollbar-color: rgb(var(--clr-text-secondary)) rgb(var(--clr-bg-secondary));
         border: none;
         border-radius: var(--br);
         outline: 0;
         background-color: rgb(var(--clr-bg-tertiary));
         color: rgb(var(--clr-text-primary));
+      }
+      textarea:hover{
+        overflow-y: auto;
       }
     `;
   }

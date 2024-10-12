@@ -36,11 +36,22 @@ class CommentCreator extends HTMLElement {
             font-size: 1.6rem;
         }       
         .comment-creator{
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            padding: 1rem;
+            background-color: rgb(var(--clr-bg-secondary));
+            width: 100%;
             display: grid;
             grid-template-columns: 5rem 1fr;
-            width: 100%;
-            height: auto;
         } 
+        input-c::part(text-container){
+            max-height: 20rem;
+            overflow-y: auto;
+        }
+        .col{
+            height: 100%;
+        }
         .img {
             margin-right: 1rem;
             border-radius: 50%;
@@ -64,6 +75,8 @@ class CommentCreator extends HTMLElement {
             cursor: pointer;
             transition: .5s;
             transform: rotate( 0deg);
+            margin-right: 1.5rem;
+            margin-bottom: 1.5rem;
         }       
         button:disabled{
             background-color: rgb(var(--clr-disabled-bg));
@@ -79,8 +92,7 @@ class CommentCreator extends HTMLElement {
             transform: rotate(45deg);
         }       
         .main{
-            padding-right: 2rem;
-            padding-bottom: 1rem;
+
         }
         .overflow-hidden{
             overflow: hidden;

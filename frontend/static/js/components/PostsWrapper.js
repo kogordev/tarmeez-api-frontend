@@ -185,11 +185,11 @@ export default class PostsWrapper extends HTMLElement {
     }
   }
 
-  renderSinglePost(post, fromView=false) {
+  async renderSinglePost(post, fromView=false) {
     const postsWrapper = this.shadowRoot.querySelector("#posts-wrapper");
     if (!postsWrapper) return;
 
-    const postComp = new PostComponent();
+    const postComp = await new PostComponent();
     postComp.state = post;
     postComp.id = post.id;
 
@@ -198,8 +198,8 @@ export default class PostsWrapper extends HTMLElement {
       ? postsWrapper.prepend(postComp)
       : postsWrapper.append(postComp);
 
-    this.setupPostEventListeners(postComp);
-    if(fromView) postComp.setAsNewAdded();
+      this.setupPostEventListeners(postComp);
+      if(fromView) postComp.setAsNewAdded();
   }
 
   setupPostEventListeners(postComp) {

@@ -358,8 +358,6 @@ export default class PostComponent extends HTMLElement {
         this.renderComponent(profileImage, null);
       }
     } else {
-      // Render even if the image failed to load
-      await this.preloadImage(profileImageElement);
       this.renderComponent(profileImage, null);
     }
   

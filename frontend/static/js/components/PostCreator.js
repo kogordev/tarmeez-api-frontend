@@ -1,9 +1,10 @@
 import { navigateTo } from "/static/js/utils/router.js";
 import Controller from "/static/js/controllers/controller.js";
 import state from "/static/js/utils/state.js";
+import { reset, flex, grid, card } from "/static/js/utils/cssClasses.js";
 
 function getCss() {
-  return /*css*/`
+  const postCreatorStyles =  /*css*/`
   :host{
     display: block;
 }
@@ -125,41 +126,9 @@ textarea{
     background-color: rgb(var(--clr-danger-alert)); /* Hover state for delete */
       transform: scale(1.15);
   }
-  
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-  }
-  
-  .d-hidden{
-      display: none;
-  }
-  
+    
   .hidden{
       visibility:hidden;
-  }
-  
-  .overflow-hidden{
-      overflow: hidden;
-  }
-  
-  .circle-btn {
-      border: none;
-      border-radius: 50%;
-      height: 2.5rem;
-      width: 2.5rem;
-      background-color: rgb(var(--clr-accent-secondary)); /* Circle button background */
-      cursor: pointer;
-  }
-  
-  .close-btn {
-      mask-image: url("/static/assets/images/close-button.svg");
-      mask-position: center;
-      mask-repeat: no-repeat;
-      position: absolute;
-      top: 1.25rem;
-      right: 1.5rem;
   }
   
   .btn{
@@ -169,39 +138,8 @@ textarea{
       cursor: pointer;
   }
   
-  .post-btn{
-      mask-image: url("/static/assets/images/send.svg");
-      mask-position: center;
-      mask-repeat: no-repeat;
-      position: absolute;
-      top: 1.25rem;
-      right: 1.5rem;
-      background-color: rgb(var(--clr-action-bg)); /* Post button background */
-      transition: transform .5s, background-color .5s;
-  }
-  
-  .post-btn:hover{
-      transform: rotate(45deg);
-      background-color: rgb(var(--clr-action-hover-bg)); /* Hover state for post button */
-      color: rgb(var(--clr-action-hover-text)); /* Hover text color */
-  }
-  
-  .post-btn:disabled{
-    background-color: rgb(var(--clr-disabled-bg)); /* Disabled state */
-    color: rgb(var(--clr-disabled-text));
-  }
-  
-  .main-color {
-    background-color: rgb(var(--clr-bg-primary)); /* Main background */
-    color: rgb(var(--clr-text-primary)); /* Main foreground text */
-  }
-  
   .padding {
       padding: 2rem;
-  }
-  
-  .padding-view {
-      padding-top: calc(var(--nav-h) + 4rem);
   }
   
   .margin-view {
@@ -213,96 +151,7 @@ textarea{
       height: 100%;
       width: 100%;
   }
-  
-  .card {
-    width: 680px;
-    background-color: rgb(var(--clr-bg-secondary)); /* Card background */
-    color: rgb(var(--clr-text-primary)); /* Card text color */
-    border-radius: var(--br);
-  }
-  
-  .ml-1{
-      margin-left: 1rem;
-  }
-  
-  .mb-1 {
-      margin-bottom: 1rem;
-  }
-  
-  .flex {
-      display: flex;
-  }
-  
-  .flex-col {
-      flex-direction: column;
-  }
-  
-  .flex-center {
-      justify-content: center;
-      align-items: center;
-  }
-  
-  .justify-content-center {
-      justify-content: center;
-  }
-  
-  .justify-content-between {
-      justify-content: space-between;
-  }
-  
-  .justify-content-start {
-      justify-content: start;
-  }
-  
-  .justify-content-end {
-      justify-content: end;
-  }
-  
-  .gap {
-      gap: 1rem;
-  }
-  
-  .align-items-center {
-      align-items: center;
-  }
-  
-  .align-items-top {
-      align-items: start;
-  }
-  
-  .grid {
-      display: grid;
-      gap: 1rem;
-  }
-  
-  .col-2 {
-      grid-template-columns: 45px 1fr;
-  }
-  
-  .col-3 {
-      grid-template-columns: repeat(3, 1fr);
-  }
-  
-  .col-3-custom {
-      grid-template-columns: 45px 1fr 45px;
-  }
-  
-  .bg-transparent {
-      background-color: transparent;
-  }
-  
-  .backdrop {
-      overflow: initial;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: fixed;
-      inset: 0 0 0 0;
-      height: 100vh;
-      width: 100vw;
-      background-color: rgba(var(--clr-bg-secondary), .8); /* Semi-transparent backdrop */
-      z-index: 9999;
-  }
+    
   .error{
     height: 100%;
     position: absolute;
@@ -313,6 +162,7 @@ textarea{
     font-size: 1.4rem;
   }
   `
+  return "".concat(reset, flex, grid, card, postCreatorStyles);
 }
 
 export default class PostCreator extends HTMLElement {
@@ -361,8 +211,8 @@ export default class PostCreator extends HTMLElement {
         </div>
         <div id="upload-section" class="col flex">
           <input id="file-input" type="file" accept="image/*" hidden/>
-          <button id="upload-btn" type="button">Upload Image</button>
-          <button id="delete-btn" type="button" style="display: none;">Delete Image</button>
+          <button id="upload-btn" type="button"></button>
+          <button id="delete-btn" type="button" style="display: none;"></button>
         </div>
       </div>
       <div class="submit-wrapper flex justify-content-end">
@@ -406,7 +256,7 @@ export default class PostCreator extends HTMLElement {
   }
 
   resizeTextarea(textarea) {
-    textarea.style.height = "5rem"; // Reset height for recalculation
+    textarea.style.minHeight = "5rem"; // Reset height for recalculation
     if (textarea.value.trim()) {
       textarea.style.height = `${textarea.scrollHeight}px`; // Set to content's scroll height
     }

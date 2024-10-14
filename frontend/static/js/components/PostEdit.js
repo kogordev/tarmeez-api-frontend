@@ -1,6 +1,197 @@
 import Controller from "/static/js/controllers/controller.js";
 import state from "/static/js/utils/state.js";
 import { loader } from "/static/js/utils/loader.js";
+import { reset, backdrop, flex, niceScrollbar } from "/static/js/utils/cssClasses.js";
+
+
+function getCss(){
+  const postEditStyles = /*css*/`
+  .shadow {
+    box-shadow: 0 0 .5rem rgba(0, 0, 0, 0.3);
+  }
+
+  .p {
+      padding: 1rem;
+  }
+
+  :host {
+      display: block;
+  }
+
+  .post-edit {
+      display: grid;
+      grid-template-rows:auto auto auto auto auto;
+      width: 50rem;
+      background-color: rgb(var(--clr-bg-secondary)) !important;
+      box-shadow: 0 0 2rem rgb(0, 0, 0, 0.3);
+      border-radius: var(--br);
+      overflow: hidden;
+  }
+
+  .header {
+      position: relative;
+      padding: 1rem;
+  }
+
+  .user-info {
+      padding-inline: 2rem;
+      margin-bottom: 1rem;
+  }
+
+  .profile-img {
+      height: 3.5rem;
+      width: 3.5rem;
+      object-fit: contain;
+      border-radius: 50%;
+  }
+
+  .img-wrapper {
+      padding: 1.5rem;
+      border: 1px solid rgb(var(--clr-text-secondary)) !important;
+      min-height: 50rem;
+      overflow: hidden;
+      width: 450px;
+      height: 517.38px;
+      border-radius: var(--br);
+      position: relative;
+  }
+
+  .post-img {
+      object-fit: cover;
+      height: 100%;
+      width: 100%;
+  }
+
+  .body {
+      padding-top: 1rem;
+      padding-inline: 2rem;
+      max-height: 60vh;
+      scroll-behavior: smooth;
+      overflow: hidden;
+      margin-bottom: .5rem;
+  }
+  .body:hover{
+    overflow-y: auto;
+  }
+
+  .footer {
+      margin-bottom: 3.5rem;
+  }
+
+  #submit-btn {
+      border: none;
+      background-color: rgb(var(--clr-action-bg)) !important;
+      color: rgb(var(--clr-action-text)) !important;
+      padding: 1.5rem;
+      border-radius: var(--br);
+      cursor: pointer;
+      transition: background-color .3s;
+  }
+
+  #submit-btn:hover {
+      background-color: rgb(var(--clr-action-hover-bg)) !important; /* Hover background (darker teal) */
+      color: rgb(var(--clr-action-hover-text)) !important; /* White text for hover state */
+  }
+
+  #submit-btn:disabled {
+      background-color: rgb(var(--clr-disabled-bg)) !important;
+      color: rgb(var(--clr-disabled-text)) !important;
+  }
+
+
+  #remove-btn {
+      border-radius: 50%;
+      height: 3.5rem;
+      width: 3.5rem;
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      mask-image: url("/static/assets/images/close-button.svg");
+      color: rgb(var(--clr-text-primary)) !important;
+      z-index: 999;
+  }
+
+  span {
+      font-size: 1.6rem;
+  }
+
+  .options {
+      padding: 2rem;
+  }
+
+  input-c::part(input) {
+      background-color: rgb(var(--clr-bg-tertiary)) !important;
+      padding-top: 1.5rem;
+      border: 1px solid rgb(var(--clr-secondary-foreground)) !important;
+  }
+
+  input-c::part(input):focus {
+      border:.2rem solid rgb(var(--clr-action-bg)) !important;
+  }
+
+  .error-msg {
+      margin-bottom: 1rem;
+      color: red;
+      font-size: 1.4rem;
+  }
+
+  #username {
+      display: inline-block;
+      font-size: 1.6rem;
+      font-weight: 600;
+      text-transform: capitalize;
+  }
+
+  #created-at {
+      display: inline-block;
+      font-weight: 300;
+      font-size: 1.3rem;
+  }
+
+  .btn {
+    border: none;
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: cover;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+
+  #upload-btn {
+      border: none;
+      padding: 1.5rem;
+      mask-image: url("/static/assets/images/img.svg");
+      background-color: rgb(var(--clr-accent-primary)) !important;
+  }
+
+  .btn{
+    border: none;
+    height: 2.5rem;
+    width: 2.5rem;
+    cursor: pointer;
+  }
+
+  .circle-btn {
+    border: none;
+    border-radius: 50%;
+    height: 2.5rem;
+    width: 2.5rem;
+    background-color: rgb(var(--clr-text-primary)) !important;
+    cursor: pointer;
+  }
+
+  .close-btn {
+    mask-image: url("/static/assets/images/close-button.svg");
+    mask-position: center;
+    mask-repeat: no-repeat;
+    position: absolute;
+    top: 1.25rem;
+    right: 1.5rem;
+  }`;
+
+  return "".concat(reset, backdrop, flex,niceScrollbar, postEditStyles)
+}
+
 
 class PostEdit extends HTMLElement {
   constructor() {
@@ -43,273 +234,10 @@ class PostEdit extends HTMLElement {
    this.dispatchEvent(new CustomEvent("closed"))
   }
 
-  getCss(){
-    return /*css*/`
-    .shadow {
-      box-shadow: 0 0 .5rem rgba(0, 0, 0, 0.3);
-  }
   
-  .p {
-      padding: 1rem;
-  }
-  
-  :host {
-      display: block;
-  }
-  
-  * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-  }
-  
-  .backdrop {
-      overflow: initial;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: fixed;
-      inset: 0 0 0 0;
-      height: 100vh;
-      width: 100vw;
-      background-color: rgba(var(--clr-bg-secondary), .8) !important;
-      z-index: 9999;
-  }
-  
-  .post-edit {
-      display: grid;
-      grid-template-rows:auto auto auto auto auto;
-      width: 50rem;
-      background-color: rgb(var(--clr-bg-secondary)) !important;
-      box-shadow: 0 0 2rem rgb(0, 0, 0, 0.3);
-      border-radius: var(--br);
-      overflow: hidden;
-  }
-  
-  .header {
-      position: relative;
-      padding: 1rem;
-  }
-  
-  .user-info {
-      padding-inline: 2rem;
-      margin-bottom: 1rem;
-  }
-  
-  .profile-img {
-      height: 3.5rem;
-      width: 3.5rem;
-      object-fit: contain;
-      border-radius: 50%;
-  }
-  
-  .img-wrapper {
-      padding: 1.5rem;
-      border: 1px solid rgb(var(--clr-text-secondary)) !important;
-      min-height: 50rem;
-      overflow: hidden;
-      width: 450px;
-      height: 517.38px;
-      border-radius: var(--br);
-      position: relative;
-  }
-  
-  .post-img {
-      object-fit: cover;
-      height: 100%;
-      width: 100%;
-  }
-  
-  .body {
-      padding-top: 1rem;
-      padding-inline: 2rem;
-      max-height: 60vh;
-      scroll-behavior: smooth;
-      overflow: hidden;
-      scroll-behavior: smooth;
-      scrollbar-width: thin;
-      scrollbar-color: rgb(var(--clr-text-secondary)) rgb(var(--clr-bg-secondary));
-  }
-  .body:hover{
-    overflow-y: auto;
-  }
-  
-  .footer {
-      margin-bottom: 3.5rem;
-  }
-  
-  #submit-btn {
-      border: none;
-      background-color: rgb(var(--clr-action-bg)) !important;
-      color: rgb(var(--clr-action-text)) !important;
-      padding: 1.5rem;
-      border-radius: var(--br);
-      cursor: pointer;
-      transition: background-color .3s;
-  }
-  
-  #submit-btn:hover {
-      background-color: rgb(var(--clr-action-hover-bg)) !important; /* Hover background (darker teal) */
-      color: rgb(var(--clr-action-hover-text)) !important; /* White text for hover state */
-  }
-  
-  #submit-btn:disabled {
-      background-color: rgb(var(--clr-disabled-bg)) !important;
-      color: rgb(var(--clr-disabled-text)) !important;
-  }
-  
-  
-  #remove-btn {
-      border-radius: 50%;
-      height: 3.5rem;
-      width: 3.5rem;
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      mask-image: url("/static/assets/images/close-button.svg");
-      color: rgb(var(--clr-text-primary)) !important;
-      z-index: 999;
-  }
-  
-  .btn {
-      border: none;
-      mask-position: center;
-      mask-repeat: no-repeat;
-      mask-size: cover;
-      cursor: pointer;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  }
-  
-  #upload-btn {
-      border: none;
-      padding: 1.5rem;
-      mask-image: url("/static/assets/images/img.svg");
-      background-color: rgb(var(--clr-accent-primary)) !important;
-  }
-  
-  span {
-      font-size: 1.6rem;
-  }
-  
-  .options {
-      padding: 2rem;
-  }
-  
-  input-c::part(input) {
-      background-color: rgb(var(--clr-bg-tertiary)) !important;
-      padding-top: 1.5rem;
-      border: 1px solid rgb(var(--clr-secondary-foreground)) !important;
-  }
-  
-  input-c::part(input):focus {
-      border:.2rem solid rgb(var(--clr-action-bg)) !important;
-  }
-  
-  .error-msg {
-      margin-bottom: 1rem;
-      color: red;
-      font-size: 1.4rem;
-  }
-  
-  #username {
-      display: inline-block;
-      font-size: 1.6rem;
-      font-weight: 600;
-      text-transform: capitalize;
-  }
-  
-  #created-at {
-      display: inline-block;
-      font-weight: 300;
-      font-size: 1.3rem;
-  }
-  .circle-btn {
-    border: none;
-    border-radius: 50%;
-    height: 2.5rem;
-    width: 2.5rem;
-    background-color: rgb(var(--clr-text-primary)) !important;
-    cursor: pointer;
-}
-
-.close-btn {
-    mask-image: url("/static/assets/images/close-button.svg");
-    mask-position: center;
-    mask-repeat: no-repeat;
-    position: absolute;
-    top: 1.25rem;
-    right: 1.5rem;
-}
-
-.flex {
-  display: flex;
-}
-.flex-center {
-  justify-content: center;
-  align-items: center;
-}
-.gap {
-  gap: 1rem;
-}
-.align-items-center {
-  align-items: center;
-}
-.btn{
-  border: none;
-  height: 2.5rem;
-  width: 2.5rem;
-  cursor: pointer;
-}
-.circle-btn {
-  border: none;
-  border-radius: 50%;
-  height: 2.5rem;
-  width: 2.5rem;
-  background-color: rgb(var(--clr-accent-primary)) !important;
-  cursor: pointer;
-}
-
-.close-btn {
-  mask-image: url("/static/assets/images/close-button.svg");
-  mask-position: center;
-  mask-repeat: no-repeat;
-  position: absolute;
-  top: 1.25rem;
-  right: 1.5rem;
-}
-
-.btn{
-  border: none;
-  height: 2.5rem;
-  width: 2.5rem;
-  cursor: pointer;
-}
-
-.flex {
-  display: flex;
-}
-
-.flex-col {
-  flex-direction: column;
-}
-
-.flex-center {
-  justify-content: center;
-  align-items: center;
-}
-.align-items-center {
-  align-items: center;
-}
-
-.gap {
-  gap: 1rem;
-}
-    `
-  }
-
   addStyle(){
     const style = document.createElement("style");
-    style.textContent = this.getCss().trim();
+    style.textContent = getCss().trim();
     this.shadow.appendChild(style);
   }
 
@@ -339,16 +267,16 @@ class PostEdit extends HTMLElement {
             <button id="close-btn" class="circle-btn close-btn"></button>
           </div>
           <div class="user-info flex gap">
-            <img height="40" width="40" class="profile-img" src="${profileImg}" alt="profile image"/>
+            <img loading="lazy" height="40" width="40" class="profile-img" src="${profileImg}" alt="profile image"/>
             <div class="flex flex-col ml-1">
               <span id="username">${username}</span>
               <span id="created-at">${created_at}</span>
             </div>
           </div>
-          <div class="body flex flex-col gap">
+          <div class="body niceScrollbar flex flex-col gap">
             <input-c data-input-value="${content}"></input-c>
             <div class="img-wrapper flex flex-center" style="display: none;">
-              <img width="466" height="517.38" class="post-img" src="${img}" alt="post image"/>
+              <img loading="lazy" width="466" height="517.38" class="post-img" src="${img}" alt="post image"/>
               <button id="remove-btn" class="btn"></button>
             </div>
           </div>

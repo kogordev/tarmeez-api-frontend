@@ -1,7 +1,8 @@
 import Controller from "/static/js/controllers/controller.js";
+import { reset, flex, grid, card } from "/static/js/utils/cssClasses.js";
 
 function getCss() {
-  return /*css*/`
+  const dashBoardStyles =  /*css*/`
   :host{
     display: block;
   }  
@@ -45,39 +46,17 @@ function getCss() {
   .padding {
     padding: 2rem;
   }
-  .grid {
-      display: grid;
-      gap: 1rem;
-  }
-  .col-3 {
-      grid-template-columns: repeat(3, 1fr);
-  }
+
   .hidden{
     visibility:hidden;
   }
-  .flex {
-      display: flex;
-  }
-  .flex-col {
-      flex-direction: column;
-  }
-  .flex-center {
-    justify-content: center;
-    align-items: center;
-  }
-  .gap {
-      gap: 1rem;
-  }
-  .card {
-    width: 680px;
-    background-color: rgb(var(--clr-bg-secondary));
-    color: rgb(var(--clr-text-primary));
-    border-radius: var(--br);
-  }
+
   .img-col{
     position: relative;
   }
-    `
+    `;
+
+    return "".concat(reset, flex, grid, card, dashBoardStyles);
 }
 
 export default class DashboardComponent extends HTMLElement {

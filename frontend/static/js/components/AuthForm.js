@@ -1,45 +1,17 @@
 import Controller from "/static/js/controllers/controller.js";
 import state from "/static/js/utils/state.js";
+import {reset, backdrop, flex} from "/static/js/utils/cssClasses.js";
 
 function getCss() {
-    return /*css*/`
+    const authFormStyles = /*css*/`
     *{
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
         font-size: 1.8rem;
+    }
+
+    .wrapper, input, button, .slider{
         border-radius: var(--br);
-    }
-    .flex{
-        display: flex;
-    }
-    .flex-col{
-        flex-direction: column;
-    }
-    .flex-center{
-        align-items: center;
-        justify-content: center;
-    }
-    .justify-content-center{
-        justify-content: center;
-    }
-    .justify-content-between{
-        justify-content: space-between;
-    }
-    .align-items-center{
-        align-items: center;
-    }
-    .gap{
-        gap: 1.5rem;
-    }
-    .backdrop{
-        position: fixed;
-        inset: 0 0 0 0;
-        height: 100vh;
-        width: 100vw;
-        background-color: rgba(0,0,0, 0.9);
-        z-index: 99999;
-    }
+    } 
+
     .wrapper{
         width: 50rem;
         height: 70rem;
@@ -48,6 +20,9 @@ function getCss() {
         color: rgb(var(--clr-text-primary));
         position: relative;
         overflow: hidden;
+        shadow: 0 0 6px rgb(0, 0, 0);
+        border: 1px solid rgba(0,0,0, .5);
+        border-radius: var(--br);
     }
     .slider-wrapper{
         height: 6rem;
@@ -63,6 +38,7 @@ function getCss() {
     .slider-wrapper, form{
         width: 40rem;
     }
+
     .slider{
         width: 20rem;
         height: 6rem;
@@ -71,12 +47,15 @@ function getCss() {
         top: 0;
         right: 0;
     }
+
     .radio{
         display: none;
     }
+
     .slider, label, form{
         transition: all 0.5s cubic-bezier(.8, -.6, .4, -.3);
     }
+
     label{
         display: inline-block;
         height: 100%;
@@ -88,9 +67,11 @@ function getCss() {
         z-index: 10;
         cursor: pointer;
     }
+
     input, button{
         width: 40rem;
     }
+
     input{
         border: 1px solid rgb(var(--clr-border));
         height: 5rem;
@@ -99,18 +80,22 @@ function getCss() {
         background-color: inherit;
         color: rgb(var(--clr-text-primary));
     }
+
     input:focus{
         border: 2px solid rgb(var(--clr-action-bg));
     }
+
     form{
         height: 100%;
         width: 100%;
     }
+
     form h2{
         font-size: 4rem;
         margin-top: 4rem;
         margin-bottom:16rem;
     }
+
     .btn{
         border: none;
         background-color: rgb(var(--clr-action-bg));
@@ -119,48 +104,61 @@ function getCss() {
         padding: 2rem;
         cursor: pointer
     }
+
     .signupHide{
         transform:translateX(500px);
     }
+
     .loginHide{
         transform: translateX(-500px);
     }
+
     .container{
         display: block;
         width: 100%;
         height:100%;
     }
+    
     .translateCenter{
         transform:translateX(50%);
     }
+
     .centerSignup{
         transform: translateX(-50%);
     }
+
     .centerLogin{
         transform: translateX(50%);
     }
+
     .footer{
         margin-top: 5rem;
     }
+
     .slider-container{
         height: 100%;
         position: relative
     }
+
     .active{
         color: rgb(var(--clr-action-text))
     }
+
     .footer p{
         font-size: 1.8rem;
         padding-block: 4rem;
     }
+
     #signupLink{
         font-size: 1.8rem;
         color: rgb(var(--clr-link));
         text-decoration: none;
     }
+
     #fileInput{
         display: none;
     }
+
     .displayInfo{
         padding: 1rem;
         font-size: 1.4rem;
@@ -172,9 +170,11 @@ function getCss() {
         position: absolute;
         bottom: -3.5rem;
     }
+
     .position-relative{
         position: relative;
     }
+
     .circle-btn {
         border: none;
         border-radius: 50%;
@@ -194,6 +194,7 @@ function getCss() {
         right: 1.5rem;
     }
     `
+    return "".concat(reset, backdrop, flex, authFormStyles);
 }
 
 export default class AuthForm extends HTMLElement {

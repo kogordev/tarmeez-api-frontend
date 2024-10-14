@@ -1,6 +1,80 @@
 import { navigateTo } from "/static/js/utils/router.js";
 import Controller from "/static/js/controllers/controller.js";
 import state from "/static/js/utils/state.js"
+import { reset, flex } from "/static/js/utils/cssClasses.js";
+
+function  getCss() {
+    return /*css*/`
+    :host{
+        display: block;
+    }
+    *{
+        font-size: 1.6rem;
+    }       
+    .comment-creator{
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        padding: 1rem;
+        background-color: rgb(var(--clr-bg-secondary));
+        width: 100%;
+        display: grid;
+        grid-template-columns: 5rem 1fr;
+    } 
+    input-c::part(text-container){
+        max-height: 20rem;
+        overflow-y: auto;
+    }
+    .col{
+        height: 100%;
+    }
+    .img {
+        margin-right: 1rem;
+        border-radius: 50%;
+        object-fit: cover;
+        cursor: pointer;
+        transition: .2s;
+    }       
+    .main{
+        background-color: rgb(var(--clr-bg-tertiary));
+        color: rgb(var(--clr-text-secondary));
+        border-radius: var(--br);
+    }       
+    button{
+        height: 2.5rem;
+        width: 2.5rem;
+        mask-image: url("/static/assets/images/send.svg");
+        mask-position: center;
+        mask-size: cover;
+        mask-repeat: no-repeat;
+        border: none;
+        cursor: pointer;
+        transition: .5s;
+        transform: rotate( 0deg);
+        margin-right: 1.5rem;
+        margin-bottom: 1.5rem;
+    }       
+    button:disabled{
+        background-color: rgb(var(--clr-disabled-bg));
+        color: rgb(var(--clr-disabled-text));
+        transform: rotate(0deg);
+    }  
+    button:hover{
+        background-color: rgb(var(--clr-submit-hover-bg));
+        background-color: rgb(var(--clr-submit-hover-light-bg-text));
+    }      
+    .active{
+        background-color: rgb(var(--clr-action-bg));
+        transform: rotate(45deg);
+    }       
+    .main{
+
+    }
+    .overflow-hidden{
+        overflow: hidden;
+    }
+    `.concat(reset, flex);
+}
 
 class CommentCreator extends HTMLElement {
     constructor() {
@@ -27,94 +101,9 @@ class CommentCreator extends HTMLElement {
         this.style.display = "block";
     }
 
-    getCss() {
-        return /*css*/`
-        :host{
-            display: block;
-        }
-        *{
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-size: 1.6rem;
-        }       
-        .comment-creator{
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            padding: 1rem;
-            background-color: rgb(var(--clr-bg-secondary));
-            width: 100%;
-            display: grid;
-            grid-template-columns: 5rem 1fr;
-        } 
-        input-c::part(text-container){
-            max-height: 20rem;
-            overflow-y: auto;
-        }
-        .col{
-            height: 100%;
-        }
-        .img {
-            margin-right: 1rem;
-            border-radius: 50%;
-            object-fit: cover;
-            cursor: pointer;
-            transition: .2s;
-        }       
-        .main{
-            background-color: rgb(var(--clr-bg-tertiary));
-            color: rgb(var(--clr-text-secondary));
-            border-radius: var(--br);
-        }       
-        button{
-            height: 2.5rem;
-            width: 2.5rem;
-            mask-image: url("/static/assets/images/send.svg");
-            mask-position: center;
-            mask-size: cover;
-            mask-repeat: no-repeat;
-            border: none;
-            cursor: pointer;
-            transition: .5s;
-            transform: rotate( 0deg);
-            margin-right: 1.5rem;
-            margin-bottom: 1.5rem;
-        }       
-        button:disabled{
-            background-color: rgb(var(--clr-disabled-bg));
-            color: rgb(var(--clr-disabled-text));
-            transform: rotate(0deg);
-        }  
-        button:hover{
-            background-color: rgb(var(--clr-submit-hover-bg));
-            background-color: rgb(var(--clr-submit-hover-light-bg-text));
-        }      
-        .active{
-            background-color: rgb(var(--clr-action-bg));
-            transform: rotate(45deg);
-        }       
-        .main{
-
-        }
-        .overflow-hidden{
-            overflow: hidden;
-        }
-        .flex {
-            display: flex;
-        }
-        .justify-content-center {
-            justify-content: center;
-        }
-        .justify-content-end {
-            justify-content: end;
-        }
-        `
-    }
-
     addStyle() {
         const style = document.createElement("style");
-        style.textContent = this.getCss().trim();
+        style.textContent = getCss().trim();
         this.shadowRoot.appendChild(style);
     }
 

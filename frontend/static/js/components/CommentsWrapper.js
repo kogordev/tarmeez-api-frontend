@@ -1,5 +1,64 @@
 import Controller from "/static/js/controllers/controller.js";
 import { navigateTo } from "/static/js/utils/router.js";
+import { reset, flex } from "/static/js/utils/cssClasses.js";
+
+function  getCss() {
+  const commentsWrapper = /*css*/`
+  .comments-wrapper{
+    border-top: 1px solid rgb(var(--clr-border)) !important;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    gap: 1.5rem;
+  }   
+  ul{
+      list-style: none;
+      padding-left: 1rem;
+  }    
+  .comment{
+      font-size: 1.6rem;
+      width: auto;
+      /*background: green*/
+  }    
+  img{
+      height: 3.5rem;
+      width: 3.5rem;
+      margin-top: 1rem;
+      border-radius: 50%;
+      object-fit: cover;
+      cursor: pointer;
+  }   
+  span{
+      font-size: 1rem;
+      color: rgb(var(--clr-bg-secondary)) !important;
+  }   
+  .body{
+      display: inline-block;
+      background-color: rgb(var(--clr-bg-tertiary)) !important;
+      border-radius: 1.2rem;
+      padding: 1rem;
+      width: auto;
+  }    
+  .username{
+      display: block;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      letter-spacing: .1rem;
+      text-transform: capitalize;
+      color: rgb(var(--clr-text-primary)) !important;
+  }   
+  .content{
+      display: block;
+      font-size: 1.5rem;
+      text-indent: .5rem;
+      color: rgb(var(--clr-text-secondary)) !important;
+  }
+  .clickable{
+    color: rgb(var(--clr-link));
+  }   
+  `
+  return "".concat(reset, flex, commentsWrapper);
+}
 
 class CommentsWrapper extends HTMLElement {
   constructor() {
@@ -36,86 +95,9 @@ class CommentsWrapper extends HTMLElement {
     }
   }
 
-  getCss() {
-    return /*css*/`
-    *{
-      padding: 0;
-      margin: 0;
-      box-sizing: border-box;
-    }
-    .flex {
-      display: flex;
-    }    
-    .flex-col {
-        flex-direction: column;
-    }
-    .gap {
-      gap: 1rem;
-    }
-    .justify-content-center {
-      justify-content: center;
-    }
-    .justify-content-start {
-      justify-content: start;
-    }
-    .comments-wrapper{
-      border-top: 1px solid rgb(var(--clr-border)) !important;
-      margin-top: 1.5rem;
-      padding-top: 1.5rem;
-      gap: 1.5rem;
-    }   
-    ul{
-        list-style: none;
-        padding-left: 1rem;
-    }    
-    .comment{
-        font-size: 1.6rem;
-        width: auto;
-        /*background: green*/
-    }    
-    img{
-        height: 3.5rem;
-        width: 3.5rem;
-        margin-top: 1rem;
-        border-radius: 50%;
-        object-fit: cover;
-        cursor: pointer;
-    }   
-    span{
-        font-size: 1rem;
-        color: rgb(var(--clr-bg-secondary)) !important;
-    }   
-    .body{
-        display: inline-block;
-        background-color: rgb(var(--clr-bg-tertiary)) !important;
-        border-radius: 1.2rem;
-        padding: 1rem;
-        width: auto;
-    }    
-    .username{
-        display: block;
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        letter-spacing: .1rem;
-        text-transform: capitalize;
-        color: rgb(var(--clr-text-primary)) !important;
-    }   
-    .content{
-        display: block;
-        font-size: 1.5rem;
-        text-indent: .5rem;
-        color: rgb(var(--clr-text-secondary)) !important;
-    }
-    .clickable{
-      color: rgb(var(--clr-link));
-    }   
-    `
-  }
-
   addStyle(){
     const style = document.createElement("style");
-    style.textContent = this.getCss().trim();
+    style.textContent = getCss().trim();
     this.shadowRoot.appendChild(style);
   }
 

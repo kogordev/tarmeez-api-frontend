@@ -1,9 +1,9 @@
 import Controller from "/static/js/controllers/controller.js";
 import state from "/static/js/utils/state.js";
-
+import { backdrop, niceScrollbar } from "/static/js/utils/cssClasses.js";
 
 function getCss() {
-  return /*css*/`
+  const postDetailsStyless =  /*css*/`
   :host {
     display: block;
     transition: visibility .3s;
@@ -15,18 +15,6 @@ function getCss() {
   font-size: 1.6rem;
 }
 
-.backdrop {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    inset: 0 0 0 0;
-    height: 100vh;
-    width: 100vw;
-    background-color: rgba(var(--clr-bg-secondary), .8);
-    z-index: 9999;
-}
-
 .post-details {
     display: grid;
     grid-template-rows: 5rem auto auto;
@@ -36,15 +24,13 @@ function getCss() {
     border-radius: var(--br);
     position: relative;
     max-height: 90vh;
+    overflow: hidden
 }
   
 .body{
     max-height: 70vh;
     width: auto;
     overflow: hidden;
-    scroll-behavior: smooth;
-    scrollbar-width: thin;
-    scrollbar-color: rgb(var(--clr-text-secondary)) rgb(var(--clr-bg-secondary));
     margin-bottom: 1.5rem;
 }
 /* WebKit scrollbar styles (for Chrome, Safari, Edge) */
@@ -116,6 +102,8 @@ display: none;
   cursor: pointer;
 }
   `
+
+  return "".concat(backdrop, niceScrollbar, postDetailsStyless)
 }
 
 class PostDetails extends HTMLElement {
@@ -210,7 +198,7 @@ class PostDetails extends HTMLElement {
                     <h2>Post by ${username}</h2>
                     <button id="close-btn" class="circle-btn close-btn"></button>
                 </div>
-                <div class="col body">
+                <div class="col body niceScrollbar">
                     <div id="post-section"></div>
                     <div id="comments-wrapper-section"></div>
                 </div>

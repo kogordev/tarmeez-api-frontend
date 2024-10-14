@@ -2,14 +2,12 @@ import Controller from "/static/js/controllers/controller.js";
 import state from "/static/js/utils/state.js";
 import { navigateTo } from "/static/js/utils/router.js";
 import { isRTL } from "/static/js/utils/utils.js";
+import { reset, flex } from "/static/js/utils/cssClasses.js";
 
 
 function  getCss() {
-  return /*css*/`
+  const postStyles = /*css*/`
   *{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
     font-size: 1.5rem;
   }
   a {
@@ -243,47 +241,6 @@ function  getCss() {
   .newPost{
     background-color: rgba(var(--clr-accent-primary), .6) !important;
   }
-  
-.flex {
-display: flex;
-}
-
-.flex-col {
-flex-direction: column;
-}
-
-.flex-center {
-justify-content: center;
-align-items: center;
-}
-
-.justify-content-center {
-justify-content: center;
-}
-
-.justify-content-between {
-justify-content: space-between;
-}
-
-.justify-content-start {
-justify-content: start;
-}
-
-.justify-content-end {
-justify-content: end;
-}
-
-.gap {
-gap: 1rem;
-}
-
-.align-items-center {
-align-items: center;
-}
-
-.align-items-top {
-align-items: start;
-}
 
 #profile-img{
   border-radius: 50%;
@@ -292,6 +249,8 @@ align-items: start;
 
   /* Add other styles here */
       `;
+
+return "".concat(reset, flex, postStyles);
 }
 
 

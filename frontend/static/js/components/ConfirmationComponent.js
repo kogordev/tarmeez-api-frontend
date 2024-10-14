@@ -1,3 +1,38 @@
+import { backdrop, reset } from "/static/js/utils/cssClasses.js";
+
+function getCSS() {
+    const confirmationStyles =  /*css*/`
+
+    .wrapper {
+        padding: 2rem;
+        background-color: rgb(var(--clr-bg-secondary));
+        color: rgb(var(--clr-text-primary));
+        border-radius: var(--br);
+        font-size: 2rem;
+        font-weight: 600;
+        user-select: none;
+    }
+    .footer {
+        padding-top: 3rem;
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+    }
+    .button {
+        border: none;
+        border-radius: var(--br);
+        cursor: pointer;
+        padding: 1rem;
+    }
+    #confirm-btn {
+        background-color: rgb(var(--clr-action-bg));
+        color: rgb(var(--clr-action-text));
+    }
+    `;
+
+    return "".concat(reset, backdrop, confirmationStyles);
+}
+
 export default class ConfirmationComponent extends HTMLElement {
     constructor(msg) {
         super();
@@ -39,54 +74,11 @@ export default class ConfirmationComponent extends HTMLElement {
 
     addStyles() {
         const style = document.createElement("style");
-        style.textContent = this.getCSS();
+        style.textContent = getCSS();
         this.shadow.appendChild(style);
     }
 
-    getCSS() {
-        return /*css*/`
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        .backdrop {
-            position: fixed;
-            inset: 0;
-            background-color: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 99999;
-        }
-        .wrapper {
-            padding: 2rem;
-            background-color: rgb(var(--clr-bg-secondary));
-            color: rgb(var(--clr-text-primary));
-            border-radius: var(--br);
-            font-size: 2rem;
-            font-weight: 600;
-            user-select: none;
-        }
-        .footer {
-            padding-top: 3rem;
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-        }
-        .button {
-            border: none;
-            border-radius: var(--br);
-            cursor: pointer;
-            padding: 1rem;
-        }
-        #confirm-btn {
-            background-color: rgb(var(--clr-action-bg));
-            color: rgb(var(--clr-action-text));
-        }
-        `;
-    }
-
+   
     attachEventListeners() {
         this.shadow.querySelector("#confirm-btn").addEventListener("click", () => this.dispatchResult(true));
         this.shadow.querySelector("#cancel-btn").addEventListener("click", () => this.dispatchResult(false));

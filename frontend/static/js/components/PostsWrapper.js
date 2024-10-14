@@ -1,35 +1,11 @@
 import PostComponent from "/static/js/components/PostComponent.js";
 import Controller from "/static/js/controllers/controller.js";
 
+import { reset, flex, card } from "/static/js/utils/cssClasses.js";
+
 function getCss() {
-  return /*css*/`
-  *{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  .card {
-    width: 680px;
-    background-color: rgb(var(--clr-bg-secondary));
-    color: rgb(var(--clr-text-primary));
-    border-radius: var(--br);
-  }
-  .flex {
-    display: flex;
-  } 
-  .flex-center{
-    justify-content: center;
-    align-items: center;
-  }
-  .flex-col {
-    flex-direction: column;
-  }
-  .justify-content-center {
-    justify-content: center;
-  }
-  .gap {
-      gap: 1rem;
-  }
+  const postsWrapperStyles = /*css*/`
+
   .bg-transparent {
     background-color: transparent !important;
   }
@@ -45,17 +21,12 @@ function getCss() {
     color: rgb(var(--clr-danger-bg));
     font-size: 2rem;
   }
-  .card {
-    width: 680px;
-    background-color: rgb(var(--clr-bg-secondary));
-    color: rgb(var(--clr-text-primary));
-    border-radius: var(--br);
-  }
   .spinner{
     position: relative;
     height: 10rem;
   }
   `
+  return "".concat(reset, flex, card, postsWrapperStyles);
 }
 
 export default class PostsWrapper extends HTMLElement {

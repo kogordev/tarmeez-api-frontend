@@ -1,0 +1,560 @@
+
+.light {
+    /* Background Colors */
+    --clr-bg-primary: 240, 250, 255;
+    /* Very Light Blue for the main background */
+    --clr-bg-secondary: 255, 255, 255;
+    /* Pure White for secondary backgrounds */
+    --clr-bg-tertiary: 245, 245, 245;
+    /* Light Gray for tertiary backgrounds */
+
+    /* Foreground Colors */
+    --clr-text-primary: 20, 20, 20;
+    /* Dark Charcoal for primary text */
+    --clr-text-secondary: 50, 50, 50;
+    /* Darker Gray for secondary text for better contrast */
+    --clr-text-tertiary: 20, 20, 20;
+    /* Same as primary text for tertiary use */
+
+    /* Accent Colors */
+    --clr-accent-primary: 255, 165, 0;
+    /* Bright Orange for highlights */
+    --clr-accent-secondary: 30, 144, 255;
+    /* Dodger Blue for base accents */
+    --clr-accent-light: 124, 252, 0;
+    /* Light Green for softer accents */
+    --clr-accent-text: 30, 50, 50;
+    /* Pure White for text on accent backgrounds */
+
+    /* Action States */
+    --clr-action-bg: 60, 179, 113;
+    /* Medium Sea Green for active background */
+    --clr-action-text: 255, 255, 255;
+    /* White text for active state */
+    --clr-action-hover-bg: 50, 205, 50;
+    /* Lime Green for hover background */
+    --clr-action-hover-text: 255, 255, 255;
+    /* White text for hover state */
+
+    /* Active State */
+    --clr-active-bg: 30, 144, 255; /* Dodger Blue for the active background */
+    --clr-active-text: 255, 255, 255; /* White for the active tab text */
+
+    /* Inactive State */
+    --clr-inactive-bg: 180, 190, 195; /* Light background for inactive tab */
+    --clr-inactive-text: 50, 50, 50;  /* Gray text for inactive tab */    
+
+    /* Disabled States */
+    --clr-disabled-bg: 230, 230, 230;
+    /* Light Gray for disabled background */
+    --clr-disabled-text: 150, 150, 150;
+    /* Medium Gray for disabled text */
+    --clr-disabled-bg-secondary: 200, 200, 200;
+    /* Light Gray for secondary disabled background */
+    --clr-disabled-text-secondary: 180, 180, 180;
+    /* Light Gray for secondary disabled text */
+
+    /* Danger (Error) State */
+    --clr-danger: 255, 0, 0;
+    /* Crimson for danger background */
+    --clr-danger-hover: 255, 55, 115;
+    --clr-danger-alert: 250, 60, 120;
+
+    /* Submit Button States */
+    --clr-submit-bg: 30, 144, 255;
+    /* Dodger Blue background for submit button */
+    --clr-submit-text: 255, 255, 255;
+    /* White text for submit button */
+    --clr-submit-hover-bg: 55, 165, 255;
+    /* Darker Dodger Blue for hover state */
+    --clr-submit-hover-text: 250, 250, 250;
+    --clr-submit-hover-light-bg-text: 50, 50, 50;
+    /* White text for hover state */
+
+    /* Hover and Miscellaneous */
+    --clr-hover-bg: 245, 245, 255;
+
+    /* Alice Blue for menu options */
+    --clr-border: 200, 200, 200;
+    /* Light gray for borders */
+
+    /* Clickable Links */
+    --clr-link: 0, 191, 255;
+    /* Deep Sky Blue for clickable links */
+
+    --clr-processing-bg: 0, 191, 255;
+    /* Deep Sky Blue for data processing */
+    --clr-processing-gradient: linear-gradient(90deg, rgba(0, 191, 255, 1) 0%, rgba(124, 252, 0, 1) 100%);
+}
+
+.dark {
+    /* Background Colors */
+    --clr-bg-primary: 18, 18, 18;
+    /* Very Dark Gray for main background */
+    --clr-bg-secondary: 28, 28, 28;
+    /* Dark Gray for secondary backgrounds */
+    --clr-bg-tertiary: 38, 38, 38;
+    /* Slightly lighter dark gray for tertiary backgrounds */
+
+    /* Foreground Colors */
+    --clr-text-primary: 255, 255, 255;
+    /* White for primary text */
+    --clr-text-secondary: 200, 200, 200;
+    /* Light Gray for secondary text */
+    --clr-text-tertiary: 180, 180, 180;
+    /* Lighter Gray for tertiary text */
+
+    /* Accent Colors */
+    --clr-accent-primary: 255, 165, 0;
+    /* Bright Orange for highlights */
+    --clr-accent-secondary: 30, 144, 255;
+    /* Dodger Blue for base accents */
+    --clr-accent-light: 124, 252, 0;
+    /* Light Green for softer accents */
+    --clr-accent-text: 0, 0, 0;
+    /* Black for text on accent backgrounds */
+
+    /* Action States */
+    --clr-action-bg: 60, 179, 113;
+    /* Medium Sea Green for active background */
+    --clr-action-text: 255, 255, 255;
+    /* White text for active state */
+    --clr-action-hover-bg: 50, 205, 50;
+    /* Lime Green for hover background */
+    --clr-action-hover-text: 255, 255, 255;
+    /* White text for hover state */
+
+    /* Active State */
+    --clr-active-bg: 30, 144, 255; /* Dodger Blue for the active background */
+    --clr-active-text: 255, 255, 255; /* White for the active tab text */
+    /* Active hover state */
+    --clr-active-bg: 80, 194, 255; /* Dodger Blue for the active background */
+    --clr-active-text: 55, 55, 55; /* White for the active tab text */
+    
+    /* Inactive State */
+    --clr-inactive-bg: 240, 250, 255; /* Light background for inactive tab */
+    --clr-inactive-text: 50, 50, 50;  /* Gray text for inactive tab */    
+
+    /* Disabled States */
+    --clr-disabled-bg: 50, 50, 50;
+    /* Dark Gray for disabled background */
+    --clr-disabled-text: 100, 100, 100;
+    /* Gray for disabled text */
+    --clr-disabled-bg-secondary: 70, 70, 70;
+    /* Slightly lighter for secondary disabled background */
+    --clr-disabled-text-secondary: 150, 150, 150;
+    /* Lighter gray for secondary disabled text */
+
+    /* Danger (Error) State */
+    --clr-danger: 220, 20, 60;
+    /* Crimson for danger background */
+    --clr-danger-hover: 255, 55, 115;
+
+    /* Submit Button States */
+    --clr-submit-bg: 30, 144, 255;
+    /* Dodger Blue background for submit button */
+    --clr-submit-text: 255, 255, 255;
+    /* White text for submit button */
+    --clr-submit-hover-bg: 55, 165, 255;
+    /* Darker Dodger Blue for hover state */
+    --clr-submit-hover-text: 250, 250, 250;
+    /* White text for hover state */
+
+    /* Hover and Miscellaneous */
+    --clr-hover-bg: 40, 40, 40;
+    /* Slightly lighter dark gray for hover background */
+    --clr-icon: 200, 200, 200;
+    /* Light Gray for icons */
+    --clr-options-bg: 30, 30, 30;
+    /* Dark Gray for menu options */
+    --clr-border: 80, 80, 80;
+    /* Medium Gray for borders */
+
+    /* Clickable Links */
+    --clr-link: 0, 191, 255;
+    /* Deep Sky Blue for clickable links */
+}
+
+.forest-serenity {
+    /* Background Colors */
+    --clr-bg-primary: 235, 245, 230;
+    /* Light Mint for the main background */
+    --clr-bg-secondary: 255, 255, 255;
+    /* Pure white for secondary backgrounds */
+    --clr-bg-tertiary: 240, 255, 240;
+    /* Honeydew for tertiary backgrounds */
+
+    /* Foreground Colors */
+    --clr-text-primary: 30, 40, 30;
+    /* Deep forest green for primary text */
+    --clr-text-secondary: 50, 60, 50;
+    /* Darker green-gray for secondary text */
+    --clr-text-tertiary: 30, 40, 30;
+    /* Same as primary text for tertiary use */
+
+    /* Accent Colors */
+    --clr-accent-primary: 85, 107, 47;
+    /* Dark Olive Green for highlights */
+    --clr-accent-secondary: 60, 179, 113;
+    /* Medium Sea Green for base accents */
+    --clr-accent-light: 144, 238, 144;
+    /* Light Green for softer accents */
+    --clr-accent-text: 255, 255, 255;
+    /* White text on accent backgrounds */
+
+    /* Active State */
+    --clr-active-bg: 30, 144, 255; /* Dodger Blue for the active background */
+    --clr-active-text: 255, 255, 255; /* White for the active tab text */
+    /* Active hover state */
+    --clr-active-bg: 80, 194, 255; /* Dodger Blue for the active background */
+    --clr-active-text: 55, 55, 55; /* White for the active tab text */
+
+    /* Action States */
+    --clr-action-bg: 46, 139, 87;
+    /* Sea Green for active background */
+    --clr-action-text: 255, 255, 255;
+    /* White text for active state */
+    --clr-action-hover-bg: 60, 179, 113;
+    /* Medium Sea Green for hover background */
+    --clr-action-hover-text: 255, 255, 255;
+    /* White text for hover state */
+
+    /* Disabled States */
+    --clr-disabled-bg: 230, 230, 230;
+    /* Light Gray for disabled background */
+    --clr-disabled-text: 150, 150, 150;
+    /* Medium Gray for disabled text */
+
+    /* Danger (Error) State */
+    --clr-danger: 220, 20, 60;
+    /* Crimson for danger background */
+    --clr-danger-hover: 255, 55, 115;
+
+    /* Submit Button States */
+    --clr-submit-bg: 60, 179, 113;
+    /* Medium Sea Green for submit button */
+    --clr-submit-text: 255, 255, 255;
+    /* White text for submit button */
+    --clr-submit-hover-bg: 50, 205, 50;
+    /* Lime Green for hover state */
+
+    /* Hover and Miscellaneous */
+    --clr-hover-bg: 240, 255, 240;
+    /* Honeydew for hover background */
+    --clr-border: 200, 200, 200;
+    /* Light Gray for borders */
+
+    /* Clickable Links */
+    --clr-link: 85, 107, 47;
+    /* Dark Olive Green for clickable links */
+}
+
+.midnight-blue {
+    /* Background Colors */
+    --clr-bg-primary: 10, 10, 30;
+    /* Dark Blue for the main background */
+    --clr-bg-secondary: 20, 20, 40;
+    /* Darker Navy for secondary backgrounds */
+    --clr-bg-tertiary: 30, 30, 50;
+    /* Charcoal for tertiary backgrounds */
+
+    /* Foreground Colors */
+    --clr-text-primary: 255, 255, 255;
+    /* White for primary text */
+    --clr-text-secondary: 200, 200, 200;
+    /* Light Gray for secondary text */
+    --clr-text-tertiary: 255, 255, 255;
+    /* White for tertiary text */
+
+    /* Accent Colors */
+    --clr-accent-primary: 0, 191, 255;
+    /* Deep Sky Blue for highlights */
+    --clr-accent-secondary: 255, 140, 0;
+    /* Coral for base accents */
+    --clr-accent-light: 124, 252, 0;
+    /* Light Green for softer accents */
+    --clr-accent-text: 10, 10, 30;
+    /* Dark background for accent text */
+
+    /* Active State */
+    --clr-active-bg: 30, 144, 255; /* Dodger Blue for the active background */
+    --clr-active-text: 255, 255, 255; /* White for the active tab text */
+    /* Active hover state */
+    --clr-active-bg: 80, 194, 255; /* Dodger Blue for the active background */
+    --clr-active-text: 55, 55, 55; /* White for the active tab text */
+
+    /* Action States */
+    --clr-action-bg: 60, 179, 113;
+    /* Medium Sea Green for active background */
+    --clr-action-text: 255, 255, 255;
+    /* White text for active state */
+    --clr-action-hover-bg: 30, 144, 255;
+    /* Dodger Blue for hover background */
+    --clr-action-hover-text: 255, 255, 255;
+    /* White text for hover state */
+
+    /* Disabled States */
+    --clr-disabled-bg: 30, 30, 30;
+    /* Dark Gray for disabled background */
+    --clr-disabled-text: 100, 100, 100;
+    /* Medium Gray for disabled text */
+    --clr-disabled-bg-secondary: 40, 40, 40;
+    /* Darker Gray for secondary disabled background */
+    --clr-disabled-text-secondary: 80, 80, 80;
+    /* Light Gray for secondary disabled text */
+
+    /* Danger (Error) State */
+    --clr-danger: 220, 20, 60;
+    /* Crimson for danger background */
+    --clr-danger-hover: 255, 55, 115;
+
+    /* Submit Button States */
+    --clr-submit-bg: 0, 191, 255;
+    /* Deep Sky Blue for submit button */
+    --clr-submit-text: 255, 255, 255;
+    /* White text for submit button */
+    --clr-submit-hover-bg: 0, 149, 255;
+    /* Bright Dodger Blue for hover state */
+    --clr-submit-hover-text: 255, 255, 255;
+
+    /* Hover and Miscellaneous */
+    --clr-hover-bg: 20, 20, 50;
+    /* Darker Charcoal for hover background */
+
+    /* Alice Blue for menu options */
+    --clr-border: 50, 50, 50;
+    /* Darker gray for borders */
+
+    /* Clickable Links */
+    --clr-link: 0, 191, 255;
+    /* Deep Sky Blue for clickable links */
+
+    --clr-processing-bg: 0, 191, 255;
+    /* Deep Sky Blue for data processing */
+    --clr-processing-gradient: linear-gradient(90deg, rgba(0, 191, 255, 1) 0%, rgba(124, 252, 0, 1) 100%);
+}
+
+.dark-forest {
+    /* Background Colors */
+    --clr-bg-primary: 20, 30, 20;
+    /* Dark Forest Green for the main background */
+    --clr-bg-secondary: 30, 40, 30;
+    /* Darker Green for secondary backgrounds */
+    --clr-bg-tertiary: 40, 50, 40;
+    /* Charcoal Green for tertiary backgrounds */
+
+    /* Foreground Colors */
+    --clr-text-primary: 255, 255, 255;
+    /* White for primary text */
+    --clr-text-secondary: 200, 200, 200;
+    /* Light Gray for secondary text */
+    --clr-text-tertiary: 255, 255, 255;
+    /* White for tertiary text */
+
+    /* Accent Colors */
+    --clr-accent-primary: 255, 99, 71;
+    /* Tomato for highlights */
+    --clr-accent-secondary: 60, 179, 113;
+    /* Medium Sea Green for base accents */
+    --clr-accent-light: 124, 252, 0;
+    /* Light Green for softer accents */
+    --clr-accent-text: 20, 30, 20;
+    /* Dark background for accent text */
+
+    /* Active State */
+    --clr-active-bg: 30, 144, 255; /* Dodger Blue for the active background */
+    --clr-active-text: 255, 255, 255; /* White for the active tab text */
+    /* Active hover state */
+    --clr-active-bg: 80, 194, 255; /* Dodger Blue for the active background */
+    --clr-active-text: 55, 55, 55; /* White for the active tab text */
+    
+    /* Action States */
+    --clr-action-bg: 30, 144, 255;
+    /* Dodger Blue for active background */
+    --clr-action-text: 255, 255, 255;
+    /* White text for active state */
+    --clr-action-hover-bg: 0, 191, 255;
+    /* Deep Sky Blue for hover background */
+    --clr-action-hover-text: 255, 255, 255;
+    /* White text for hover state */
+
+    /* Disabled States */
+    --clr-disabled-bg: 30, 30, 30;
+    /* Dark Gray for disabled background */
+    --clr-disabled-text: 100, 100, 100;
+    /* Medium Gray for disabled text */
+
+    /* Danger (Error) State */
+    --clr-danger-bg: 220, 20, 60;
+    /* Crimson for danger background */
+    --clr-danger-text: 255, 255, 255;
+    /* White for text on danger background */
+
+    /* Submit Button States */
+    --clr-submit-bg: 60, 179, 113;
+    /* Medium Sea Green for submit button */
+    --clr-submit-text: 255, 255, 255;
+    /* White text for submit button */
+    --clr-submit-hover-bg: 30, 144, 255;
+    /* Dodger Blue for hover state */
+
+    /* Hover and Miscellaneous */
+    --clr-hover-bg: 20, 30, 20;
+    /* Darker Green for hover background */
+    --clr-border: 50, 50, 50;
+    /* Darker gray for borders */
+
+    /* Clickable Links */
+    --clr-link: 124, 252, 0;
+    /* Light Green for clickable links */
+}
+
+.vampire-night {
+    /* Background Colors */
+    --clr-bg-primary: 20, 20, 30;
+    /* Deep Blackish Blue for the main background */
+    --clr-bg-secondary: 30, 30, 40;
+    /* Darker Slate for secondary backgrounds */
+    --clr-bg-tertiary: 40, 40, 50;
+    /* Midnight Blue for tertiary backgrounds */
+
+    /* Foreground Colors */
+    --clr-text-primary: 255, 0, 0;
+    /* Bright Red for primary text */
+    --clr-text-secondary: 200, 200, 200;
+    /* Light Gray for secondary text */
+    --clr-text-tertiary: 255, 0, 0;
+    /* Bright Red for tertiary text */
+
+    /* Accent Colors */
+    --clr-accent-primary: 255, 165, 0;
+    /* Bright Orange for highlights */
+    --clr-accent-secondary: 0, 191, 255;
+    /* Deep Sky Blue for base accents */
+    --clr-accent-light: 124, 252, 0;
+    /* Light Green for softer accents */
+    --clr-accent-text: 20, 20, 30;
+    /* Dark background for accent text */
+
+    /* Active State */
+    --clr-active-bg: 255, 165, 0; /* Dodger Blue for the active background */
+    --clr-active-text: 0, 0, 0; /* White for the active tab text */
+    /* Active hover state */
+    --clr-inactive-bg: 250, 254, 255; /* Dodger Blue for the active background */
+    --clr-inactive-text: 55, 55, 55; /* White for the active tab text */    
+
+
+    /* Action States */
+    --clr-action-bg: 220, 20, 60;
+    /* Crimson for active background */
+    --clr-action-text: 255, 255, 255;
+    /* White text for active state */
+    --clr-action-hover-bg: 255, 99, 71;
+    /* Tomato for hover background */
+    --clr-action-hover-text: 255, 255, 255;
+    /* White text for hover state */
+
+    /* Disabled States */
+    --clr-disabled-bg: 30, 30, 30;
+    /* Dark Gray for disabled background */
+    --clr-disabled-text: 100, 100, 100;
+    /* Medium Gray for disabled text */
+
+    /* Danger (Error) State */
+    --clr-danger: 220, 20, 60;
+    /* Crimson for danger background */
+    --clr-danger-hover: 255, 55, 115;
+
+    /* Submit Button States */
+    --clr-submit-bg: 255, 0, 0;
+    /* Bright Red for submit button */
+    --clr-submit-text: 255, 255, 255;
+    /* White text for submit button */
+    --clr-submit-hover-bg: 220, 20, 60;
+    /* Crimson for hover state */
+
+    /* Hover and Miscellaneous */
+    --clr-hover-bg: 40, 40, 40;
+    /* Darker Slate for hover background */
+    --clr-border: 50, 50, 50;
+    /* Darker gray for borders */
+
+    /* Clickable Links */
+    --clr-link: 0, 191, 255;
+    /* Deep Sky Blue for clickable links */
+}
+
+.gothic-night {
+    /* Background Colors */
+    --clr-bg-primary: 10, 10, 10;
+    /* Very Dark Gray for the main background */
+    --clr-bg-secondary: 20, 20, 20;
+    /* Darker Gray for secondary backgrounds */
+    --clr-bg-tertiary: 30, 30, 30;
+    /* Charcoal for tertiary backgrounds */
+
+    /* Foreground Colors */
+    --clr-text-primary: 255, 255, 255;
+    /* White for primary text */
+    --clr-text-secondary: 150, 150, 150;
+    /* Light Gray for secondary text */
+    --clr-text-tertiary: 255, 255, 255;
+    /* White for tertiary text */
+
+    /* Accent Colors */
+    --clr-accent-primary: 255, 0, 255;
+    /* Magenta for highlights */
+    --clr-accent-secondary: 0, 255, 255;
+    /* Cyan for base accents */
+    --clr-accent-light: 255, 20, 147;
+    /* Deep Pink for softer accents */
+    --clr-accent-text: 10, 10, 10;
+    /* Dark background for accent text */
+
+    /* Active State */
+    --clr-active-bg: 30, 144, 255; /* Dodger Blue for the active background */
+    --clr-active-text: 255, 255, 255; /* White for the active tab text */
+    /* Active hover state */
+    --clr-inactive-bg: 250, 254, 255; /* Dodger Blue for the active background */
+    --clr-inactive-text: 55, 55, 55; /* White for the active tab text */    
+
+    /* Action States */
+    --clr-action-bg: 255, 69, 0;
+    /* Red-Orange for active background */
+    --clr-action-text: 255, 255, 255;
+    /* White text for active state */
+    --clr-action-hover-bg: 255, 20, 147;
+    /* Deep Pink for hover background */
+    --clr-action-hover-text: 255, 255, 255;
+    /* White text for hover state */
+
+    /* Disabled States */
+    --clr-disabled-bg: 30, 30, 30;
+    /* Dark Gray for disabled background */
+    --clr-disabled-text: 100, 100, 100;
+    /* Medium Gray for disabled text */
+
+    /* Danger (Error) State */
+    --clr-danger: 220, 20, 60;
+    /* Crimson for danger background */
+    --clr-danger-hover: 255, 55, 115;
+
+    /* Submit Button States */
+    --clr-submit-bg: 255, 20, 147;
+    /* Deep Pink for submit button */
+    --clr-submit-text: 255, 255, 255;
+    /* White text for submit button */
+    --clr-submit-hover-bg: 255, 69, 0;
+    /* Red-Orange for hover state */
+
+    /* Hover and Miscellaneous */
+    --clr-hover-bg: 10, 10, 10;
+    /* Very Dark Gray for hover background */
+    --clr-border: 50, 50, 50;
+    /* Darker gray for borders */
+
+    /* Clickable Links */
+    --clr-link: 0, 255, 127;
+    /* Medium Spring Green for clickable links */
+}
+

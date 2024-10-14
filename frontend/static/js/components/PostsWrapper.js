@@ -156,7 +156,7 @@ export default class PostsWrapper extends HTMLElement {
     }
   }
 
-  async renderSinglePost(post, fromView=false) {
+  async renderSinglePost(post, fromView = false) {
     const postsWrapper = this.shadowRoot.querySelector("#posts-wrapper");
     if (!postsWrapper) return;
 
@@ -164,13 +164,14 @@ export default class PostsWrapper extends HTMLElement {
     postComp.state = post;
     postComp.id = post.id;
 
+    if(fromView) postComp.addEventListener("renderFinished", () => postComp.setAsNewAdded());
+
     const sortOrder = this.getAttribute("sort") || "asc";
     sortOrder === "desc"
       ? postsWrapper.prepend(postComp)
       : postsWrapper.append(postComp);
 
       this.setupPostEventListeners(postComp);
-      if(fromView) postComp.setAsNewAdded();
   }
 
   setupPostEventListeners(postComp) {

@@ -344,6 +344,7 @@ export default class PostComponent extends HTMLElement {
 
     this.shadowRoot.appendChild(template.content.cloneNode(true));
     this.style.visibility = "visible";
+    this.dispatchEvent(new CustomEvent("renderFinished"));
   }
 
   addStyle() {
@@ -660,6 +661,7 @@ export default class PostComponent extends HTMLElement {
   }
 
   setAsNewAdded(){
+    console.log(this.shadowRoot.querySelector(".post"))
     this.shadowRoot.querySelector(".post").classList.add("newPost");
     setTimeout(() => {
       this.shadowRoot.querySelector(".post").classList.remove("newPost");  

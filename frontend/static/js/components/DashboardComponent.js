@@ -11,6 +11,9 @@ function getCss() {
     margin: 0;
     box-sizing: border-box;
   }
+  .dashboard-wrapper{
+    box-shadow: var(--shadow-sm)
+  }
   .col{
     background-color: rgb(var(--clr-bg-tertiary));
     color: rgb(var(--clr-text-tertiary)); 
@@ -83,9 +86,11 @@ export default class DashboardComponent extends HTMLElement {
   async load() {
     this.renderLoadingState(); // Show loading state with smooth transition
 
-    const id = this.dataset.id;
+   // const id = this.dataset.id;
+    const id = null;
     if (!id) {
       this.handleError("User ID is missing");
+      this.remove();
       return;
     }
 
@@ -185,7 +190,7 @@ export default class DashboardComponent extends HTMLElement {
 
   getHTMLTemplate(profile_image, username, email, posts_count, comments_count) {
     return /*html*/`
-    <div class="card padding grid col-3 transition-opacity hidden">
+    <div class="card padding grid col-3 transition-opacity hidden dashboard-wrapper">
       <div class="col padding flex flex-col gap">
         <div class="img-col flex flex-col flex-center">
           <img id="profile-img" height="120" width="120" src="${this.getProfileImage(profile_image)}" alt="Profile image of ${username}" class="profile-image"/>

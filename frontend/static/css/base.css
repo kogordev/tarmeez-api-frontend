@@ -49,9 +49,10 @@
 
     --p: 2rem;
 
+    --card-w: 680px;
 
 
-    --shadow-sm: 0 0 4px -2px black;
+    --shadow-sm: 0 0 3px rgba(0, 0, 0, .5);
     --shadow: 0 0 10px -5px black;
 
 

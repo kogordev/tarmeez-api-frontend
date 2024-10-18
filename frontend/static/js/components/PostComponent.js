@@ -31,7 +31,7 @@ function  getCss() {
   }
 
   .shadow {
-      box-shadow: 0 0 5px -2px rgba(0, 0, 0, 0.3);
+      box-shadow: var(--shadow-sm);
   }
 
   .shadow-lg {
@@ -265,7 +265,7 @@ export default class PostComponent extends HTMLElement {
 
   elements() {
     return {
-      profileImg: this.shadowRoot.querySelector("profile-img"),
+      profileImg: this.shadowRoot.querySelector("#profile-img"),
       usernameWrapper: this.shadowRoot.querySelector(".post__username"),
       usernameLink: this.shadowRoot.querySelector("#username-link"),
       postBody: this.shadowRoot.querySelector(".post__body"),
@@ -507,6 +507,9 @@ export default class PostComponent extends HTMLElement {
 
     // Handle username link 
     elements.usernameLink.addEventListener("click", () => navigateTo(`/users/${this.state.author.id}`))
+
+    // 
+    elements.profileImg.addEventListener("click", () => navigateTo(`/users/${this.state.author.id}`))
   }
 
   // Prevent default event handling for anchor tags to ensure links open correctly

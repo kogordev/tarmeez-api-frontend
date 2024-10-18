@@ -10,6 +10,8 @@ function getCss() {
 }
 .post-creator{
   position: relative;
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
 }
 
 .container{

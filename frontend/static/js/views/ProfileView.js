@@ -9,6 +9,7 @@ export default class ProfileView extends HTMLElement {
     this.controller = new Controller();
     this.currentUser = null;
     this.updateDashboard = this.updateDashboard.bind(this); // Bind update function
+    this.UpdateUserInfo = this.UpdateUserInfo.bind(this);
   }
 
   async connectedCallback() {
@@ -78,6 +79,7 @@ export default class ProfileView extends HTMLElement {
   getHTMLTemplate(postsUrl){
     return /*html*/`
     <div class="profile-view wrapper main-color flex flex-col align-items-center gap">
+    <user-info data-id="${this.params.id}"></user-info>
     <dashboard-c data-id="${this.params.id}"></dashboard-c>
     ${this.shouldRenderPostCreator()
     ? `<post-creator></post-creator>`
@@ -127,6 +129,11 @@ export default class ProfileView extends HTMLElement {
     postsWrapper.addEventListener("comment-added", this.updateDashboard);
     postsWrapper.addEventListener("state-changed", this.updateDashboard);
 
+    postsWrapper.addEventListener("post-deleted", this.UpdateUserInfo);
+    postsWrapper.addEventListener("post-added", this.UpdateUserInfo);
+    postsWrapper.addEventListener("comment-added", this.UpdateUserInfo);
+    postsWrapper.addEventListener("state-changed", this.UpdateUserInfo);
+
     this.shadowRoot.querySelector("dashboard-c")?.addEventListener("user-loaded", e => {
       const { username } = e.detail;
       document.title = "Tarmeez | " + this._capitalizeFirstLetter(username) + "'s Profile";
@@ -145,6 +152,7 @@ export default class ProfileView extends HTMLElement {
     const postsWrapper = this.shadowRoot.querySelector("posts-wrapper");
     postsWrapper.addPost(event.detail);
     this.updateDashboard(); // Refresh dashboard on new post creation
+    this.UpdateUserInfo(); // Refresh dashboard on new post creation
   }
 
   /**
@@ -168,6 +176,14 @@ export default class ProfileView extends HTMLElement {
   async updateDashboard() {
     const dashboard = this.shadowRoot.querySelector("dashboard-c");
     if (dashboard) await dashboard.update();
+  }
+
+  /**
+   * Updates the dashboard component.
+   */
+  async UpdateUserInfo() {
+    const userInfo = this.shadowRoot.querySelector("user-info");
+    if (userInfo) await userInfo.update();
   }
 }
 

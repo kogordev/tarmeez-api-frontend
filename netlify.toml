@@ -1,18 +1,19 @@
 [build]
-  publish = "frontend"  # The directory containing the static files
-  command = "npm run build"  # Build command if applicable (optional)
+  publish = "frontend"
 
+# SPA routing
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
+# Cache static assets
 [[headers]]
   for = "/*.js"
   [headers.values]
-    Cache-Control = "max-age=31536000, immutable"
+    Cache-Control = "public, max-age=3600"
 
 [[headers]]
   for = "/*.css"
   [headers.values]
-    Cache-Control = "max-age=31536000, immutable"
+    Cache-Control = "public, max-age=3600"

@@ -1,6 +1,5 @@
 [build]
   publish = "frontend"
-  command = "npm run build"
 
 # SPA routing
 [[redirects]]
